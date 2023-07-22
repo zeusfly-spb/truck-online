@@ -10,6 +10,13 @@
       'L5Swagger' => 'L5Swagger\\L5SwaggerFacade',
     ),
   ),
+  'laravel/passport' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Passport\\PassportServiceProvider',
+    ),
+  ),
   'laravel/sail' => 
   array (
     'providers' => 

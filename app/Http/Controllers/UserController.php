@@ -40,7 +40,6 @@ class UserController extends BaseController
         $username = $this->username();
         $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
             'username' => $usernameRule,
             'password' => 'required|confirmed|min:6'
         ]);
@@ -48,12 +47,11 @@ class UserController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
         $user = User::create([
-            'name' => $request->input('name'),
             $username => $request->input('username'),
             'password' => bcrypt($request->input('password'))
         ]);
         $success['token'] =  $user->createToken('MyApp')->accessToken;
-        $success['name'] =  $user->name;
+        $success[$username] =  $user->{$username};
         return $this->sendResponse($success, 'User register successfully.');
     }
 
@@ -63,10 +61,11 @@ class UserController extends BaseController
      */
     public function login(Request $request): JsonResponse
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        $username = $this->username();
+        if(Auth::attempt([$username => $request->input('username'), 'password' => $request->input('password')])){
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')-> accessToken;
-            $success['name'] =  $user->name;
+            $success[$username] =  $user->{$username};
             return $this->sendResponse($success, 'User login successfully.');
         }
         else{

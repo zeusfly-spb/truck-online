@@ -32,10 +32,12 @@
     28 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     29 => 'Termwind\\Laravel\\TermwindServiceProvider',
     30 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    31 => 'App\\Providers\\AppServiceProvider',
-    32 => 'App\\Providers\\AuthServiceProvider',
-    33 => 'App\\Providers\\EventServiceProvider',
-    34 => 'App\\Providers\\RouteServiceProvider',
+    31 => 'Spatie\\Permission\\PermissionServiceProvider',
+    32 => 'App\\Providers\\AppServiceProvider',
+    33 => 'App\\Providers\\AuthServiceProvider',
+    34 => 'App\\Providers\\EventServiceProvider',
+    35 => 'App\\Providers\\RouteServiceProvider',
+    36 => 'Spatie\\Permission\\PermissionServiceProvider',
   ),
   'eager' => 
   array (
@@ -56,10 +58,12 @@
     14 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     15 => 'Termwind\\Laravel\\TermwindServiceProvider',
     16 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    17 => 'App\\Providers\\AppServiceProvider',
-    18 => 'App\\Providers\\AuthServiceProvider',
-    19 => 'App\\Providers\\EventServiceProvider',
-    20 => 'App\\Providers\\RouteServiceProvider',
+    17 => 'Spatie\\Permission\\PermissionServiceProvider',
+    18 => 'App\\Providers\\AppServiceProvider',
+    19 => 'App\\Providers\\AuthServiceProvider',
+    20 => 'App\\Providers\\EventServiceProvider',
+    21 => 'App\\Providers\\RouteServiceProvider',
+    22 => 'Spatie\\Permission\\PermissionServiceProvider',
   ),
   'deferred' => 
   array (

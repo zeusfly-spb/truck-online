@@ -1,0 +1,51 @@
+
+import vuetify from 'vite-plugin-vuetify'
+import { createResolver } from '@nuxt/kit'
+
+const { resolve } = createResolver(import.meta.url)
+
+export default defineNuxtConfig({
+  devtools: { enabled: true },
+  css: ['vuetify/styles', '@/assets/main.scss', 'vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.min.css'],
+  buildModules: [
+    '@nuxtjs/vuetify',
+    ['@nuxtjs/vuetify', { iconfont: 'mdi' }]
+  ],
+  build: { transpile: ['vuetify'] },
+  vite: { ssr: { noExternal: ['vuetify'] } },
+  modules: [
+    'nuxt-delay-hydration',
+    'nuxt-icon',
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) =>
+        // @ts-ignore
+        config.plugins.push(
+          vuetify({
+            styles: { configFile: 'assets/variables.scss' },
+          })
+        )
+      );
+    },
+  ],
+  delayHydration: {
+    mode: 'init',
+    // enables nuxt-delay-hydration in dev mode for testing
+    debug: process.env.NODE_ENV === 'development'
+  },
+  sourcemap: {
+    server: false,
+    client: false,
+  },
+  vuetify: {
+    vuetifyOptions: {
+      // @TODO: list all vuetify options
+    },
+    moduleOptions: {
+      treeshaking: true,
+      useIconCDN: true,
+      styles: true,
+      autoImport: true,
+      useVuetifyLabs: true,
+    }
+  }
+})

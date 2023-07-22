@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends BaseController
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -28,5 +32,18 @@ class UserController extends BaseController
         $success['token'] =  $user->createToken('MyApp')->accessToken;
         $success['name'] =  $user->name;
         return $this->sendResponse($success, 'User register successfully.');
+    }
+
+    public function login(Request $request): JsonResponse
+    {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
+            $success['token'] =  $user->createToken('MyApp')-> accessToken;
+            $success['name'] =  $user->name;
+            return $this->sendResponse($success, 'User login successfully.');
+        }
+        else{
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        }
     }
 }

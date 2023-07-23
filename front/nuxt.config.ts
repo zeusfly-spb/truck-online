@@ -6,7 +6,7 @@ const { resolve } = createResolver(import.meta.url)
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  css: ['vuetify/styles', '@/assets/main.scss', 'vuetify/lib/styles/main.sass', '@mdi/font/css/materialdesignicons.min.css'],
+  css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
     '@nuxtjs/vuetify',
     ['@nuxtjs/vuetify', { iconfont: 'mdi' }]
@@ -14,6 +14,7 @@ export default defineNuxtConfig({
   build: { transpile: ['vuetify'] },
   vite: { ssr: { noExternal: ['vuetify'] } },
   modules: [
+    '@pinia/nuxt',
     'nuxt-delay-hydration',
     'nuxt-icon',
     async (options, nuxt) => {

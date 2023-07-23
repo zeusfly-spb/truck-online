@@ -66,24 +66,29 @@
 </template>
 
 <script setup lang="js">
-// set page title
-useHead({ title: 'Вход' });
+useHead({title: 'Вход'});
+import {useAuthStore} from "~/store/auth";
+const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
 const passwordType = ref('password');
-const loading = ref(false);
-
-const submit = async () => {
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
+const loading = computed(() => authStore.loading);
+const authenticated = computed(() => authStore.authenticated);
+watch(authenticated, (val) => {
+  const action = async () => {
     useSnack({
       show: true,
       type: 'success',
-      title: 'Logged In',
-      message: 'Welcome back! Feel free to browse around',
+      title: 'Авторизован',
+      message: 'Вы успешно авторизовались в системе',
     });
-  }, 2500);
+    await navigateTo('/profile')
+  }
+  val ? action() : null;
+})
+
+const submit = async () => {
+  await authStore.authenticateUser({ username, password });
 };
 </script>
 <style scoped>

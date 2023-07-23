@@ -1,7 +1,16 @@
 <template>
   <div>
     <v-app>
-      <v-app-bar title="PortOnline"/>
+      <v-app-bar title="OnlinePort">
+        <v-spacer/>
+        <v-btn
+          v-if="authenticated"
+          @click="logOut"
+          variant="tonal"
+        >
+          Выйти
+        </v-btn>
+      </v-app-bar>
       <v-main>
         <Snack></Snack>
         <slot />
@@ -10,4 +19,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useAuthStore } from "~/store/auth";
+const authStore = useAuthStore();
+const authenticated = computed(() => authStore.authenticated);
+const { logUserOut } = authStore;
+const logOut = async () => {
+  logUserOut();
+  await navigateTo('/login');
+}
+</script>

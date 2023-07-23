@@ -19,12 +19,12 @@ export const useSnack = ({show, type, title, message, }: {
   const t = useSnackTitle();
   const m = useSnackMessage();
   const ty = useSnackType();
-
   s.value = show;
   t.value = title;
   m.value = message;
   ty.value = type;
 };
+
 
 /**
  *
@@ -36,10 +36,12 @@ export const useFetchApi = (url: string, options?: UseFetchOptions<object>) => {
     ...options,
     async onRequest({ request, options }) {
       console.log("[fetch request]");
-
       const headers = new Headers(options.headers);
-      headers.set("Authorization", "Bearer Token");
-
+      headers.set('Content-Type', 'application/json');
+      const cookie_token = useCookie('online_port_token');
+      if (cookie_token.value) {
+        headers.set("Authorization", `Bearer ${ cookie_token.value }`);
+      }
       options.headers = headers;
     },
     async onRequestError({ request, options, error }) {

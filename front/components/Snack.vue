@@ -4,7 +4,7 @@
       <VSnackbar
         :color="type"
         location="top right"
-        :timeout="6000"
+        :timeout="2000"
         v-model="show"
         rounded="lg"
         transition="slide-y-transition"

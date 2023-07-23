@@ -16,10 +16,11 @@ use App\Http\Controllers\OrderController;
 |
 */
 Route::prefix('auth')->group(function () {
-    Route::post('register', [UserController::class, 'register']);
-    Route::post('login', [UserController::class, 'login']);
+  Route::post('/register', [UserController::class, 'register']);
+  Route::post('/login', [UserController::class, 'login']);
 });
 
-Route::middleware('auth:api')->group( function () {
-    Route::resource('orders', OrderController::class);
+Route::middleware('auth:api')->group(function () {
+  Route::get('/details', [UserController::class, 'details']);
+  Route::resource('orders', OrderController::class);
 });

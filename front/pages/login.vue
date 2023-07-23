@@ -67,7 +67,7 @@
 
 <script setup lang="js">
 useHead({title: 'Вход'});
-import {useAuthStore} from "~/store/auth";
+import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
@@ -82,7 +82,7 @@ watch(authenticated, (val) => {
       title: 'Авторизован',
       message: 'Вы успешно авторизовались в системе',
     });
-    await navigateTo('/profile')
+    await navigateTo('/profile');
   }
   val ? action() : null;
 })

@@ -3,23 +3,28 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use MatanYadaev\EloquentSpatial\Objects\Point;
+use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    use HasFactory;
-    use HasTranslations;
+  use HasFactory;
+  use HasTranslations;
 
-    protected $table = 'addresses';
+  protected $table = 'addresses';
 
-    protected $fillable = ['name', 'address_type_id', 'location'];
+  protected $fillable = ['name', 'address_type_id', 'location'];
 
-    public $translatable = [
-        'name'
-    ];
+  public $translatable = [
+      'name'
+  ];
 
-    public function address_type(): BelongsTo{
-        return $this->belongsTo(AddressType::class);
-    }
+  protected $casts = [
+      'location' => Point::class,
+  ];
+
+  public function address_type(){
+      return $this->belongsTo(AddressType::class);
+  }
 }

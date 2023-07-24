@@ -143,7 +143,7 @@ class AddressTypeController extends Controller
     *      operationId="Update Address Type",
     *      tags={"Addresses"},
     *      summary="Update Address Type",
-    *      description="Update Order Status",
+    *      description="Update Address Type",
     *      @OA\RequestBody(
     *         @OA\MediaType(
     *             mediaType="application/json",

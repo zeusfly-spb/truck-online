@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Api\Addresses;
+namespace App\Http\Resources\Api\Cars;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AddressTypeResource extends JsonResource
+class CarTypeResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class AddressTypeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'    => $this->id,
-            'name' => $this->getTranslation('name', app()->getLocale()),
+          'id'    => $this->id,
+          'name' => $this->getTranslation('name', app()->getLocale()),
         ];
     }
 }

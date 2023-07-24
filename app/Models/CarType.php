@@ -3,23 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
 
-class AddressType extends Model
+class CarType extends Model
 {
     use HasFactory;
     use HasTranslations;
 
-    protected $table = 'address_types';
+    protected $table = 'car_types';
 
     protected $fillable = ['name'];
 
     public $translatable = [
-        'name'
+        'name',
     ];
-
-    public function addresses(){
-        return $this->hasMany(Address::class);
-    }
 }

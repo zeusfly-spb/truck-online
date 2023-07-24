@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Containers\ContainerController;
 use App\Http\Controllers\Api\Orders\OrderStatusController;
 use App\Http\Controllers\Api\Addresses\AddressTypeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,9 +18,14 @@ use App\Http\Controllers\Api\Addresses\AddressTypeController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::prefix('auth')->group(function () {
+  Route::post('/register', [UserController::class, 'register']);
+  Route::post('/login', [UserController::class, 'login']);
+});
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function () {
+  Route::get('/details', [UserController::class, 'details']);
+  Route::resource('orders', OrderController::class);
 });
 
 Route::apiResource('containers', ContainerController::class);

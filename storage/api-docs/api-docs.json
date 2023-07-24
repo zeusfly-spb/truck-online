@@ -1,0 +1,595 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OnlinePort",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/address-types": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Get list of Address Types",
+                "operationId": "cb2f56fed79cc263de9e943f4ab9cf25",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Store Address Type",
+                "operationId": "f4017f52de134af5733ae71bea585572",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "AddressType1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/address-types/{id}": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Show Address Type",
+                "description": "Show Address Type",
+                "operationId": "f2b8c7382713209a58b31d64ebb7a4a2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Update Address Type",
+                "description": "Update Order Status",
+                "operationId": "Update Address Type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "AddressTypeTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Summary",
+                "description": "Addresses",
+                "operationId": "Delete Address Type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/containers": {
+            "get": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Get list of containers",
+                "operationId": "16104655b4f5d229e273970e21bafd3a",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Store Container",
+                "operationId": "4c45cd86d437e437ec13145bcc70277a",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "ContainerNameTest"
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "10 тонн"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/containers/{id}": {
+            "get": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Show Container",
+                "description": "Show Container",
+                "operationId": "083e41584b211785d18e9a8261c92e0a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Update Containers",
+                "description": "Update Containers",
+                "operationId": "Update Containers",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "ContainerNameTestUpdate"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Summary",
+                "description": "Containers",
+                "operationId": "Delete container",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/order-statuses": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get list of Order Statuses",
+                "operationId": "3a002ba5924af70e7b8f3e1440fba633",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Store Order Status",
+                "operationId": "74d93fe985b453247fc8e328f1133729",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "OrderStatusNameTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/order-statuses/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Show Order Status",
+                "description": "Show Order Status",
+                "operationId": "2f5c50af4acd67e93ceae460d94c6fec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Update Order Status",
+                "description": "Update Order Status",
+                "operationId": "Update Order Status",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "OrderStatusNameTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Summary",
+                "description": "Orders",
+                "operationId": "Delete Order Status",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        }
+    }
+}

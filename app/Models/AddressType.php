@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AddressType extends Model
 {
@@ -20,8 +19,7 @@ class AddressType extends Model
         'name'
     ];
 
-    public function addresses(): HasMany
-    {
+    public function addresses(){
         return $this->hasMany(Address::class);
     }
 }

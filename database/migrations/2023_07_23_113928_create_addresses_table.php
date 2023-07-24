@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name', 255);
             $table->point('location');
             $table->unsignedBigInteger('address_type_id')->nullable();
-            $table->foreign('address_type_id')->references('id')->on('address_types');
+            $table->foreign('address_type_id')->references('id')->on('address_types')->onDelete('cascade');
             $table->timestamps();
         });
     }

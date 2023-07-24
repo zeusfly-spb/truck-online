@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\Containers\ContainerController;
+use App\Http\Controllers\Api\Orders\OrderStatusController;
+use App\Http\Controllers\Api\Addresses\AddressTypeController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('containers', ContainerController::class);
+Route::apiResource('order-statuses', OrderStatusController::class);
+Route::apiResource('address-types', AddressTypeController::class);

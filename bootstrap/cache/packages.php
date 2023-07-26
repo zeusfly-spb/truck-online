@@ -10,6 +10,17 @@
       'L5Swagger' => 'L5Swagger\\L5SwaggerFacade',
     ),
   ),
+  'intervention/image' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
+    ),
+  ),
   'laravel/passport' => 
   array (
     'providers' => 
@@ -36,6 +47,13 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'matanyadaev/laravel-eloquent-spatial' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'MatanYadaev\\EloquentSpatial\\EloquentSpatialServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
@@ -75,6 +93,13 @@
     'providers' => 
     array (
       0 => 'Spatie\\Permission\\PermissionServiceProvider',
+    ),
+  ),
+  'spatie/laravel-translatable' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Spatie\\Translatable\\TranslatableServiceProvider',
     ),
   ),
 );

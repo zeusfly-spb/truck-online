@@ -2,6 +2,14 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Containers\ContainerController;
+use App\Http\Controllers\Api\Orders\OrderStatusController;
+use App\Http\Controllers\Api\Addresses\AddressTypeController;
+use App\Http\Controllers\Api\Addresses\AddressController;
+use App\Http\Controllers\Api\Companies\CompanyController;
+use App\Http\Controllers\Api\Cars\CarTypeController;
+use App\Http\Controllers\Api\Taxes\TaxController;
+use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 
@@ -24,3 +32,12 @@ Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
   Route::resource('orders', OrderController::class);
 });
+
+Route::apiResource('containers', ContainerController::class);
+Route::apiResource('order-statuses', OrderStatusController::class);
+Route::apiResource('address-types', AddressTypeController::class);
+Route::apiResource('addresses', AddressController::class);
+Route::apiResource('taxes', TaxController::class);
+Route::apiResource('countries', CountryController::class);
+Route::apiResource('companies', CompanyController::class);
+Route::apiResource('car/types', CarTypeController::class);

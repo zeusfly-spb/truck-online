@@ -1,0 +1,1185 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "OnlinePort",
+        "version": "0.1"
+    },
+    "paths": {
+        "/api/addresses": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Get list of Addresses",
+                "operationId": "78d041b6294e48018a56de0eb07fea95",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Store Addresses",
+                "operationId": "5fc5437c7395095043fd60824f3e0f55",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Rossi Boutique Hotel & SPA"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "example": "59.9310551"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "example": "30.3338147"
+                                    },
+                                    "address_type_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/addresses/{id}": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Show Address",
+                "description": "Show Address",
+                "operationId": "cb32d4583dda5894217fc7399edcc54d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Update Address",
+                "description": "Update Address",
+                "operationId": "Update Address",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Rossi Boutique Hotel & SPA"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "example": "59.9310551"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "example": "30.3338147"
+                                    },
+                                    "address_type_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Summary",
+                "description": "Addresses",
+                "operationId": "Delete Address",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/address-types": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Get list of Address Types",
+                "operationId": "cb2f56fed79cc263de9e943f4ab9cf25",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Store Address Type",
+                "operationId": "f4017f52de134af5733ae71bea585572",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "AddressType1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/address-types/{id}": {
+            "get": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Show Address Type",
+                "description": "Show Address Type",
+                "operationId": "f2b8c7382713209a58b31d64ebb7a4a2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Update Address Type",
+                "description": "Update Address Type",
+                "operationId": "Update Address Type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "AddressTypeTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Addresses"
+                ],
+                "summary": "Summary",
+                "description": "Addresses",
+                "operationId": "Delete Address Type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/types": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Get list of car types",
+                "operationId": "dfd65de4134f27c2c24982423cb5069e",
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Store Company",
+                "operationId": "1a44354ccc5b9610f585d42317a63721",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Прицеп"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/types/{id}": {
+            "get": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Show Car Type",
+                "description": "Show Car Type",
+                "operationId": "3b4c580f693f9ca48d9923eaaf540d44",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Update Car Type",
+                "description": "Update Car Type",
+                "operationId": "Update Car Type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "CarTypeUpdate"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Summary",
+                "description": "Delete Car Type",
+                "operationId": "Delete car type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/companies": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Get list of companies",
+                "operationId": "eaee9115a20d3502665cbe317978cbc4",
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Store Company",
+                "operationId": "4dd515be63b6343de205661f821a20a6",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "iin": {
+                                        "type": "string",
+                                        "example": "IIN"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "1000000000"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "company@gmail.com"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "CompanyUserName"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "CompanyLasName"
+                                    },
+                                    "company_reg_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-07-23"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/companies/{id}": {
+            "get": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Show Company",
+                "description": "Show Comapny",
+                "operationId": "c667a00a6a46cdbc63aa8821615854f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Update Companies",
+                "description": "Update Companies",
+                "operationId": "Update Companies",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "iin": {
+                                        "type": "string",
+                                        "example": "IIN"
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "1000000000"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "company@gmail.com"
+                                    },
+                                    "first_name": {
+                                        "type": "string",
+                                        "example": "CompanyUserName"
+                                    },
+                                    "last_name": {
+                                        "type": "string",
+                                        "example": "CompanyLasName"
+                                    },
+                                    "company_reg_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2023-07-23"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Companies"
+                ],
+                "summary": "Summary",
+                "description": "Companies",
+                "operationId": "Delete company",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/containers": {
+            "get": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Get list of containers",
+                "operationId": "16104655b4f5d229e273970e21bafd3a",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Store Container",
+                "operationId": "4c45cd86d437e437ec13145bcc70277a",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "ContainerNameTest"
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "10 тонн"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/containers/{id}": {
+            "get": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Show Container",
+                "description": "Show Container",
+                "operationId": "083e41584b211785d18e9a8261c92e0a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Update Containers",
+                "description": "Update Containers",
+                "operationId": "Update Containers",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "ContainerNameTestUpdate"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Containers"
+                ],
+                "summary": "Summary",
+                "description": "Containers",
+                "operationId": "Delete container",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/order-statuses": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Get list of Order Statuses",
+                "operationId": "3a002ba5924af70e7b8f3e1440fba633",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Store Order Status",
+                "operationId": "74d93fe985b453247fc8e328f1133729",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "OrderStatusNameTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/order-statuses/{id}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Show Order Status",
+                "description": "Show Order Status",
+                "operationId": "2f5c50af4acd67e93ceae460d94c6fec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Update Order Status",
+                "description": "Update Order Status",
+                "operationId": "Update Order Status",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "OrderStatusNameTest"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Summary",
+                "description": "Orders",
+                "operationId": "Delete Order Status",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        }
+    }
+}

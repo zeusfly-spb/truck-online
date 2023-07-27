@@ -1,5 +1,13 @@
 import { defineStore } from 'pinia';
 
+// const detailsUrl = 'http://localhost/api/details';
+// const registerUrl = 'http://localhost/api/auth/register';
+// const loginUrl = 'http://localhost/api/auth/login';
+
+const detailsUrl = 'http://217.197.237.54/api/details';
+const registerUrl = 'http://217.197.237.54/api/auth/register';
+const loginUrl = 'http://217.197.237.54/api/auth/login';
+
 interface UserPayloadInterface {
   username: string;
   password: string;
@@ -19,13 +27,13 @@ export const useAuthStore = defineStore('auth', {
   }),
   actions: {
     async getUserDetails() {
-      const res = await useFetchApi('http://localhost/api/details');
+      const res = await useFetchApi(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
       this.user ? this.authenticated = true : null;
     },
     async registerUser({ username, password, passwordConfirm }: UserRegisterPayloadInterface) {
-      const { data, pending }: any = await useFetchApi('http://localhost/api/auth/register', {
+      const { data, pending }: any = await useFetchApi(registerUrl, {
         method: 'post',
         body: { username, password, password_confirmation: passwordConfirm },
       });
@@ -34,7 +42,7 @@ export const useAuthStore = defineStore('auth', {
       return success;
     },
     async authenticateUser({ username, password }: UserPayloadInterface) {
-      const { data, pending }: any = await useFetchApi('http://localhost/api/auth/login', {
+      const { data, pending }: any = await useFetchApi(loginUrl, {
         method: 'post',
         body: { username, password },
       });

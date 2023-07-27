@@ -4,11 +4,10 @@
       <v-app-bar title="OnlinePort">
         <v-spacer/>
         <v-btn
-          v-if="authenticated"
-          @click="logOut"
+          @click="authenticated ? logOut() : navigateTo('/login')"
           variant="tonal"
         >
-          Выйти
+          {{ authenticated ? 'Выйти' : 'Войти' }}
         </v-btn>
       </v-app-bar>
       <v-main>

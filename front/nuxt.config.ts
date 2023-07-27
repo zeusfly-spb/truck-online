@@ -48,5 +48,10 @@ export default defineNuxtConfig({
       autoImport: true,
       useVuetifyLabs: true,
     }
+  },
+  nitro: {
+    prerender: {
+      crawlLinks: true
+    }
   }
 })

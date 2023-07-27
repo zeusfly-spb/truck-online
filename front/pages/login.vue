@@ -86,9 +86,21 @@ watch(authenticated, (val) => {
   }
   val ? action() : null;
 })
-
+const showError = async () => {
+  useSnack({
+    show: true,
+    type: 'error',
+    title: 'Ошибка авторизации!',
+    message: 'Проверьте правильность введенных данных',
+  });
+}
 const submit = async () => {
-  await authStore.authenticateUser({ username, password });
+  try {
+    await authStore.authenticateUser({ username, password });
+  } catch (e) {
+    console.log('ERROR!');
+    showError();
+  }
 };
 </script>
 <style scoped>

@@ -715,12 +715,6 @@
                 "responses": {
                     "200": {
                         "description": "SUCCESS"
-                    },
-                    "400": {
-                        "description": "Bad Request"
-                    },
-                    "403": {
-                        "description": "Forbidden"
                     }
                 }
             }
@@ -789,33 +783,92 @@
                             "schema": {
                                 "properties": {
                                     "iin": {
+                                        "type": "integer",
+                                        "example": "12345678910"
+                                    },
+                                    "kpp": {
+                                        "type": "integer",
+                                        "example": "123456789"
+                                    },
+                                    "ogrn": {
                                         "type": "string",
-                                        "example": "IIN"
+                                        "example": "ogrn"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "12345678910"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "email@gmail.com"
+                                    },
+                                    "short_name": {
+                                        "type": "string",
+                                        "example": "short_name"
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "full_name"
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "example": "https://groozgo.ru/"
+                                    },
+                                    "company_reg_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "edo_provider": {
+                                        "type": "string",
+                                        "example": "edo_provider"
+                                    },
+                                    "edo_id": {
+                                        "type": "string",
+                                        "example": "edo_id"
                                     },
                                     "user_id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "1000000000"
+                                    "tax_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "company@gmail.com"
+                                    "country_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "first_name": {
-                                        "type": "string",
-                                        "example": "CompanyUserName"
+                                    "address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "last_name": {
-                                        "type": "string",
-                                        "example": "CompanyLasName"
+                                    "post_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "company_reg_date": {
+                                    "contact": {
                                         "type": "string",
-                                        "format": "date",
-                                        "example": "2023-07-23"
+                                        "example": "contact"
+                                    },
+                                    "data_contract": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "ceo_name": {
+                                        "type": "string",
+                                        "example": "ceo_name"
+                                    },
+                                    "cceo_name": {
+                                        "type": "string",
+                                        "example": "cceo_name"
+                                    },
+                                    "cceo_contract_name": {
+                                        "type": "string",
+                                        "example": "cceo_contract_name"
+                                    },
+                                    "cceo_contract_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
                                     }
                                 },
                                 "type": "object"

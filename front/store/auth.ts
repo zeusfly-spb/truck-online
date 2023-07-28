@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 
-// const detailsUrl = 'http://localhost/api/details';
-// const registerUrl = 'http://localhost/api/auth/register';
-// const loginUrl = 'http://localhost/api/auth/login';
+const detailsUrl = 'http://localhost/api/details';
+const registerUrl = 'http://localhost/api/auth/register';
+const loginUrl = 'http://localhost/api/auth/login';
 
-const detailsUrl = 'http://217.197.237.54/api/details';
-const registerUrl = 'http://217.197.237.54/api/auth/register';
-const loginUrl = 'http://217.197.237.54/api/auth/login';
+// const detailsUrl = 'http://217.197.237.54/api/details';
+// const registerUrl = 'http://217.197.237.54/api/auth/register';
+// const loginUrl = 'http://217.197.237.54/api/auth/login';
 
 interface UserPayloadInterface {
   username: string;
@@ -17,7 +17,6 @@ interface UserRegisterPayloadInterface {
   password: string;
   passwordConfirm: string;
 }
-
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     authenticated: false,

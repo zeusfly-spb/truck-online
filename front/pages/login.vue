@@ -15,7 +15,6 @@
           >
             <FormLabel for="email">Email | Номер телефона</FormLabel>
             <VTextField
-              :rules="[rules.requiredUsername, rules.usernameRule]"
               v-model="username"
               id="username"
               type="username"
@@ -27,7 +26,6 @@
               Password
             </label>
             <VTextField
-              :rules="[rules.requiredPassword]"
               v-model="password"
               id="password"
               type="password"
@@ -46,6 +44,7 @@
             </p>
             <div class="mt-10">
               <VBtn
+                :disabled="!valid"
                 :loading="loading"
                 type="submit"
                 flat
@@ -91,26 +90,13 @@ const showError = async () => {
     message: 'Проверьте правильность введенных данных',
   });
 }
-const usernameType = computed(() => /^\d+$/.test(username.value) ? 'phone' : 'email');
-const rules = {
-  requiredUsername: value => !!value || 'Введите email или номер телефона для авторизации',
-  email: value => {
-    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return pattern.test(value) || 'Неправильный формат e-mail.'
-  },
-  requiredPassword: value => !!value || 'Введите пароль',
-  usernameRule: value => {
-    if (!value) {
-      return null;
-    }
-    if (usernameType === 'email') {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return pattern.test(value) || 'Неправильный формат e-mail.';
-    } else {
-      return /^\d+$/.test(value) && value.length > 9 || 'Неправильный формат номера телефона';
-    }
-  }
-}
+const isUsernameEmail = computed(() => {
+  const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return pattern.test(username.value);
+});
+const isUsernamePhone = computed(() => /^\d+$/.test(username.value) && username.value.toString().length > 9);
+const valid = computed(() => isUsernameEmail || isUsernamePhone);
+
 const submit = async () => {
   try {
     await authStore.authenticateUser({ username, password });

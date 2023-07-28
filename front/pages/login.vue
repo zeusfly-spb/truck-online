@@ -8,9 +8,14 @@
     <VCol cols="10" md="6" sm="8">
       <VRow justify="center" align="center">
         <VCol cols="12" md="6" sm="10">
-          <VForm :disabled="loading" @submit.prevent="submit" class="mt-10">
+          <VForm
+            :disabled="loading"
+            @submit.prevent="submit"
+            class="mt-10"
+          >
             <FormLabel for="email">Email | Номер телефона</FormLabel>
             <VTextField
+              :rules="[rules.requiredUsername, rules.usernameRule]"
               v-model="username"
               id="username"
               type="username"
@@ -18,22 +23,15 @@
             <label
               class="font-weight-medium mt-2 d-block mb-1 text-body-2"
               for="password"
-            >Password</label
             >
+              Password
+            </label>
             <VTextField
+              :rules="[rules.requiredPassword]"
               v-model="password"
-              @click:append-inner="
-                passwordType == 'password'
-                  ? (passwordType = 'text')
-                  : (passwordType = 'password')
-              "
-              :append-inner-icon="
-                passwordType == 'password'
-                  ? 'fluent:eye-24-regular'
-                  : 'fluent:eye-off-24-regular'
-              "
               id="password"
-              :type="passwordType"
+              type="password"
+              name="password"
             />
             <p class="text-medium-emphasis text-body-2 mt-3">
               <p class="text-body-1 text-medium-emphasis mt-2">
@@ -71,7 +69,6 @@ import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
-const passwordType = ref('password');
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
 watch(authenticated, (val) => {
@@ -94,14 +91,34 @@ const showError = async () => {
     message: 'Проверьте правильность введенных данных',
   });
 }
+const usernameType = computed(() => /^\d+$/.test(username.value) ? 'phone' : 'email');
+const rules = {
+  requiredUsername: value => !!value || 'Введите email или номер телефона для авторизации',
+  email: value => {
+    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return pattern.test(value) || 'Неправильный формат e-mail.'
+  },
+  requiredPassword: value => !!value || 'Введите пароль',
+  usernameRule: value => {
+    if (!value) {
+      return null;
+    }
+    if (usernameType === 'email') {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern.test(value) || 'Неправильный формат e-mail.';
+    } else {
+      return /^\d+$/.test(value) && value.length > 9 || 'Неправильный формат номера телефона';
+    }
+  }
+}
 const submit = async () => {
   try {
     await authStore.authenticateUser({ username, password });
   } catch (e) {
-    console.log('ERROR!');
     showError();
   }
 };
+
 </script>
 <style scoped>
 a, u {

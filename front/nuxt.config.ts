@@ -6,10 +6,8 @@ const { resolve } = createResolver(import.meta.url)
 
 // @ts-ignore
 export default defineNuxtConfig({
-  app: {
-    baseURL: '/dev',
-  },
-  devtools: { enabled: true },
+  app: { baseURL: '/dev' },
+  devtools: { enabled: true, componentInspector: false },
   css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
     '@nuxtjs/vuetify',

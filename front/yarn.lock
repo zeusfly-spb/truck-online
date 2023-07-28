@@ -1163,6 +1163,18 @@
     hookable "^5.5.3"
     unhead "1.1.32"
 
+"@vee-validate/i18n@^4.10.8":
+  version "4.10.8"
+  resolved "https://registry.yarnpkg.com/@vee-validate/i18n/-/i18n-4.10.8.tgz#26ba9c494173bad6ddab7b9bdde415652fb20929"
+  integrity sha512-ZnmKFUyvHqSyqtvK1TitXj3su7Dy8VlTD1WaEfaI4scqmKaoKJCKCDyUkfT/RiuF8Kkf5JpWFTU9z/EWKuoPUw==
+
+"@vee-validate/rules@^4.10.8":
+  version "4.10.8"
+  resolved "https://registry.yarnpkg.com/@vee-validate/rules/-/rules-4.10.8.tgz#1537ebfe6edfea4f48ed090f010d0ff5ee8cddbf"
+  integrity sha512-cg7Pd+mZhRfKDc2oC1HgbVHh0aTW1ifvxiuEZJ0Sg0obsYFukWTL86uIlUrGF3SljZbMYaI+HoOO+Xv5BU0/nA==
+  dependencies:
+    vee-validate "^4.10.8"
+
 "@vercel/nft@^0.22.6":
   version "0.22.6"
   resolved "https://registry.yarnpkg.com/@vercel/nft/-/nft-0.22.6.tgz#edb30d300bb809c0945ea4c7b87e56f634885541"
@@ -5714,6 +5726,11 @@ type-fest@^2.11.2, type-fest@^2.13.0:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-2.19.0.tgz#88068015bb33036a598b952e55e9311a60fd3a9b"
   integrity sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==
 
+type-fest@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.0.0.tgz#1c87b05c3f0304a2f911b5a47bb45fa4d62031db"
+  integrity sha512-d/oYtUnPM9zar2fqqGLYPzgcY0qUlYK0evgNVti93xpzfjGkMgZHu9Lvgrkn0rqGXTgsFRxFamzjGoD9Uo+dgw==
+
 ufo@^1.1.1, ufo@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ufo/-/ufo-1.1.2.tgz#d0d9e0fa09dece0c31ffd57bd363f030a35cfe76"
@@ -5925,6 +5942,14 @@ validate-npm-package-name@^5.0.0:
   integrity sha512-YuKoXDAhBYxY7SfOKxHBDoSyENFeW5VvIIQp2TGQuit8gpK6MnWaQelBKxso72DoxTZfZdcP3W90LqpSkgPzLQ==
   dependencies:
     builtins "^5.0.0"
+
+vee-validate@^4.10.8:
+  version "4.10.8"
+  resolved "https://registry.yarnpkg.com/vee-validate/-/vee-validate-4.10.8.tgz#0e3ba44463cf52a12e85e6c11609a9422350f983"
+  integrity sha512-4VWziid3tdlIMGWr0D24YG/e+Q+M6TMK2DQg8dMvufgNyHFIpKxkMKwWoSMuQS0Pi0wKJEo5F5Kok8pXlei4vA==
+  dependencies:
+    "@vue/devtools-api" "^6.5.0"
+    type-fest "^4.0.0"
 
 vite-node@^0.33.0:
   version "0.33.0"

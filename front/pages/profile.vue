@@ -1,10 +1,14 @@
 <template>
   <div>
-    PROFILE PAGE
   </div>
 </template>
 
 <script setup>
+useHead({title: 'Личный кабинет'});
+definePageMeta({
+  middleware: 'auth'
+});
+
 
 </script>
 

@@ -19,9 +19,10 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
-const authenticated = computed(() => authStore.authenticated);
+const { authenticated } = storeToRefs(useAuthStore());
 const { logUserOut } = authStore;
 const logOut = async () => {
   logUserOut();

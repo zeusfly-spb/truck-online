@@ -4,7 +4,11 @@ import { createResolver } from '@nuxt/kit'
 
 const { resolve } = createResolver(import.meta.url)
 
+// @ts-ignore
 export default defineNuxtConfig({
+  app: {
+    baseURL: '/dev',
+  },
   devtools: { enabled: true },
   css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
@@ -49,9 +53,4 @@ export default defineNuxtConfig({
       useVuetifyLabs: true,
     }
   },
-  nitro: {
-    prerender: {
-      crawlLinks: true
-    }
-  }
 })

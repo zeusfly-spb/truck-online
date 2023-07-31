@@ -619,33 +619,92 @@
                             "schema": {
                                 "properties": {
                                     "iin": {
+                                        "type": "integer",
+                                        "example": "12345678910"
+                                    },
+                                    "kpp": {
+                                        "type": "integer",
+                                        "example": "123456789"
+                                    },
+                                    "ogrn": {
                                         "type": "string",
-                                        "example": "IIN"
+                                        "example": "ogrn"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "12345678910"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "email@gmail.com"
+                                    },
+                                    "short_name": {
+                                        "type": "string",
+                                        "example": "short_name"
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "full_name"
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "example": "https://groozgo.ru/"
+                                    },
+                                    "company_reg_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "edo_provider": {
+                                        "type": "string",
+                                        "example": "edo_provider"
+                                    },
+                                    "edo_id": {
+                                        "type": "string",
+                                        "example": "edo_id"
                                     },
                                     "user_id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "1000000000"
+                                    "tax_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "company@gmail.com"
+                                    "country_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "first_name": {
-                                        "type": "string",
-                                        "example": "CompanyUserName"
+                                    "address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "last_name": {
-                                        "type": "string",
-                                        "example": "CompanyLasName"
+                                    "post_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "company_reg_date": {
+                                    "contact": {
                                         "type": "string",
-                                        "format": "date",
-                                        "example": "2023-07-23"
+                                        "example": "contact"
+                                    },
+                                    "data_contract": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "ceo_name": {
+                                        "type": "string",
+                                        "example": "ceo_name"
+                                    },
+                                    "cceo_name": {
+                                        "type": "string",
+                                        "example": "cceo_name"
+                                    },
+                                    "cceo_contract_name": {
+                                        "type": "string",
+                                        "example": "cceo_contract_name"
+                                    },
+                                    "cceo_contract_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
                                     }
                                 },
                                 "type": "object"
@@ -724,33 +783,92 @@
                             "schema": {
                                 "properties": {
                                     "iin": {
+                                        "type": "integer",
+                                        "example": "12345678910"
+                                    },
+                                    "kpp": {
+                                        "type": "integer",
+                                        "example": "123456789"
+                                    },
+                                    "ogrn": {
                                         "type": "string",
-                                        "example": "IIN"
+                                        "example": "ogrn"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "12345678910"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "email@gmail.com"
+                                    },
+                                    "short_name": {
+                                        "type": "string",
+                                        "example": "short_name"
+                                    },
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "full_name"
+                                    },
+                                    "link": {
+                                        "type": "string",
+                                        "example": "https://groozgo.ru/"
+                                    },
+                                    "company_reg_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "edo_provider": {
+                                        "type": "string",
+                                        "example": "edo_provider"
+                                    },
+                                    "edo_id": {
+                                        "type": "string",
+                                        "example": "edo_id"
                                     },
                                     "user_id": {
                                         "type": "integer",
                                         "example": "1"
                                     },
-                                    "phone": {
-                                        "type": "string",
-                                        "example": "1000000000"
+                                    "tax_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "email": {
-                                        "type": "string",
-                                        "example": "company@gmail.com"
+                                    "country_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "first_name": {
-                                        "type": "string",
-                                        "example": "CompanyUserName"
+                                    "address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "last_name": {
-                                        "type": "string",
-                                        "example": "CompanyLasName"
+                                    "post_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     },
-                                    "company_reg_date": {
+                                    "contact": {
                                         "type": "string",
-                                        "format": "date",
-                                        "example": "2023-07-23"
+                                        "example": "contact"
+                                    },
+                                    "data_contract": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
+                                    },
+                                    "ceo_name": {
+                                        "type": "string",
+                                        "example": "ceo_name"
+                                    },
+                                    "cceo_name": {
+                                        "type": "string",
+                                        "example": "cceo_name"
+                                    },
+                                    "cceo_contract_name": {
+                                        "type": "string",
+                                        "example": "cceo_contract_name"
+                                    },
+                                    "cceo_contract_date": {
+                                        "type": "string",
+                                        "example": "2023-07-26"
                                     }
                                 },
                                 "type": "object"
@@ -987,6 +1105,161 @@
                 }
             }
         },
+        "/api/countries": {
+            "get": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Get list of Countries",
+                "operationId": "7ea4c4a1df3eba55378302d94963d39f",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Store Counntry",
+                "operationId": "c389dd6281abc1d15e7126b27a96ee3b",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "РФ"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/countries/{id}": {
+            "put": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Update Country",
+                "description": "Update Country",
+                "operationId": "Update Country",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "UpdateCountry"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Countries"
+                ],
+                "summary": "Country delete",
+                "description": "Country delete",
+                "operationId": "Delete Country",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
         "/api/order-statuses": {
             "get": {
                 "tags": [
@@ -1163,6 +1436,200 @@
                 "summary": "Summary",
                 "description": "Orders",
                 "operationId": "Delete Order Status",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/taxes": {
+            "get": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Get list of Taxes",
+                "operationId": "6ca41918780f4b5aa17153bc53cf947c",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Store Tax",
+                "operationId": "4553074398d261b0def172fcbc8da7d8",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "ОСНО"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/taxes/{id}": {
+            "get": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Show Tax",
+                "description": "Show Tax",
+                "operationId": "d86fc49912cd0ffa2921a7d1222731d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Update Tax",
+                "description": "Update Tax",
+                "operationId": "Update Tax",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "UpdateTax"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Summary",
+                "description": "Taxes",
+                "operationId": "Delete Tax",
                 "parameters": [
                     {
                         "name": "id",

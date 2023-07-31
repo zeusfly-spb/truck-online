@@ -4,11 +4,10 @@
       <v-app-bar title="OnlinePort">
         <v-spacer/>
         <v-btn
-          v-if="authenticated"
-          @click="logOut"
+          @click="authenticated ? logOut() : navigateTo('/login')"
           variant="tonal"
         >
-          Выйти
+          {{ authenticated ? 'Выйти' : 'Войти' }}
         </v-btn>
       </v-app-bar>
       <v-main>
@@ -20,9 +19,10 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
-const authenticated = computed(() => authStore.authenticated);
+const { authenticated } = storeToRefs(useAuthStore());
 const { logUserOut } = authStore;
 const logOut = async () => {
   logUserOut();

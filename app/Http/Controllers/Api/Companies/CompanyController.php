@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Companies;
 
 use App\Http\Resources\Api\Companies\CompanyResource;
+use App\Http\Requests\CompanyRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company;
@@ -50,38 +51,113 @@ class CompanyController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                     property="iin",
+     *                     type="integer",
+     *                     example="12345678910"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="kpp",
+     *                     type="integer",
+     *                     example="123456789"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="ogrn",
      *                     type="string",
-     *                     example="IIN"
+     *                     example="ogrn"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="phone",
+     *                     type="string",
+     *                     example="12345678910"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="email",
+     *                     type="string",
+     *                     example="email@gmail.com"
      *                 ),
      *                 @OA\Property(
+     *                     property="short_name",
+     *                     type="string",
+     *                     example="short_name"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="full_name",
+     *                     type="string",
+     *                     example="full_name"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="link",
+     *                     type="string",
+     *                     example="https://groozgo.ru/"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="company_reg_date",
+     *                     type="string",
+     *                     example="2023-07-26"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="edo_provider",
+     *                     type="string",
+     *                     example="edo_provider"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="edo_id",
+     *                     type="string",
+     *                     example="edo_id"
+     *                 ),
+     *                  @OA\Property(
      *                     property="user_id",
      *                     type="integer",
      *                     example="1"
      *                 ),
      *                 @OA\Property(
-     *                     property="phone",
-     *                     type="string",
-     *                     example="1000000000"
+     *                     property="tax_id",
+     *                     type="integer",
+     *                     example="1"
+     *                 ),
+     *                  @OA\Property(
+     *                     property="country_id",
+     *                     type="integer",
+     *                     example="1"
      *                 ),
      *                 @OA\Property(
-     *                     property="email",
-     *                     type="string",
-     *                     example="company@gmail.com"
+     *                     property="address_id",
+     *                     type="integer",
+     *                     example="1"
      *                 ),
      *                 @OA\Property(
-     *                     property="first_name",
-     *                     type="string",
-     *                     example="CompanyUserName"
+     *                     property="post_address_id",
+     *                     type="integer",
+     *                     example="1"
      *                 ),
      *                 @OA\Property(
-     *                     property="last_name",
+     *                     property="contact",
      *                     type="string",
-     *                     example="CompanyLasName"
+     *                     example="contact"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="data_contract",
+     *                     type="string",
+     *                     example="2023-07-26"
      *                 ),
      *                @OA\Property(
-     *                     property="company_reg_date",
-     *                     type="date",
-     *                     example="2023-07-23"
+     *                     property="ceo_name",
+     *                     type="string",
+     *                     example="ceo_name"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="cceo_name",
+     *                     type="string",
+     *                     example="cceo_name"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="cceo_contract_name",
+     *                     type="string",
+     *                     example="cceo_contract_name"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="cceo_contract_date",
+     *                     type="string",
+     *                     example="2023-07-26"
      *                 ),
      *             )
      *         )
@@ -92,7 +168,7 @@ class CompanyController extends Controller
      *     ),
      * )
      */
-    public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         try{
             $data = $request->all();
@@ -155,38 +231,113 @@ class CompanyController extends Controller
     *             @OA\Schema(
     *                 @OA\Property(
     *                     property="iin",
+    *                     type="integer",
+    *                     example="12345678910"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="kpp",
+    *                     type="integer",
+    *                     example="123456789"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="ogrn",
     *                     type="string",
-    *                     example="IIN"
+    *                     example="ogrn"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="phone",
+    *                     type="string",
+    *                     example="12345678910"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="email",
+    *                     type="string",
+    *                     example="email@gmail.com"
     *                 ),
     *                 @OA\Property(
+    *                     property="short_name",
+    *                     type="string",
+    *                     example="short_name"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="full_name",
+    *                     type="string",
+    *                     example="full_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="link",
+    *                     type="string",
+    *                     example="https://groozgo.ru/"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="company_reg_date",
+    *                     type="string",
+    *                     example="2023-07-26"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="edo_provider",
+    *                     type="string",
+    *                     example="edo_provider"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="edo_id",
+    *                     type="string",
+    *                     example="edo_id"
+    *                 ),
+    *                  @OA\Property(
     *                     property="user_id",
     *                     type="integer",
     *                     example="1"
     *                 ),
     *                 @OA\Property(
-    *                     property="phone",
-    *                     type="string",
-    *                     example="1000000000"
+    *                     property="tax_id",
+    *                     type="integer",
+    *                     example="1"
+    *                 ),
+    *                  @OA\Property(
+    *                     property="country_id",
+    *                     type="integer",
+    *                     example="1"
     *                 ),
     *                 @OA\Property(
-    *                     property="email",
-    *                     type="string",
-    *                     example="company@gmail.com"
+    *                     property="address_id",
+    *                     type="integer",
+    *                     example="1"
     *                 ),
     *                 @OA\Property(
-    *                     property="first_name",
-    *                     type="string",
-    *                     example="CompanyUserName"
+    *                     property="post_address_id",
+    *                     type="integer",
+    *                     example="1"
     *                 ),
     *                 @OA\Property(
-    *                     property="last_name",
+    *                     property="contact",
     *                     type="string",
-    *                     example="CompanyLasName"
+    *                     example="contact"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="data_contract",
+    *                     type="string",
+    *                     example="2023-07-26"
     *                 ),
     *                @OA\Property(
-    *                     property="company_reg_date",
-    *                     type="date",
-    *                     example="2023-07-23"
+    *                     property="ceo_name",
+    *                     type="string",
+    *                     example="ceo_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="cceo_name",
+    *                     type="string",
+    *                     example="cceo_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="cceo_contract_name",
+    *                     type="string",
+    *                     example="cceo_contract_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="cceo_contract_date",
+    *                     type="string",
+    *                     example="2023-07-26"
     *                 ),
     *             )
     *         )
@@ -211,7 +362,7 @@ class CompanyController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, Company $company)
+    public function update(CompanyRequest $request, Company $company)
     {
         try{
             $input = $request->all();

@@ -1,10 +1,10 @@
 <template>
   <div>
-    INDEX PAGE
   </div>
 </template>
 
 <script setup>
+useHead({title: 'OnlinePort'});
 
 </script>
 

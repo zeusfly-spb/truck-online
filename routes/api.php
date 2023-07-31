@@ -12,8 +12,7 @@ use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ConfigController;
-
+use App\Http\Controllers\DadataController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,8 +30,13 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
-  Route::get('/get_config', [ConfigController::class, 'getConfig']);
-  Route::resource('orders', OrderController::class);
+  Route::prefix('dadata')->group(function () {
+    Route::post('validate_address', [DadataController::class, 'validateAddress']);
+    Route::post('address_geocode', [DadataController::class, 'addressGeocode']);
+    Route::post('geo_ip_city', [DadataController::class, 'geoIpCity']);
+    Route::post('suggest_address', [DadataController::class, 'suggestAddress']);
+    Route::post('find_by_id', [DadataController::class, 'findById']);
+  });
 });
 
 Route::apiResource('containers', ContainerController::class);

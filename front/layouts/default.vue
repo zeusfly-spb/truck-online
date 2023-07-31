@@ -10,6 +10,12 @@
         >
           Выйти
         </v-btn>
+        <v-btn
+          v-if="!authenticated && routeName !== 'login'"
+          @click="redirectLogin"
+        >
+          Войти
+        </v-btn>
       </v-app-bar>
       <v-main>
         <Snack></Snack>
@@ -19,14 +25,22 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const { authenticated } = storeToRefs(useAuthStore());
 const { logUserOut } = authStore;
+
+const { currentRoute } = useRouter();
+const routeName = computed(() => currentRoute.value.name);
+
 const logOut = async () => {
   logUserOut();
+  await navigateTo('/login');
+}
+const redirectLogin = async () => {
   await navigateTo('/login');
 }
 </script>

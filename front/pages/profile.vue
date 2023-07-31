@@ -1,18 +1,30 @@
 <template>
   <div>
+    <VTextField
+      v-model="inn"
+    />
+
+    <v-btn
+      @click="action"
+    >
+      Action
+    </v-btn>
   </div>
 </template>
 
 <script setup>
 useHead({title: 'Личный кабинет'});
 definePageMeta({ middleware: 'auth' });
-import { useConfigStore } from "~/store/config";
-const configStore = useConfigStore();
+const inn = ref('');
 
-const config = computed(() => configStore.config);
-const getConfig = async () => await configStore.getConfig();
+const action = async () => {
+  const { data: { _rawValue } } = await useFetchApi('http://localhost/api/dadata/find_by_id', {
+    method: 'post',
+    body: {inn: inn.value}
+  });
+  console.log(_rawValue);
+}
 
-getConfig();
 </script>
 
 <style lang="scss" scoped>

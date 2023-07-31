@@ -64,6 +64,8 @@
 
 <script setup lang="js">
 useHead({title: 'Вход'});
+definePageMeta({ middleware: 'auth' });
+
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const username = ref('');

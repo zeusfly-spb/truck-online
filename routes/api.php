@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ConfigController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
+  Route::get('/get_config', [ConfigController::class, 'getConfig']);
   Route::resource('orders', OrderController::class);
 });
 

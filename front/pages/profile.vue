@@ -14,7 +14,6 @@
 
 <script setup>
 useHead({title: 'Личный кабинет'});
-definePageMeta({ middleware: 'auth' });
 const inn = ref('');
 
 const action = async () => {

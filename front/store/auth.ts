@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 
-const detailsUrl = 'http://localhost/api/details';
-const registerUrl = 'http://localhost/api/auth/register';
-const loginUrl = 'http://localhost/api/auth/login';
+// const detailsUrl = 'http://localhost/api/details';
+// const registerUrl = 'http://localhost/api/auth/register';
+// const loginUrl = 'http://localhost/api/auth/login';
 
-// const detailsUrl = 'http://217.197.237.54/api/details';
-// const registerUrl = 'http://217.197.237.54/api/auth/register';
-// const loginUrl = 'http://217.197.237.54/api/auth/login';
+const detailsUrl = 'http://217.197.237.54/api/details';
+const registerUrl = 'http://217.197.237.54/api/auth/register';
+const loginUrl = 'http://217.197.237.54/api/auth/login';
 
 interface UserPayloadInterface {
   username: string;
@@ -30,7 +30,9 @@ export const useAuthStore = defineStore('auth', {
       const res = await useFetchApi(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
-      this.user ? this.authenticated = true : null;
+      if (this.user) {
+        this.authenticated = true;
+      }
     },
     async registerUser({ username, password, passwordConfirm }: UserRegisterPayloadInterface) {
       const { data, pending }: any = await useFetchApi(registerUrl, {

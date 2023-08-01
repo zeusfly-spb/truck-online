@@ -47,13 +47,16 @@ export const useFetchApi = (url: string, options?: UseFetchOptions<object>) => {
     async onResponse({ request, response, options }) {},
     async onResponseError({ request, response, options }) {},
   });
-};
-/**
- *
- * @param inn
- */
-export const getSbis = async (inn: string) => {
-  const { data, error } =
-    await useFetch('https://api.sbis.ru/vok-demo/req?inn=' + inn);
-  return { data, error };
 }
+
+export const postDadata = async ({ query }) => {
+  const headers = new Headers();
+  headers.set('Content-Type', 'application/json');
+  headers.set('Accept', 'application/json');
+  headers.set('Authorization', 'Token 1f871a72833bf0acbdde9976e17aeb519149480d');
+
+  return await useFetch('https://suggestions.dadata.ru/suggestions/api/4_1/rs/findById/party',
+    {method: 'post', headers, body: { query } });
+}
+
+

@@ -55,7 +55,6 @@ class DadataController extends Controller
    */
   public function findById(Request $request)
   {
-    return response()->json($this->dadata->findById('party', $request->input('inn')));
+    return response()->json($this->dadata->findById('party', $request->input('inn'), 1));
   }
-
 }

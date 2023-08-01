@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DadataController;
+use App\Http\Controllers\ConfigController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,6 +31,7 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
+  Route::get('/config', [ConfigController::class, 'getConfig']);
   Route::prefix('dadata')->group(function () {
     Route::post('validate_address', [DadataController::class, 'validateAddress']);
     Route::post('address_geocode', [DadataController::class, 'addressGeocode']);

@@ -1,7 +1,9 @@
 <template>
   <div>
     <v-app>
-      <v-app-bar title="OnlinePort">
+      <v-app-bar
+        :title="appTitle"
+      >
         <v-spacer/>
         <v-btn
           v-if="authenticated"
@@ -11,7 +13,7 @@
           Выйти
         </v-btn>
         <v-btn
-          v-if="!authenticated && routeName !== 'login'"
+          v-if="!authenticated && 'login' !== routeName"
           @click="redirectLogin"
         >
           Войти
@@ -27,7 +29,6 @@
 
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
@@ -35,6 +36,14 @@ const { logUserOut } = authStore;
 
 const { currentRoute } = useRouter();
 const routeName = computed(() => currentRoute.value.name);
+
+const appTitle = computed(() => {
+  let result = 'OnlinePort';
+  if (['register', 'register2'].includes(routeName.value)) {
+    result = result + ' - Регистрация';
+  }
+  return result;
+});
 
 const logOut = async () => {
   logUserOut();

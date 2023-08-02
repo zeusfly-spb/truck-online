@@ -1,87 +1,132 @@
 <template>
-  <VRow
-    no-gutters
-    justify="center"
-    align="center"
-    class="fill-height pa-0 ma-0"
-  >
-    <VCol cols="10" md="6" sm="8">
-      <VRow justify="center" align="center">
-        <VCol cols="12" md="6" sm="10">
-          <VForm :disabled="loading" @submit.prevent="submit" class="mt-10">
-            <FormLabel for="email">Email | Номер телефона</FormLabel>
-            <VTextField
-              v-model="username"
-              id="username"
-              type="username"
-            />
-            <label
-              class="font-weight-medium mt-2 d-block mb-1 text-body-2"
-              for="password"
-            >
-              Пароль
-            </label>
-            <VTextField
-              v-model="password"
-              id="password"
-              type="password"
-            />
-            <label
-              class="font-weight-medium mt-2 d-block mb-1 text-body-2"
-              for="password"
-            >
-              Подтверждение пароля
-            </label>
-            <VTextField
-              v-model="passwordConfirm"
-              id="password_confirm"
-              type="password"
-            />
-
-            <div class="mt-10">
-              <VBtn
-                :loading="loading"
-                type="submit"
-                flat
-                class="gradient primary font-weight-bold text-body-2"
-                min-height="45"
-                block
+  <v-layout class="rounded rounded-md">
+    <v-main
+      class="d-flex align-center justify-center flex-column"
+      style="margin-top: 3em!important;"
+    >
+      <v-card
+        class="pa-md-4 mx-lg-auto register-class register-card"
+      >
+        <v-card-text
+          class="register-class"
+        >
+          <v-row>
+            <v-col>
+              <img src="/register_logo.png" alt="register_logo" class="logo">
+              <v-radio-group
+                label="Зарегистрируйте меня как"
+                v-model="accountType"
               >
-                Регистрировать
-              </VBtn>
-            </div>
-          </VForm>
-        </VCol>
-      </VRow>
-    </VCol>
-  </VRow>
+                <v-radio label="Заказчик" value="customer"/>
+                <v-radio label="Перевозчик" value="transporter"/>
+                <v-radio label="Владелец уборочной техники" value="equipment_owner"/>
+                <v-radio label="Агент терминала" value="terminal_agent"/>
+              </v-radio-group>
+            </v-col>
+            <v-col>
+              <v-combobox
+                label="ИНН организации"
+                :items="innItems"
+                v-model="inn"
+                placeholder="0000 0000 0000"
+              />
+              <v-radio-group
+                inline
+                label="Являетесь ли вы плательщиком НДС?"
+                v-model="ndsPayer"
+              >
+                <v-radio label="Да" value="yes"/>
+                <v-radio label="Нет" value="no"/>
+              </v-radio-group>
+              <v-text-field
+                label="Контактное лицо"
+                v-model="contactPerson"
+                placeholder="Иванов Иван Иванович"
+                density="compact"
+              />
+              <v-text-field
+                label="Мобильный телефон"
+                v-model="phone"
+                placeholder="+7 900 000-00-00"
+                density="compact"
+              />
+              <v-text-field
+                label="E-mail"
+                v-model="email"
+                placeholder="example@mail.ru"
+                density="compact"
+              />
+              <v-text-field
+                label="Пароль"
+                v-model="password"
+                type="password"
+                density="compact"
+              />
+              <v-text-field
+                label="Повтор пароля"
+                v-model="passwordConfirm"
+                type="password"
+                density="compact"
+              />
+              <v-checkbox
+                label="Даю согласие на обработку персональных данных"
+                v-model="processPersonal"
+              />
+              <v-checkbox
+                label="Принимаю пользовательское соглашение и политику конфиденциальности"
+                v-model="termsNConditions"
+              />
+              <v-btn
+                :disabled="!termsNConditions || !processPersonal"
+                @click="register"
+                class="mb-2"
+              >
+                Зарегистрироваться
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-main>
+  </v-layout>
 </template>
 
-<script setup lang="js">
-useHead({title: 'Регистрация'});
+<script setup>
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
-const username = ref('');
+const { getCompanyByInn } = authStore;
+const accountType = ref('');
+const inn = ref('');
+const ndsPayer = ref('no');
+const contactPerson = ref('');
+const phone = ref('');
+const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('');
-
-const loading = computed(() => authStore.loading);
-const registered = async () => {
-  useSnack({
-    show: true,
-    type: 'success',
-    title: 'Авторизован',
-    message: 'Вы успешно зарегистрировались в системе',
-  });
-  await navigateTo('/login');
+const processPersonal = ref(false);
+const termsNConditions = ref(false);
+const innItems = ref([]);
+const innInfo = computed(() => authStore.innInfo);
+watch(innInfo, val => !!val ? innItems.value.push(val) : null)
+watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
+const { registerUser } = authStore;
+const username = email.value || phone.value;
+const smartRegister = async () => {
+  return await registerUser({ username, password,
+    password_confirmation: passwordConfirm, company_id });
 }
-const submit = async () => {
-  const success = await authStore.registerUser({ username, password, passwordConfirm });
-  success ? registered() : null;
-};
+smartRegister();
 </script>
-<style scoped>
-a, u {
-  text-decoration: none;
+
+<style lang="css" scoped>
+.logo {
+  width: 300px;
+}
+.register-class {
+  margin: 0!important;
+  padding: 0!important;
+}
+.register-card {
+  width: 650px;
 }
 </style>

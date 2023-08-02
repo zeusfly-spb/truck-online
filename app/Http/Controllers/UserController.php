@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
@@ -37,6 +38,16 @@ class UserController extends BaseController
    */
   public function register(Request $request): JsonResponse
   {
+    $company = Company::where('inn', $request->inn)->first();
+    if ($company) {
+      $company_id = $company->id;
+    } else {
+      $company = Company::create([
+        'inn' => $request->inn,
+        'short_name' => $request->value || 'testJokeName'
+      ]);
+      $company_id = $company->id;
+    }
     $username = $this->username();
     $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
     $validator = Validator::make($request->all(), [
@@ -48,7 +59,8 @@ class UserController extends BaseController
     }
     $user = User::create([
       $username => $request->input('username'),
-      'password' => bcrypt($request->input('password'))
+      'password' => bcrypt($request->input('password')),
+      'company_id' => $company_id
     ]);
     $success['token'] = $user->createToken('MyApp')->accessToken;
     $success[$username] = $user->{$username};

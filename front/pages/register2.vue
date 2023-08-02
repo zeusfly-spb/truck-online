@@ -26,7 +26,7 @@
             <v-col>
               <v-combobox
                 label="ИНН организации"
-                :items="[]"
+                :items="innItems"
                 v-model="inn"
                 placeholder="0000 0000 0000"
               />
@@ -69,7 +69,7 @@
                 density="compact"
               />
               <v-checkbox
-                label="Даю согласине на обработку персональных данных"
+                label="Даю согласие на обработку персональных данных"
                 v-model="processPersonal"
               />
               <v-checkbox
@@ -104,7 +104,9 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
-const fundedItem = [ authStore.innInfo ] || [];
+const innItems = ref([]);
+const innInfo = computed(() => authStore.innInfo);
+watch(innInfo, val => !!val ? innItems.value.push(val) : null)
 const register = async () => {}
 watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
 </script>

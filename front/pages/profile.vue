@@ -15,24 +15,23 @@
 <script setup>
 useHead({title: 'Личный кабинет'});
 definePageMeta({ middleware: 'auth' });
-// import { useConfigStore } from "~/store/config";
-// const configStore = useConfigStore();
-// const config = computed(() => configStore.config);
 const config = useRuntimeConfig();
-console.log(config.API_BASE_URL);
-
 const inn = ref('');
-// const getConfig = async () => {
-//   await configStore.getConfig();
-// }
+const targetInfo = reactive({});
+
 const makeNSend = async () => {
   const res = await postDadata({query: inn.value});
-  console.log(res);
+  targetInfo.value = res.data._rawValue;
 }
-const testEnv = () => {
-  console.log('ENV_DATA:', process.env.API_BASE_URL);
-};
-testEnv();
+
+const getInnValue = async (inn) => {
+  const res = await postDadata({query: inn});
+  return res.data._rawValue.suggestions[0].value;
+}
+
+
+const innValue = computed(() => targetInfo.value && targetInfo.value.suggestions[0]
+  && targetInfo.value.suggestions[0].value || null);
 
 </script>
 

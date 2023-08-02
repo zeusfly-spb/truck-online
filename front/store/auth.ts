@@ -24,6 +24,7 @@ export const useAuthStore = defineStore('auth', {
     loading: false,
     token: null,
     user: null,
+    innInfo: null
   }),
   actions: {
     async getUserDetails() {
@@ -63,5 +64,9 @@ export const useAuthStore = defineStore('auth', {
       this.token = null;
       token_cookie.value = null;
     },
+    async getCompanyByInn(inn) {
+      const res = await postDadata({query: inn});
+      this.innInfo = res.data._rawValue.suggestions[0].value;
+    }
   },
 });

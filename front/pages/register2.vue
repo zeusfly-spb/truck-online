@@ -85,6 +85,10 @@
 </template>
 
 <script setup>
+import {useAuthStore} from "~/store/auth";
+const authStore = useAuthStore();
+const { getCompanyByInn } = authStore;
+
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -93,7 +97,9 @@ const phone = ref('');
 const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('');
+const companyInfo = ref('');
 const register = async () => {}
+watch(inn, async val => val.length >= 10 ? companyInfo.value = await getCompanyByInn(val) : null);
 </script>
 
 <style lang="css" scoped>

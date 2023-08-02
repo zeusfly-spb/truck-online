@@ -8,10 +8,15 @@ const { resolve } = createResolver(import.meta.url)
 export default defineNuxtConfig({
   app: { baseURL: '/dev' },
   devtools: { enabled: true, componentInspector: false },
-  css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css"],
+  publicRuntimeConfig: {
+    API_BASE_URL: process.env.API_BASE_URL
+  },
+  css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass",
+    "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
     '@nuxtjs/vuetify',
-    ['@nuxtjs/vuetify', { iconfont: 'mdi' }]
+    ['@nuxtjs/vuetify', { iconfont: 'mdi' }],
+    '@nuxtjs/dotenv'
   ],
   build: { transpile: ['vuetify'] },
   vite: { ssr: { noExternal: ['vuetify'] } },

@@ -14,7 +14,6 @@
 
 <script setup>
 useHead({title: 'Личный кабинет'});
-definePageMeta({ middleware: 'auth' });
 const config = useRuntimeConfig();
 const inn = ref('');
 const targetInfo = reactive({});

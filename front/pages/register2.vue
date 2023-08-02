@@ -24,17 +24,11 @@
               </v-radio-group>
             </v-col>
             <v-col>
-              <v-autocomplete
+              <v-combobox
                 label="ИНН организации"
-                v-model="inn"
-                :items="fundedItem"
-                variant="outlined"
-              />
-              <v-text-field
-                label="ИНН организации"
+                :items="[]"
                 v-model="inn"
                 placeholder="0000 0000 0000"
-                density="compact"
               />
               <v-radio-group
                 inline
@@ -97,7 +91,7 @@
 </template>
 
 <script setup>
-import {useAuthStore} from "~/store/auth";
+import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const { getCompanyByInn } = authStore;
 const accountType = ref('');

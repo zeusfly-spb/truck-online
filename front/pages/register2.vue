@@ -24,6 +24,12 @@
               </v-radio-group>
             </v-col>
             <v-col>
+              <v-autocomplete
+                label="ИНН организации"
+                v-model="inn"
+                :items="fundedItem"
+                variant="outlined"
+              />
               <v-text-field
                 label="ИНН организации"
                 v-model="inn"
@@ -68,8 +74,14 @@
                 type="password"
                 density="compact"
               />
-              <v-checkbox label="Даю согласине на обработку персональных данных"/>
-              <v-checkbox label="Принимаю пользовательское соглашение и политику конфиденциальности"/>
+              <v-checkbox
+                label="Даю согласине на обработку персональных данных"
+                v-model="processPersonal"
+              />
+              <v-checkbox
+                label="Принимаю пользовательское соглашение и политику конфиденциальности"
+                v-model="termsNConditions"
+              />
               <v-btn
                 @click="register"
                 class="mb-2"
@@ -88,7 +100,6 @@
 import {useAuthStore} from "~/store/auth";
 const authStore = useAuthStore();
 const { getCompanyByInn } = authStore;
-
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -97,9 +108,11 @@ const phone = ref('');
 const email = ref('');
 const password = ref('');
 const passwordConfirm = ref('');
-const companyInfo = ref('');
+const processPersonal = ref(false);
+const termsNConditions = ref(false);
+const fundedItem = [ authStore.innInfo ] || [];
 const register = async () => {}
-watch(inn, async val => val.length >= 10 ? companyInfo.value = await getCompanyByInn(val) : null);
+watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
 </script>
 
 <style lang="css" scoped>

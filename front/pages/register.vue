@@ -78,7 +78,7 @@
               />
               <v-btn
                 :disabled="!termsNConditions || !processPersonal"
-                @click="register"
+                @click="smartRegister"
                 class="mb-2"
               >
                 Зарегистрироваться
@@ -111,11 +111,8 @@ watch(innInfo, val => !!val ? innItems.value.push(val) : null)
 watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
 const { registerUser } = authStore;
 const username = email.value || phone.value;
-const smartRegister = async () => {
-  return await registerUser({ username, password,
-    password_confirmation: passwordConfirm, company_id });
-}
-smartRegister();
+registerUser({ username, password,
+    password_confirmation: passwordConfirm, inn });
 </script>
 
 <style lang="css" scoped>

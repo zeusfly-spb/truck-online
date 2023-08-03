@@ -43,7 +43,7 @@ class UserController extends BaseController
       $company_id = $company->id;
     } else {
       $company = Company::create([
-        'inn' => $request->inn,
+        'inn' => $request->inn || 'test-data',
         'short_name' => $request->value || 'testJokeName'
       ]);
       $company_id = $company->id;

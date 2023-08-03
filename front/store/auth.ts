@@ -16,7 +16,8 @@ interface UserRegisterPayloadInterface {
   username: string;
   password: string;
   passwordConfirm: string;
-  company_id: bigint;
+  inn: string;
+  value: string;
 }
 
 export const useAuthStore = defineStore('auth', {
@@ -36,10 +37,10 @@ export const useAuthStore = defineStore('auth', {
         this.authenticated = true;
       }
     },
-    async registerUser({ username, password, passwordConfirm, company_id }: UserRegisterPayloadInterface) {
+    async registerUser({ username, password, passwordConfirm, inn, value }: UserRegisterPayloadInterface) {
       const { data, pending }: any = await useFetchApi(registerUrl, {
         method: 'post',
-        body: { username, password, password_confirmation: passwordConfirm, company_id },
+        body: { username, password, password_confirmation: passwordConfirm, inn, value },
       });
       this.loading = pending;
       const { _rawValue : { success } } = data;

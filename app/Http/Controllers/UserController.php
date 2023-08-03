@@ -39,14 +39,11 @@ class UserController extends BaseController
   public function register(Request $request): JsonResponse
   {
     $company = Company::where('inn', $request->inn)->first();
-    if ($company) {
-      $company_id = $company->id;
-    } else {
+    if (!$company) {
       $company = Company::create([
-        'inn' => $request->inn || 'test-data',
-        'short_name' => $request->value || 'testJokeName'
+        'inn' => $request->inn ?? 'test-data',
+        'short_name' => $request->value ?? 'testJokeName'
       ]);
-      $company_id = $company->id;
     }
     $username = $this->username();
     $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
@@ -60,7 +57,7 @@ class UserController extends BaseController
     $user = User::create([
       $username => $request->input('username'),
       'password' => bcrypt($request->input('password')),
-      'company_id' => $company_id
+      'company_id' => $company->id
     ]);
     $success['token'] = $user->createToken('MyApp')->accessToken;
     $success[$username] = $user->{$username};

@@ -110,9 +110,22 @@ const innInfo = computed(() => authStore.innInfo);
 watch(innInfo, val => !!val ? innItems.value.push(val) : null)
 watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
 const { registerUser } = authStore;
-const username = email.value || phone.value;
-registerUser({ username, password,
-    password_confirmation: passwordConfirm, inn });
+const username = computed(() => email.value || phone.value);
+const value = computed (() => authStore.innInfo);
+const registered = async () => {
+  useSnack({
+    show: true,
+    type: 'success',
+    title: 'Авторизован',
+    message: 'Вы успешно зарегистрировались в системе',
+  });
+  await navigateTo('/login');
+}
+const smartRegister = async () => {
+  const success =  await registerUser({ username, password, passwordConfirm, inn, value });
+  success ? registered() : null;
+}
+
 </script>
 
 <style lang="css" scoped>

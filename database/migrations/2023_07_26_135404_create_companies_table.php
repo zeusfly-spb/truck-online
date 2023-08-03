@@ -17,7 +17,7 @@ return new class extends Migration
           $table->string('short_name');
           $table->string('kpp',9)->nullable();
           $table->string('ogrn')->nullable();
-          $table->string('phone',10);
+          $table->string('phone',10)->nullable();
           $table->string('email')->nullable();
           $table->string('full_name')->nullable();
           $table->string('link')->nullable();

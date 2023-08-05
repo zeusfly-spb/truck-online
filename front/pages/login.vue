@@ -102,7 +102,7 @@ const isUsernameEmail = computed(() => {
   return pattern.test(username.value);
 });
 const isUsernamePhone = computed(() => /^\d+$/.test(username.value) && username.value.toString().length > 9);
-const valid = computed(() => isUsernameEmail || isUsernamePhone);
+const valid = computed(() => (isUsernameEmail || isUsernamePhone) && !!password.value);
 
 const submit = async () => {
   try {

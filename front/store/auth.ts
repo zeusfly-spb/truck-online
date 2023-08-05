@@ -29,6 +29,9 @@ export const useAuthStore = defineStore('auth', {
     innInfo: null
   }),
   actions: {
+    removeInnInfo() {
+      this.innInfo = null;
+    },
     async getUserDetails() {
       const res = await useFetchApi(detailsUrl);
       // @ts-ignore
@@ -68,7 +71,6 @@ export const useAuthStore = defineStore('auth', {
     },
     async getCompanyByInn(inn) {
       const res = await postDadata({query: inn});
-      console.log(res);
       this.innInfo = res.data._rawValue.suggestions[0].value;
     }
   },

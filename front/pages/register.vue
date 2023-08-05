@@ -29,6 +29,7 @@
                 :items="innItems"
                 v-model="inn"
                 placeholder="0000 0000 0000"
+                :active="comboActive"
               />
               <v-radio-group
                 inline
@@ -106,12 +107,23 @@ const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
 const innItems = ref([]);
+const comboActive = ref(false);
+const { removeInnInfo } = authStore;
+
 const innInfo = computed(() => authStore.innInfo);
-watch(innInfo, val => !!val ? innItems.value.push(val) : null)
-watch(inn, async val => !!val && val.length >= 10 ? await getCompanyByInn(val) : null);
+watch(innInfo, val => {
+    removeInnInfo();
+    !!val ? innItems.value.push(val) : null;
+})
+watch(inn, async val => {
+  innItems.value = [];
+  !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
+});
 const { registerUser } = authStore;
 const username = computed(() => email.value || phone.value);
 const value = computed (() => authStore.innInfo);
+
+const comboboxActive = ref(false);
 const registered = async () => {
   useSnack({
     show: true,

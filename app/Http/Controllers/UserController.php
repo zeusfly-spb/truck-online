@@ -41,8 +41,8 @@ class UserController extends BaseController
     $company = Company::where('inn', $request->inn)->first();
     if (!$company) {
       $company = Company::create([
-        'inn' => $request->inn ?? 'test-data',
-        'short_name' => $request->value ?? 'testJokeName'
+        'inn' => $request->inn ?? null,
+        'short_name' => $request->value ?? null
       ]);
     }
     $username = $this->username();

@@ -14,8 +14,8 @@
             <v-col>
               <img src="/register_logo.png" alt="register_logo" class="logo">
               <v-radio-group
-                  label="Зарегистрируйте меня как"
-                  v-model="accountType"
+                label="Зарегистрируйте меня как"
+                v-model="accountType"
               >
                 <v-radio label="Заказчик" value="customer"/>
                 <v-radio label="Перевозчик" value="transporter"/>

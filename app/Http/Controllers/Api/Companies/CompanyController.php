@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\Companies;
 
-use App\Http\Resources\Api\Companies\CompanyResource;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Exception;
@@ -404,4 +404,20 @@ class CompanyController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+  /**
+   * @param Request $request
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function findByInn(Request $request)
+  {
+    if ($company = Company::where('inn', $request->inn)->first()) {
+      return response()->json(['company' => new CompanyResource($company)]);
+    } else {
+      $dadata = new \Dadata\DadataClient(env('DADATA_API_KEY'), env('DADATA_SECRET_KEY'));
+      $res = $dadata->findById('party', $request->inn, 1);
+      return response()->json(['company' => new CompanyResource(Company::create(['inn' => $request->inn,
+        'short_name' => $res[0]['value']]))]);
+    }
+  }
 }

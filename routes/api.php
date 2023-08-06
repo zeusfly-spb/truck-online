@@ -32,6 +32,9 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
   Route::get('/config', [ConfigController::class, 'getConfig']);
+  Route::prefix('company')->group(function () {
+    Route::post('/find_by_inn',[CompanyController::class, 'findByInn']);
+  });
   Route::prefix('dadata')->group(function () {
     Route::post('validate_address', [DadataController::class, 'validateAddress']);
     Route::post('address_geocode', [DadataController::class, 'addressGeocode']);

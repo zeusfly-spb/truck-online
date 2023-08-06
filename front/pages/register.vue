@@ -1,21 +1,21 @@
 <template>
   <v-layout class="rounded rounded-md">
     <v-main
-      class="d-flex align-center justify-center flex-column"
-      style="margin-top: 3em!important;"
+        class="d-flex align-center justify-center flex-column"
+        style="margin-top: 3em!important;"
     >
       <v-card
-        class="pa-md-4 mx-lg-auto register-class register-card"
+          class="pa-md-4 mx-lg-auto register-class register-card"
       >
         <v-card-text
-          class="register-class"
+            class="register-class"
         >
           <v-row>
             <v-col>
               <img src="/register_logo.png" alt="register_logo" class="logo">
               <v-radio-group
-                label="Зарегистрируйте меня как"
-                v-model="accountType"
+                  label="Зарегистрируйте меня как"
+                  v-model="accountType"
               >
                 <v-radio label="Заказчик" value="customer"/>
                 <v-radio label="Перевозчик" value="transporter"/>
@@ -24,13 +24,18 @@
               </v-radio-group>
             </v-col>
             <v-col>
-              <v-combobox
+              <v-text-field
+                hide-details
                 label="ИНН организации"
-                :items="innItems"
                 v-model="inn"
                 placeholder="0000 0000 0000"
-                :active="comboActive"
               />
+              <v-btn
+                v-if="innInfo"
+                color="#BBDEFB"
+              >
+                {{ innInfo }}
+              </v-btn>
               <v-radio-group
                 inline
                 label="Являетесь ли вы плательщиком НДС?"
@@ -93,9 +98,9 @@
 </template>
 
 <script setup>
-import { useAuthStore } from "~/store/auth";
+import {useAuthStore} from "~/store/auth";
 const authStore = useAuthStore();
-const { getCompanyByInn } = authStore;
+const {getCompanyByInn} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -106,24 +111,16 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
-const innItems = ref([]);
-const comboActive = ref(false);
-const { removeInnInfo } = authStore;
+const company_id = ref('');
 
 const innInfo = computed(() => authStore.innInfo);
-watch(innInfo, val => {
-    removeInnInfo();
-    !!val ? innItems.value.push(val) : null;
-})
+
 watch(inn, async val => {
-  innItems.value = [];
   !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
 });
-const { registerUser } = authStore;
+const {registerUser} = authStore;
 const username = computed(() => email.value || phone.value);
-const value = computed (() => authStore.innInfo);
-
-const comboboxActive = ref(false);
+const value = computed(() => authStore.innInfo);
 const registered = async () => {
   useSnack({
     show: true,
@@ -134,7 +131,8 @@ const registered = async () => {
   await navigateTo('/login');
 }
 const smartRegister = async () => {
-  const success =  await registerUser({ username, password, passwordConfirm, inn, value });
+  const success = await
+      registerUser({username, password, passwordConfirm, inn, value});
   success ? registered() : null;
 }
 
@@ -144,10 +142,12 @@ const smartRegister = async () => {
 .logo {
   width: 300px;
 }
+
 .register-class {
-  margin: 0!important;
-  padding: 0!important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
+
 .register-card {
   width: 650px;
 }

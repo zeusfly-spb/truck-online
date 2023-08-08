@@ -38,13 +38,6 @@ class UserController extends BaseController
    */
   public function register(Request $request): JsonResponse
   {
-    $company = Company::where('inn', $request->inn)->first();
-    if (!$company) {
-      $company = Company::create([
-        'inn' => $request->inn ?? null,
-        'short_name' => $request->value ?? null
-      ]);
-    }
     $username = $this->username();
     $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
     $validator = Validator::make($request->all(), [
@@ -57,7 +50,7 @@ class UserController extends BaseController
     $user = User::create([
       $username => $request->input('username'),
       'password' => bcrypt($request->input('password')),
-      'company_id' => $company->id
+      'company_id' => $request->company_id
     ]);
     $success['token'] = $user->createToken('MyApp')->accessToken;
     $success[$username] = $user->{$username};

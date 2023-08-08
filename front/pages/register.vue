@@ -2,7 +2,7 @@
   <v-layout class="rounded rounded-md">
     <v-dialog
       v-model="dialog"
-      width="30%"
+      width="20%"
     >
       <v-card>
         <v-card-title>
@@ -51,14 +51,26 @@
                   label="ИНН организации"
                   v-model="inn"
                   placeholder="0000 0000 0000"
+                  :readonly="companyConfirmed"
                 />
-                <v-btn
-                  v-if="innInfo"
-                  color="#BBDEFB"
+                <div
+                  v-if="company && companyConfirmed"
                 >
-                  {{ innInfo }}
+                  <v-icon
+                    icon="mdi-check-bold"
+                    color="green"
+                  />
+                  {{ company.short_name }}
+                </div>
+                <v-btn
+                  v-if="company && !companyConfirmed"
+                  color="#BBDEFB"
+                  @click="confirmCompany"
+                >
+                  {{ company.short_name }}
                 </v-btn>
                 <v-radio-group
+                  class="mt-4"
                   inline
                   label="Являетесь ли вы плательщиком НДС?"
                   v-model="ndsPayer"
@@ -76,11 +88,12 @@
                 />
                 <v-text-field
                   required
-                  :rules="[rules.required, rules.phoneLength]"
+                  :rules="[rules.required, rules.phoneLength, rules.digits]"
                   label="Мобильный телефон"
                   v-model="phone"
                   placeholder="+7 900 000-00-00"
                   density="compact"
+                  :readonly="phoneConfirmed"
                 >
                   <template v-slot:append-inner>
                     <v-icon
@@ -95,12 +108,23 @@
 
                 <v-text-field
                   required
-                  :rules="[]"
+                  :rules="[rules.required, rules.email]"
                   label="E-mail"
                   v-model="email"
                   placeholder="example@mail.ru"
                   density="compact"
-                />
+                  :readonly="emailConfirmed"
+                >
+                  <template v-slot:append-inner>
+                    <v-icon
+                      v-if="email.length && isEmail(email)"
+                      @click.prevent="emailAppendClick"
+                      :color="emailConfirmed ? 'green' : null "
+                      style="cursor: pointer"
+                      icon="mdi-check-bold"
+                    />
+                  </template>
+                </v-text-field>
                 <v-text-field
                   required
                   :rules="[]"
@@ -156,16 +180,17 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
-const company_id = ref('');
 
-const innInfo = computed(() => authStore.innInfo);
+const company = computed(() => authStore.company);
+const innInfo = computed(() => company.value && company.value.short_name || null);
+
 
 watch(inn, async val => {
   !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
 });
-const {registerUser} = authStore;
+const { registerUser } = authStore;
 const username = computed(() => email.value || phone.value);
-const value = computed(() => authStore.innInfo);
+
 const registered = async () => {
   useSnack({
     show: true,
@@ -175,38 +200,78 @@ const registered = async () => {
   });
   await navigateTo('/login');
 }
-
 const dialog = ref(false);
+const value = computed(() => company.value && company.value.short_name);
+const company_id = computed(() => company.value && company.value.id);
 
 const smartRegister = async () => {
   const success = await
-      registerUser({username, password, passwordConfirm, inn, value});
+      registerUser({username, password, passwordConfirm, company_id, value});
   success ? registered() : null;
 }
 
 const phoneConfirmed = ref(false);
+const emailConfirmed = ref(false);
+const companyConfirmed = ref(false);
 
 const rules = {
   required: value => !!value || 'Поле обязательно для заполнения',
-  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длинной 10 цифр'
+  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
+  digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
+  email: value =>  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
 }
 
 const phoneCode = '9898';
+const emailCode = '9898';
 
 const dialogTitle = ref('');
 const dialogMode = ref('');
 const dialogText = ref('');
 
+
 const dialogEnter = () => {
   if (dialogMode.value === 'phone' && dialogText.value === phoneCode) {
     phoneConfirmed.value = true;
+    return dialog.value = false;
+  }
+  if (dialogMode.value === 'email' && dialogText.value === emailCode) {
+    emailConfirmed.value = true;
+    return dialog.value = false;
   }
 }
 const phoneAppendClick = () => {
+  if (phoneConfirmed.value) {
+    return phoneConfirmed.value = false;
+  }
   dialogMode.value = 'phone';
   dialogTitle.value = 'Введите код подтверждения телефона: ';
   dialog.value = true;
 }
+
+const emailAppendClick = () => {
+  if (emailConfirmed.value) {
+    return emailConfirmed.value = false;
+  }
+  dialogMode.value = 'email';
+  dialogTitle.value = 'Введите код подтверждения электронной почты';
+  dialog.value = true;
+}
+
+
+const confirmCompany = () => {
+  company_id.value = company.value.id;
+  companyConfirmed.value = true;
+}
+
+watch(dialog, val => !val ? dialogText.value = '' : null);
+
+const isEmail = (val) => {
+  return String(val)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 
 </script>
 

@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 const detailsUrl = 'http://localhost/api/details';
 const registerUrl = 'http://localhost/api/auth/register';
 const loginUrl = 'http://localhost/api/auth/login';
+const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
 
 // const detailsUrl = 'http://217.197.237.54/api/details';
 // const registerUrl = 'http://217.197.237.54/api/auth/register';
@@ -70,8 +71,10 @@ export const useAuthStore = defineStore('auth', {
       token_cookie.value = null;
     },
     async getCompanyByInn(inn) {
-      const res = await postDadata({query: inn});
-      this.innInfo = res.data._rawValue.suggestions[0].value;
+      const res = await useFetchApi(getCompanyByInnUrl, { method: 'post', body: { inn }});
+      console.log('RES =' + JSON.stringify(res));
+      // const res = await postDadata({query: inn});
+      // this.innInfo = res.data._rawValue.suggestions[0].value;
     }
   },
 });

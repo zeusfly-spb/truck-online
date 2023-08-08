@@ -5,9 +5,6 @@ const getConfigUrl = 'http://localhost/api/config';
 export const useConfigStore = defineStore('config', {
   state: () => ({
     config: [],
-    validatorRules: {
-      required: value => !!value || 'Обязательно для заполнения'
-    }
   }),
   actions: {
     async getConfig() {

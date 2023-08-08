@@ -19,8 +19,6 @@
               >
                 <v-radio label="Заказчик" value="customer"/>
                 <v-radio label="Перевозчик" value="transporter"/>
-                <v-radio label="Владелец уборочной техники" value="equipment_owner"/>
-                <v-radio label="Агент терминала" value="terminal_agent"/>
               </v-radio-group>
             </v-col>
             <v-col>
@@ -45,30 +43,35 @@
                 <v-radio label="Нет" value="no"/>
               </v-radio-group>
               <v-text-field
+                :rules="[rules.required]"
                 label="Контактное лицо"
                 v-model="contactPerson"
                 placeholder="Иванов Иван Иванович"
                 density="compact"
               />
               <v-text-field
+                :rules="[rules.required]"
                 label="Мобильный телефон"
                 v-model="phone"
                 placeholder="+7 900 000-00-00"
                 density="compact"
               />
               <v-text-field
+                :rules="[rules.required]"
                 label="E-mail"
                 v-model="email"
                 placeholder="example@mail.ru"
                 density="compact"
               />
               <v-text-field
+                :rules="[rules.required]"
                 label="Пароль"
                 v-model="password"
                 type="password"
                 density="compact"
               />
               <v-text-field
+                :rules="[rules.required]"
                 label="Повтор пароля"
                 v-model="passwordConfirm"
                 type="password"
@@ -136,6 +139,9 @@ const smartRegister = async () => {
   success ? registered() : null;
 }
 
+import { useConfigStore } from "~/store/config";
+const configStore = useConfigStore();
+const rules = computed(() => configStore.validatorRules);
 </script>
 
 <style lang="css" scoped>

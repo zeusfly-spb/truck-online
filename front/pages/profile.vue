@@ -1,21 +1,6 @@
 <template>
   <div class="flex-col">
-    <VTextField
-      v-model="inn"
-    />
-    <v-btn
-      :disabled="inn.length < 10"
-      @click="makeNSend"
-    >
-      Получить данные
-    </v-btn>
-    <div class="mt-1">
-      <v-chip
-        v-if="innValue"
-      >
-        {{ innValue }}
-      </v-chip>
-    </div>
+
   </div>
 </template>
 

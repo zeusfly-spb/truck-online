@@ -4,8 +4,10 @@ import { createResolver } from '@nuxt/kit'
 
 const { resolve } = createResolver(import.meta.url)
 
+// @ts-ignore
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  app: { baseURL: '/dev' },
+  devtools: { enabled: true, componentInspector: false },
   css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass", "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
     '@nuxtjs/vuetify',
@@ -48,5 +50,5 @@ export default defineNuxtConfig({
       autoImport: true,
       useVuetifyLabs: true,
     }
-  }
+  },
 })

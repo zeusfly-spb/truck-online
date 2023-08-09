@@ -8,7 +8,11 @@
     <VCol cols="10" md="6" sm="8">
       <VRow justify="center" align="center">
         <VCol cols="12" md="6" sm="10">
-          <VForm :disabled="loading" @submit.prevent="submit" class="mt-10">
+          <VForm
+            :disabled="loading"
+            @submit.prevent="submit"
+            class="mt-10"
+          >
             <FormLabel for="email">Email | Номер телефона</FormLabel>
             <VTextField
               v-model="username"
@@ -18,22 +22,14 @@
             <label
               class="font-weight-medium mt-2 d-block mb-1 text-body-2"
               for="password"
-            >Password</label
             >
+              Password
+            </label>
             <VTextField
               v-model="password"
-              @click:append-inner="
-                passwordType == 'password'
-                  ? (passwordType = 'text')
-                  : (passwordType = 'password')
-              "
-              :append-inner-icon="
-                passwordType == 'password'
-                  ? 'fluent:eye-24-regular'
-                  : 'fluent:eye-off-24-regular'
-              "
               id="password"
-              :type="passwordType"
+              type="password"
+              name="password"
             />
             <p class="text-medium-emphasis text-body-2 mt-3">
               <p class="text-body-1 text-medium-emphasis mt-2">
@@ -48,6 +44,7 @@
             </p>
             <div class="mt-10">
               <VBtn
+                :disabled="!valid"
                 :loading="loading"
                 type="submit"
                 flat
@@ -71,7 +68,6 @@ import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
-const passwordType = ref('password');
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
 watch(authenticated, (val) => {
@@ -86,10 +82,29 @@ watch(authenticated, (val) => {
   }
   val ? action() : null;
 })
+const showError = async () => {
+  useSnack({
+    show: true,
+    type: 'error',
+    title: 'Ошибка авторизации!',
+    message: 'Проверьте правильность введенных данных',
+  });
+}
+const isUsernameEmail = computed(() => {
+  const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return pattern.test(username.value);
+});
+const isUsernamePhone = computed(() => /^\d+$/.test(username.value) && username.value.toString().length > 9);
+const valid = computed(() => isUsernameEmail || isUsernamePhone);
 
 const submit = async () => {
-  await authStore.authenticateUser({ username, password });
+  try {
+    await authStore.authenticateUser({ username, password });
+  } catch (e) {
+    showError();
+  }
 };
+
 </script>
 <style scoped>
 a, u {

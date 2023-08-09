@@ -35,7 +35,6 @@ export const useFetchApi = (url: string, options?: UseFetchOptions<object>) => {
   return useFetch(url, {
     ...options,
     async onRequest({ request, options }) {
-      console.log("[fetch request]");
       const headers = new Headers(options.headers);
       headers.set('Content-Type', 'application/json');
       const cookie_token = useCookie('online_port_token');
@@ -44,14 +43,17 @@ export const useFetchApi = (url: string, options?: UseFetchOptions<object>) => {
       }
       options.headers = headers;
     },
-    async onRequestError({ request, options, error }) {
-      console.log("[fetch request error]");
-    },
-    async onResponse({ request, response, options }) {
-      console.log("[fetch response]");
-    },
-    async onResponseError({ request, response, options }) {
-      console.log("[fetch response error]");
-    },
+    async onRequestError({ request, options, error }) {},
+    async onResponse({ request, response, options }) {},
+    async onResponseError({ request, response, options }) {},
   });
 };
+/**
+ *
+ * @param inn
+ */
+export const getSbis = async (inn: string) => {
+  const { data, error } =
+    await useFetch('https://api.sbis.ru/vok-demo/req?inn=' + inn);
+  return { data, error };
+}

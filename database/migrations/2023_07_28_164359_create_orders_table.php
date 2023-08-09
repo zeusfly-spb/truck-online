@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('order_status_id')->nullable();;
             $table->foreign('order_status_id')->references('id')->on('order_statuses')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->nullable(); //remove nullable after test
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');

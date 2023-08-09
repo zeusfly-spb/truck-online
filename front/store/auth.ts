@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 
-const detailsUrl = 'http://localhost/api/details';
-const registerUrl = 'http://localhost/api/auth/register';
-const loginUrl = 'http://localhost/api/auth/login';
-const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
+const detailsUrl = URI+'details';
+const registerUrl = URI+'auth/register';
+const loginUrl = URI+'auth/login';
+const getCompanyByInnUrl = URI+'company/find_by_inn';
 
 // const detailsUrl = 'http://217.197.237.54/api/details';
 // const registerUrl = 'http://217.197.237.54/api/auth/register';

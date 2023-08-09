@@ -14,7 +14,7 @@
     </v-btn>
     <table>
       <tr>
-        <th v-for="header in headers">{{ header.title }}</th>
+        <th v-for="head in heads">{{ head.title }}</th>
       </tr>
       <tr v-for="order in orders">
         <td>{{ order.id }}</td>
@@ -56,9 +56,15 @@ tr:nth-child(even) {
 }
 </style>
 <script setup>
-  const { data: orders } = await useFetch(URI+'orders');
+  const headers = new Headers();
+  const token_cookie = useCookie('online_port_token');
+  if (token_cookie.value) {
+    headers.set("Authorization", `Bearer ${ token_cookie.value }`);
+  }
+
+  const { data: orders } = await useFetch(URI+'orders',{ headers});
   const itemsPerPage = 5;
-  const headers = [
+  const heads = [
           {
             title: 'ID',
             align: 'start',

@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class OrderController extends Controller
 {
     public function index(){
-      $orders = Order::get();
+      $orders = Auth::user()->orders;
       return $orders;
     }
     /**
@@ -209,6 +211,7 @@ class OrderController extends Controller
     public function order_create($data){
 
       $order = new Order;
+      $order['user_id'] = Auth::user() ? Auth::user()->id : null;
       $order['from_address_id'] = $data['from_address_id'];
       $order['from_date'] = $data['from_date'];
       $order['from_slot'] = $data['from_slot'];

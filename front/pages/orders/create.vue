@@ -292,30 +292,52 @@ var deliveryAddress;
 var returnAddress;
 
 const submit = async (event) => {
+  try {
+    await submitForm(event);
+  } catch (e) {
+    const showError = async () => {
+      useSnack({
+        show: true,
+        type: 'error',
+        title: 'Что-то не так с созданием заказа!',
+        message: 'Проверьте правильность введенных данных',
+      });
+    }
+  }
+};
 
+const submitForm = async (event) => {
+  //get FromData
   const formData = new FormData(event.target);
   const formProps = Object.fromEntries(formData);
+  //get Token
+  const token_cookie = useCookie('online_port_token');
+  const headers = new Headers();
+  if (token_cookie.value) {
+    headers.set("Authorization", `Bearer ${ token_cookie.value }`);
+  }
+  //store order
   const { data: responseData } = await useFetch(URI+'order/store',{
     method: 'post',
+    headers,
     body: { data: formProps },
     async onResponse({ request, response, options }) {
+      console.log(response)
       if(response.status=='200'){
         useSnack({
           show: true,
           type: 'success',
-          title: 'Successfully created',
-          message: 'Successfully created',
+          title: 'Заказ успешно создан!',
+          message: 'Заказ успешно создан!',
         });
         await navigateTo('/orders');
       }
     },
-
   })
-
 };
+
 const calculate = async () => {
 
-  console.log(URI);
   var data = {
       "points": [
           {
@@ -341,20 +363,19 @@ const calculate = async () => {
 
   const responseDataDistance = ref();
   var distance = ref();
-  const headers = new Headers();
-  headers.set('Accept', 'application/json');
+  // const headers = new Headers();
+  // headers.set('Accept', 'application/json');
 
-  const { data: responseData } = await useFetch('https://routing.api.2gis.com/routing/7.0.0/global?key=cb315652-4a77-4656-b55c-2485e210e675',
-    { method: 'post',  headers, body: data,
-      async onResponse({ request, response, options }) {
-        console.log('response',response);
-        responseDataDistance.value = response;
-      },
-    });
+  // const { data: responseData } = await useFetch('https://routing.api.2gis.com/routing/7.0.0/global?key=cb315652-4a77-4656-b55c-2485e210e675',
+  //   { method: 'post',  headers, body: data,
+  //     async onResponse({ request, response, options }) {
+  //       console.log('response',response);
+  //       responseDataDistance.value = response;
+  //     },
+  //   });
 
-  distance = responseDataDistance.value._data.result[0].total_distance; //kilometraj
-
-  // const token_cookie = useCookie('online_port_token');
+  //distance = responseDataDistance.value._data.result[0].total_distance; //kilometraj
+  distance = 1000;
   var fullWeight = document.getElementById('weight').value;
   //getContainerWeight
   var containerWeight = getContainerWeight();
@@ -372,7 +393,6 @@ const calculate = async () => {
   //console.log(deliveryAddress.coordinates.coordinates);
   //console.log(returnAddress.coordinates.coordinates);
 };
-
 
 const getContainerWeight = () => {
 
@@ -428,9 +448,6 @@ const getDistance = async() => {
     distanceSum = responseDataDistance.value._data.result[0].total_distance;
     //  return responseDataDistance.value._data.result[0].total_distance;
 }
-
-
-
 const updateFromAddress = async (id) =>{
   fromAddress = addresses.value.data.find(address => address.id === id);
 }

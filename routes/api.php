@@ -43,6 +43,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('suggest_address', [DadataController::class, 'suggestAddress']);
     Route::post('find_by_id', [DadataController::class, 'findById']);
   });
+
+  //orders
+  Route::apiResource('orders', OrderController::class);
+  Route::post('order/store', [OrderController::class, 'store']);
 });
 
 Route::post('/company/find_by_inn',[CompanyController::class, 'findByInn']);
@@ -61,7 +65,5 @@ Route::apiResource('car/types', CarTypeController::class);
 Route::apiResource('car/pass/types', PassController::class);
 Route::apiResource('car/right-uses', RightUseController::class);
 Route::apiResource('cars', CarController::class);
-//orders
-Route::apiResource('orders', OrderController::class);
-Route::post('order/store', [OrderController::class, 'store']);
+
 Route::get('order/settings', [OrderSettingController::class, 'index']);

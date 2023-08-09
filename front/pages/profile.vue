@@ -1,11 +1,5 @@
 <template>
   <div class="flex-col">
-    <v-btn
-      @click="send"
-    >
-      Send
-    </v-btn>
-
   </div>
 </template>
 

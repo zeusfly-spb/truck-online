@@ -150,7 +150,7 @@
                   v-model="termsNConditions"
                 />
                 <v-btn
-                  :disabled="!termsNConditions || !processPersonal"
+                  :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed"
                   @click="smartRegister"
                   class="mb-2"
                 >
@@ -213,6 +213,7 @@ const smartRegister = async () => {
 const phoneConfirmed = ref(false);
 const emailConfirmed = ref(false);
 const companyConfirmed = ref(false);
+const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 
 const rules = {
   required: value => !!value || 'Поле обязательно для заполнения',

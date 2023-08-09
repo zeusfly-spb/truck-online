@@ -9,6 +9,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class EmailConfirm extends Mailable
 {
@@ -28,7 +29,7 @@ class EmailConfirm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-          from: new Address('info@online-port.ru', 'Jack Smith'),
+          from: new Address('info@online-port.ru', 'Support'),
           subject: 'Email Confirm',
         );
     }
@@ -39,7 +40,8 @@ class EmailConfirm extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.demoMail',
+            view: 'emails.emailConfirmCode',
+            with: [ 'code' => Str::random(6)]
         );
     }
 

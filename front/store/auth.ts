@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia';
 
-const detailsUrl = 'http://localhost/api/details';
-const registerUrl = 'http://localhost/api/auth/register';
-const loginUrl = 'http://localhost/api/auth/login';
-const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
+// const detailsUrl = 'http://localhost/api/details';
+// const registerUrl = 'http://localhost/api/auth/register';
+// const loginUrl = 'http://localhost/api/auth/login';
+// const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
 
-// const detailsUrl = 'http://217.197.237.54/api/details';
-// const registerUrl = 'http://217.197.237.54/api/auth/register';
-// const loginUrl = 'http://217.197.237.54/api/auth/login';
+const detailsUrl = 'http://217.197.237.54/api/details';
+const registerUrl = 'http://217.197.237.54/api/auth/register';
+const loginUrl = 'http://217.197.237.54/api/auth/login';
+const getCompanyByInnUrl = 'http://217.197.237.54/api/company/find_by_inn';
 
 interface UserPayloadInterface {
   username: string;

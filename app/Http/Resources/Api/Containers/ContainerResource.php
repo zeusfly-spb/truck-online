@@ -17,7 +17,8 @@ class ContainerResource extends JsonResource
         return [
             'id'  =>  $this->id,
             'name' => $this->getTranslation('name', app()->getLocale()),
-            'weight' => $this->weight
+            'weight' => $this->weight,
+            'kit' => $this->kit
         ];
     }
 }

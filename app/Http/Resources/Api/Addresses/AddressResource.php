@@ -19,6 +19,9 @@ class AddressResource extends JsonResource
           'address_type' => $this->address_type?->name,
           'name' => $this->getTranslation('name', app()->getLocale()),
           'coordinates' => $this->location,
+          'return' => $this->return,
+          'from' => $this->from,
+          'to' => $this->to,
       ];
     }
 }

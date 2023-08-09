@@ -207,13 +207,14 @@ class AddressController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, Address $address)
+    public function update(Request $request, $id)
     {
         try{
-            $address->address_type_id = $request->address_type_id;
-            $address->location = new Point($request->latitude, $request->longitude);
-            $address->setTranslation('name', 'ru', $request->name)->save();
-            return AddressResource::make($address);
+          $address = Address::find($id);
+          $address->address_type_id = $request->address_type_id;
+          $address->location = new Point($request->latitude, $request->longitude);
+          $address->setTranslation('name', 'ru', $request->name)->save();
+          return AddressResource::make($address);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

@@ -7,14 +7,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarType;
 
-
 class CarTypeController extends Controller
 {
     /**
      * @OA\Get(
      *     path="/api/car/types",
      *     summary="Get list of car types",
-     *     tags = {"Cars"},
+     *     tags = {"Car Types"},
      *     @OA\Response(
      *         response=200,
      *         description="SUCCESS",
@@ -43,7 +42,7 @@ class CarTypeController extends Controller
     * @OA\Post(
     *     path="/api/car/types",
     *     summary="Store Company",
-    *     tags = {"Cars"},
+    *     tags = {"Car Types"},
     *      @OA\RequestBody(
     *         @OA\MediaType(
     *             mediaType="application/json",
@@ -85,7 +84,7 @@ class CarTypeController extends Controller
     * @OA\Get(
     *      path="/api/car/types/{id}",
     *      summary="Show Car Type",
-    *      tags={"Cars"},
+    *      tags={"Car Types"},
     *      description="Show Car Type",
     *      @OA\Parameter(
     *      name="id",
@@ -126,7 +125,13 @@ class CarTypeController extends Controller
     {
         //
     }
-
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\CarType  $province
+     * @return \Illuminate\Http\Response
+     */
     /**
      * Update the specified resource in storage.
      */
@@ -134,7 +139,7 @@ class CarTypeController extends Controller
     * @OA\Put(
     *      path="/api/car/types/{id}",
     *      operationId="Update Car Type",
-    *      tags={"Cars"},
+    *      tags={"Car Types"},
     *      summary="Update Car Type",
     *      description="Update Car Type",
     *      @OA\RequestBody(
@@ -169,11 +174,11 @@ class CarTypeController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, CarType $carType)
+    public function update(Request $request, $id)
     {
         try{
-            $input = $request->all();
-            $carType->fill($input)->save();
+            $carType = CarType::find($id);
+            $carType->update($request->all());
             return CarTypeResource::make($carType);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
@@ -184,7 +189,7 @@ class CarTypeController extends Controller
     * @OA\Delete(
     *      path="/api/car/types/{id}",
     *      operationId="Delete car type",
-    *      tags={"Cars"},
+    *      tags={"Car Types"},
     *      summary="Summary",
     *      description="Delete Car Type",
     *      @OA\Parameter(

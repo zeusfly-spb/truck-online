@@ -362,11 +362,11 @@ class CompanyController extends Controller
     *     ),
     *   )
     */
-    public function update(CompanyRequest $request, Company $company)
+    public function update(CompanyRequest $request, $id)
     {
         try{
-            $input = $request->all();
-            $company->fill($input)->save();
+            Company::find($id);
+            $company->update($request->all());
             return CompanyResource::make($company);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

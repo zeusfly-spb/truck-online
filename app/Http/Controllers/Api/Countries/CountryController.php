@@ -144,12 +144,12 @@ class CountryController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, $id)
     {
         try{
-            $input = $request->all();
-            $country->fill($input)->save();
-            return CountryResource::make($country);
+          $country = Country::find($id);
+          $country->update($request->all());
+          return CountryResource::make($country);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

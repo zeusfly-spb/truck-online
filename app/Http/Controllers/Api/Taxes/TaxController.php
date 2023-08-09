@@ -178,8 +178,8 @@ class TaxController extends Controller
     public function update(Request $request, Tax $tax)
     {
         try{
-            $input = $request->all();
-            $tax->fill($input)->save();
+            $tax = Tax::find($id);
+            $tax->update($request->all());
             return TaxResource::make($tax);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

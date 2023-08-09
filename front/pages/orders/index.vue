@@ -56,7 +56,7 @@ tr:nth-child(even) {
 }
 </style>
 <script setup>
-  const { data: orders } = await useFetch('http://127.0.0.1:8000/api/orders');
+  const { data: orders } = await useFetch(URI+'orders');
   const itemsPerPage = 5;
   const headers = [
           {

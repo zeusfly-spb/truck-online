@@ -16,7 +16,8 @@ use App\Http\Controllers\Api\Orders\OrderSettingController;
 use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\DadataController;
+use App\Http\Controllers\ConfigController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,8 +35,17 @@ Route::prefix('auth')->group(function () {
 
 Route::middleware('auth:api')->group(function () {
   Route::get('/details', [UserController::class, 'details']);
- // Route::resource('orders', OrderController::class);
+  Route::get('/config', [ConfigController::class, 'getConfig']);
+  Route::prefix('dadata')->group(function () {
+    Route::post('validate_address', [DadataController::class, 'validateAddress']);
+    Route::post('address_geocode', [DadataController::class, 'addressGeocode']);
+    Route::post('geo_ip_city', [DadataController::class, 'geoIpCity']);
+    Route::post('suggest_address', [DadataController::class, 'suggestAddress']);
+    Route::post('find_by_id', [DadataController::class, 'findById']);
+  });
 });
+
+Route::post('/company/find_by_inn',[CompanyController::class, 'findByInn']);
 
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('order-statuses', OrderStatusController::class);

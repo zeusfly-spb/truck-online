@@ -274,9 +274,9 @@ export default {
 
 <script setup>
 
-const { data: containers } = await useFetch('http://127.0.0.1:8000/api/containers');
-const { data: addresses } = await useFetch('http://127.0.0.1:8000/api/addresses');
-const { data: orderSetting } = await useFetch('http://127.0.0.1:8000/api/order/settings');
+const { data: containers } = await useFetch(URI+'containers');
+const { data: addresses } = await useFetch(URI+'addresses');
+const { data: orderSetting } = await useFetch(URI+'order/settings');
 
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
@@ -295,7 +295,7 @@ const submit = async (event) => {
 
   const formData = new FormData(event.target);
   const formProps = Object.fromEntries(formData);
-  const { data: responseData } = await useFetch('http://127.0.0.1:8000/api/order/store',{
+  const { data: responseData } = await useFetch(URI+'order/store',{
     method: 'post',
     body: { data: formProps },
     async onResponse({ request, response, options }) {
@@ -315,6 +315,7 @@ const submit = async (event) => {
 };
 const calculate = async () => {
 
+  console.log(URI);
   var data = {
       "points": [
           {

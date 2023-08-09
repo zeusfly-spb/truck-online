@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 const detailsUrl = 'http://localhost/api/details';
 const registerUrl = 'http://localhost/api/auth/register';
 const loginUrl = 'http://localhost/api/auth/login';
+const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
 
 // const detailsUrl = 'http://217.197.237.54/api/details';
 // const registerUrl = 'http://217.197.237.54/api/auth/register';
@@ -16,25 +17,34 @@ interface UserRegisterPayloadInterface {
   username: string;
   password: string;
   passwordConfirm: string;
+  inn: string;
+  value: string;
 }
+
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     authenticated: false,
     loading: false,
     token: null,
     user: null,
+    innInfo: null
   }),
   actions: {
+    removeInnInfo() {
+      this.innInfo = null;
+    },
     async getUserDetails() {
       const res = await useFetchApi(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
-      this.user ? this.authenticated = true : null;
+      if (this.user) {
+        this.authenticated = true;
+      }
     },
-    async registerUser({ username, password, passwordConfirm }: UserRegisterPayloadInterface) {
+    async registerUser({ username, password, passwordConfirm, inn, value }: UserRegisterPayloadInterface) {
       const { data, pending }: any = await useFetchApi(registerUrl, {
         method: 'post',
-        body: { username, password, password_confirmation: passwordConfirm },
+        body: { username, password, password_confirmation: passwordConfirm, inn, value },
       });
       this.loading = pending;
       const { _rawValue : { success } } = data;
@@ -60,5 +70,11 @@ export const useAuthStore = defineStore('auth', {
       this.token = null;
       token_cookie.value = null;
     },
+    async getCompanyByInn(inn) {
+      const res = await useFetchApi(getCompanyByInnUrl, { method: 'post', body: { inn }});
+      console.log('RES =' + JSON.stringify(res));
+      // const res = await postDadata({query: inn});
+      // this.innInfo = res.data._rawValue.suggestions[0].value;
+    }
   },
 });

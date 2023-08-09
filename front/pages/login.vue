@@ -64,12 +64,17 @@
 
 <script setup lang="js">
 useHead({title: 'Вход'});
+definePageMeta({ middleware: 'auth' });
+
+const router = useRouter();
+
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
+
 watch(authenticated, (val) => {
   const action = async () => {
     useSnack({
@@ -78,10 +83,12 @@ watch(authenticated, (val) => {
       title: 'Авторизован',
       message: 'Вы успешно авторизовались в системе',
     });
-    await navigateTo('/profile');
+    router.push('/profile');
   }
   val ? action() : null;
 })
+
+
 const showError = async () => {
   useSnack({
     show: true,
@@ -95,7 +102,7 @@ const isUsernameEmail = computed(() => {
   return pattern.test(username.value);
 });
 const isUsernamePhone = computed(() => /^\d+$/.test(username.value) && username.value.toString().length > 9);
-const valid = computed(() => isUsernameEmail || isUsernamePhone);
+const valid = computed(() => (isUsernameEmail || isUsernamePhone) && !!password.value);
 
 const submit = async () => {
   try {
@@ -104,7 +111,6 @@ const submit = async () => {
     showError();
   }
 };
-
 </script>
 <style scoped>
 a, u {

@@ -18,19 +18,32 @@ interface UserRegisterPayloadInterface {
   username: string;
   password: string;
   passwordConfirm: string;
-  inn: string;
-  value: string;
+  company_id: bigint
 }
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
+    modalConfig: {
+      dialogTitle: '',
+      dialogMode: '',
+      dialogText: '',
+      dialog: false
+    },
     authenticated: false,
     loading: false,
     token: null,
     user: null,
-    company: null
+    company: null,
+    registrationSteps: {
+      emailConfirmed: false,
+      phoneConfirmed: false,
+      companyConfirmed: false
+    },
   }),
   actions: {
+    setModalConfigField: ({ key, value }) => {
+      this.modalConfig[key] = value;
+    },
     async getUserDetails() {
       const res = await useFetchApi(detailsUrl);
       // @ts-ignore

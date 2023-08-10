@@ -29,7 +29,7 @@ class EmailConfirm extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-          from: new Address('info@online-port.ru', 'Support'),
+          from: new Address('support@online-port.ru', 'Support'),
           subject: 'Email Confirm',
         );
     }

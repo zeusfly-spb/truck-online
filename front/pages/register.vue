@@ -1,28 +1,5 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-dialog
-      v-model="dialog"
-      width="20%"
-    >
-      <v-card>
-        <v-card-title>
-          {{ dialogTitle }}
-        </v-card-title>
-        <v-card-text>
-          <v-text-field
-            v-model="dialogText"
-            @keyup.enter="dialogEnter"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            @click="dialogEnter"
-          >
-            Ok
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-main
         class="d-flex align-center justify-center flex-column"
         style="margin-top: 3em!important;"
@@ -169,7 +146,7 @@
 <script setup>
 import {useAuthStore} from "~/store/auth";
 const authStore = useAuthStore();
-const {getCompanyByInn} = authStore;
+const { getCompanyByInn, setModalConfigField } = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -180,16 +157,22 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
-
 const company = computed(() => authStore.company);
-const innInfo = computed(() => company.value && company.value.short_name || null);
+const phoneConfirmed = computed(() => authStore.registrationSteps.phoneConfirmed);
+const emailConfirmed = computed(() => authStore.registrationSteps.emailConfirmed);
+const companyConfirmed = computed({
+  get () {
+    return authStore.registrationSteps.companyConfirmed;
+  },
+  set(val) {
 
-
-watch(inn, async val => {
-  !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
+  }
 });
-const { registerUser } = authStore;
+const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
+
+
+const { registerUser } = authStore;
 
 const registered = async () => {
   useSnack({
@@ -200,45 +183,55 @@ const registered = async () => {
   });
   await navigateTo('/login');
 }
-const dialog = ref(false);
-const value = computed(() => company.value && company.value.short_name);
 const company_id = computed(() => company.value && company.value.id);
 
 const smartRegister = async () => {
   const success = await
-      registerUser({username, password, passwordConfirm, company_id, value});
+      registerUser({username, password, passwordConfirm, company_id });
   success ? registered() : null;
 }
 
-const phoneConfirmed = ref(false);
-const emailConfirmed = ref(false);
-const companyConfirmed = ref(false);
-const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 
-const rules = {
-  required: value => !!value || 'Поле обязательно для заполнения',
-  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
-  digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
-  email: value =>  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
-}
 
 const phoneCode = '9898';
 const emailCode = '9898';
 
-const dialogTitle = ref('');
-const dialogMode = ref('');
-const dialogText = ref('');
+const dialog = computed({
+  get() {
+    return authStore.confirmDialog.dialog;
+  },
+  set (val) {
+    setModalConfigField({key: 'dialog', value: val});
+  }
+});
 
+const dialogMode = computed({
+  get() {
+    return authStore.confirmDialog.dialogMode;
+  },
+  set(val) {
+    setModalConfigField({key: 'confirmDialog', value: val});
+  }
+});
+
+const dialogTitle = computed({
+  get() {
+    return authStore.confirmDialog.dialogTitle
+  },
+  set(val) {
+    setModalConfigField({key: 'dialogTitle', value: val})
+  }
+});
 
 const dialogEnter = () => {
-  if (dialogMode.value === 'phone' && dialogText.value === phoneCode) {
-    phoneConfirmed.value = true;
-    return dialog.value = false;
-  }
-  if (dialogMode.value === 'email' && dialogText.value === emailCode) {
-    emailConfirmed.value = true;
-    return dialog.value = false;
-  }
+  // if (dialogMode.value === 'phone' && dialogText.value === phoneCode) {
+  //   phoneConfirmed.value = true;
+  //   return dialog.value = false;
+  // }
+  // if (dialogMode.value === 'email' && dialogText.value === emailCode) {
+  //   emailConfirmed.value = true;
+  //   return dialog.value = false;
+  // }
 }
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {
@@ -264,7 +257,9 @@ const confirmCompany = () => {
   companyConfirmed.value = true;
 }
 
-watch(dialog, val => !val ? dialogText.value = '' : null);
+watch(inn, async val => {
+  !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
+});
 
 const isEmail = (val) => {
   return String(val)
@@ -273,6 +268,13 @@ const isEmail = (val) => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 };
+
+const rules = {
+    required: value => !!value || 'Поле обязательно для заполнения',
+    phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
+    digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
+    email: value =>  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
+}
 
 </script>
 

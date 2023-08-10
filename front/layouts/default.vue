@@ -20,6 +20,7 @@
         </v-btn>
       </v-app-bar>
       <v-main>
+        <ConfirmDialog/>
         <Snack></Snack>
         <slot />
       </v-main>
@@ -30,6 +31,9 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/store/auth";
+import { useDialogStore } from "~/store/dialog._";
+import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
+
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
 const { logUserOut } = authStore;
@@ -44,6 +48,9 @@ const appTitle = computed(() => {
   }
   return result;
 });
+
+
+
 
 const logOut = async () => {
   logUserOut();

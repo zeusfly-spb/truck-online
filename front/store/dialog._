@@ -1,0 +1,17 @@
+import { defineStore } from 'pinia';
+
+export const useDialogStore = defineStore('dialog', {
+  state: () => ({
+    confirmDialog: {
+      dialogTitle: '',
+      dialogMode: '',
+      dialogText: '',
+      dialog: false
+    }
+  }),
+  actions: {
+    setConfirmDialogField: ({ key, value }) => {
+      this.confirmDailog[key] = value;
+    }
+  }
+});

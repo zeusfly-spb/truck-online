@@ -72,9 +72,9 @@ class AddressController extends Controller
      *                     example="30.3338147"
      *               ),
      *              @OA\Property(
-     *                     property="address_type_id",
-     *                     type="integer",
-     *                     example="1"
+     *                     property="to",
+     *                     type="string",
+     *                     example="true"
      *               ),
      *             )
      *         )
@@ -97,13 +97,25 @@ class AddressController extends Controller
     {
         try{
             $address = new Address;
-            $address->address_type_id = $request->address_type_id;
+            //$address->address_type_id = $request->address_type_id;
             $address->location = new Point($request->latitude, $request->longitude);
+            $address->accept_by_admin = false;
+            if($request->has('to') && $request->to) $address->to = true; else $address->to = false;
+            if($request->has('from') && $request->from) $address->from = true; else $address->from = false;
+            if($request->has('return') && $request->return) $address->return = true; else $address->return = false;
             $address->setTranslation('name', 'ru', $request->name)->save();
+
             return AddressResource::make($address);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+
+    public function accept($id){
+
+      $address = Address::find($id);
+      $address->accept_status = true;
+      $address->save();
     }
 
     /**

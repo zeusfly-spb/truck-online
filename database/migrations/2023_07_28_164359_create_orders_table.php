@@ -72,9 +72,9 @@ return new class extends Migration
             $table->double('weight');
             $table->integer('length_algo');
             $table->integer('length_real');
-            $table->boolean('imo')->nullable();
-            $table->boolean('temp_reg')->nullable();
-            $table->boolean('is_international')->nullable();
+            $table->boolean('imo');
+            $table->boolean('temp_reg');
+            $table->boolean('is_international');
             $table->unsignedBigInteger('tax_id')->nullable();
             $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade');
             $table->longText('description')->nullable();

@@ -33,7 +33,8 @@
             <v-text-field
               name="from_contact_phone"
               label="From Contact Phone"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.phoneLength]"
+              placeholder="+7 900 000-00-00"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
@@ -75,7 +76,8 @@
             <v-text-field
               name="delivery_contact_phone"
               label="Delivery Contact Phone"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.phoneLength]"
+              placeholder="+7 900 000-00-00"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
@@ -117,7 +119,8 @@
             <v-text-field
               name="return_contact_phone"
               label="Return Contact Phone"
-              :rules="[rules.required]"
+              :rules="[rules.required, rules.phoneLength]"
+              placeholder="+7 900 000-00-00"
            ></v-text-field>
           </v-col>
           <v-col cols="12" md="4">
@@ -160,18 +163,17 @@
           <v-col cols="12" md="2">
             <v-text-field
               name="length_algo"
-              label="Length algo"
+              label="Длина маршрута в км"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
           <v-col cols="12" md="2">
             <v-text-field
               name="length_real"
-              label="Length real"
+              label="Реальная длина из данных водителя"
               :rules="[rules.required]"
             ></v-text-field>
           </v-col>
-
 
           <v-col cols="12" md="12">
             <v-text-field
@@ -186,13 +188,13 @@
               :label="`imo`"
             ></v-checkbox>
           </v-col>
-          <v-col cols="12" md="2">
+          <v-col cols="12" md="3">
             <v-checkbox
               name="temp_reg"
-              :label="`temp_reg`"
+              :label="`Температурный режим`"
             ></v-checkbox>
           </v-col>
-          <v-col cols="12" md="2">
+          <v-col cols="12" md="3">
             <v-checkbox
               name="is_international"
               :label="`is_international`"
@@ -281,11 +283,10 @@ const { data: orderSetting } = await useFetch(URI+'order/settings');
 import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
 
-const rules = computed(() => {
-  return {
-    required: value => !!value || 'Required.',
+const rules = {
+    required: value => !!value || 'Поле обязательно для заполнения',
+    phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длинной 10 цифр'
   };
-});
 
 var fromAddress;
 var deliveryAddress;
@@ -331,6 +332,14 @@ const submitForm = async (event) => {
           message: 'Заказ успешно создан!',
         });
         await navigateTo('/orders');
+      }
+      if(response.status=='500'){
+        useSnack({
+          show: true,
+          type: 'error',
+          title: 'Что-то не так с созданием заказа!',
+          message: 'Проверьте правильность введенных данных',
+        });
       }
     },
   })

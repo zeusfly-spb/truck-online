@@ -56,6 +56,7 @@ Route::apiResource('order-statuses', OrderStatusController::class);
 //address
 Route::apiResource('address-types', AddressTypeController::class);
 Route::apiResource('addresses', AddressController::class);
+Route::apiResource('address/accept', AddressController::class);
 //company
 Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);

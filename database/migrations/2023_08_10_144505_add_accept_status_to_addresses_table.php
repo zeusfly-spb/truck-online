@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('containers', function (Blueprint $table) {
-          $table->string('kit')->nullable();
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->boolean('accept_status');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('containers', function (Blueprint $table) {
-          $table->dropColumn('kit')->nullable();
+        Schema::table('addresses', function (Blueprint $table) {
+            $table->boolean('accept_status');
         });
     }
 };

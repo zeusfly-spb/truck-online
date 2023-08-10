@@ -18,7 +18,11 @@
       </tr>
       <tr v-for="order in orders">
         <td>{{ order.id }}</td>
-        <td>{{ order.from_contact_name }}</td>
+        <td>{{ order.from_address?.name }}</td>
+        <td>{{ order.delivery_address?.name }}</td>
+        <td>{{ order.container?.name }}</td>
+        <td>{{ order.weight }}</td>
+        <td>{{ order.price }}</td>
       </tr>
     </table>
     <!-- <v-btn
@@ -65,13 +69,12 @@ tr:nth-child(even) {
   const { data: orders } = await useFetch(URI+'orders',{ headers});
   const itemsPerPage = 5;
   const heads = [
-          {
-            title: 'ID',
-            align: 'start',
-            sortable: false,
-            key: 'name',
-          },
-          { title: 'From Contact Name', align: 'end', key: 'calories' },
+          { title: 'ID', align: 'start', sortable: false, key: 'id'},
+          { title: 'From Address', align: 'start', sortable: false, key: 'from_address' },
+          { title: 'To Address', align: 'start', sortable: false, key: 'to_address' },
+          { title: 'Conatiner', align: 'start', sortable: false, key: 'container' },
+          { title: 'Weight', align: 'start', sortable: false, key: 'weight' },
+          { title: 'Price', align: 'start', sortable: false, key: 'price' },
         ];
   console.log(orders._rawValue);
   console.log(headers);

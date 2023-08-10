@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Resources\Api\Orders\OrderResource;
+
 
 class OrderController extends Controller
 {
     public function index(){
       $orders = Auth::user()->orders;
-      return $orders;
+      return OrderResource::collection($orders)->collection;
     }
     /**
      * @OA\Post(
@@ -239,9 +241,9 @@ class OrderController extends Controller
       $order['price'] = $data['price'];
       $order['weight'] = $data['weight'];
 
-      // if($data['imo']) $order['imo'] = true; else $order['imo'] = false;
-      // if($data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
-      // if($data['temp_reg']) $order['temp_reg'] = true; else $order['temp_reg'] = false;
+      if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
+      if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
+      if(isset($data['temp_reg']) && $data['temp_reg']) $order['temp_reg'] = true; else $order['temp_reg'] = false;
 
       $order['description'] = $data['description'];
       $order->save();

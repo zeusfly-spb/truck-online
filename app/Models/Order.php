@@ -78,16 +78,16 @@ class Order extends Model
     public function from_address(){
       return $this->belongsTo(Address::class, 'from_address_id');
     }
-    public function delivery_adress(){
-      return $this->belongsTo(Address::class, 'delivery_adress_id');
+    public function delivery_address(){
+      return $this->belongsTo(Address::class, 'delivery_address_id');
     }
-    public function return_adress(){
-      return $this->belongsTo(Address::class, 'return_adress_id');
+    public function return_address(){
+      return $this->belongsTo(Address::class, 'return_address_id');
     }
-    public function delivery2_adress(){
-      return $this->belongsTo(Address::class, 'delivery2_adress_id');
+    public function delivery2_address(){
+      return $this->belongsTo(Address::class, 'delivery2_address_id');
     }
-    public function return2_adress(){
-      return $this->belongsTo(Address::class, 'return2_adress_id');
+    public function return2_address(){
+      return $this->belongsTo(Address::class, 'return2_address_id');
     }
 }

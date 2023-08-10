@@ -41,8 +41,11 @@ export const useAuthStore = defineStore('auth', {
     },
   }),
   actions: {
-    setModalConfigField: ({ key, value }) => {
-      this.modalConfig[key] = value;
+    setRegistrationStepsField: ({ state }, data) => {
+      state.registrationSteps[data.key] = data.value;
+    },
+    setModalConfigField: ({ state }, data) => {
+      state.modalConfig[data.key] = data.value;
     },
     async getUserDetails() {
       const res = await useFetchApi(detailsUrl);

@@ -19,7 +19,9 @@
           Войти
         </v-btn>
       </v-app-bar>
-      <v-main>
+      <v-main
+        style="background-image: url('/bg.jpg');   background-size: cover;"
+      >
         <ConfirmDialog/>
         <Snack></Snack>
         <slot />
@@ -31,7 +33,6 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/store/auth";
-import { useDialogStore } from "~/store/dialog._";
 import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
 
 const authStore = useAuthStore();

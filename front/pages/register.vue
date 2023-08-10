@@ -146,7 +146,7 @@
 <script setup>
 import {useAuthStore} from "~/store/auth";
 const authStore = useAuthStore();
-const { getCompanyByInn, setModalConfigField } = authStore;
+const { getCompanyByInn, setModalConfigField, setRegistrationStepsField } = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -165,7 +165,7 @@ const companyConfirmed = computed({
     return authStore.registrationSteps.companyConfirmed;
   },
   set(val) {
-
+    setRegistrationStepsField({key: 'companyConfirmed', value: val})
   }
 });
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);

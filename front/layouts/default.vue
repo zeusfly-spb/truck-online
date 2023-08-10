@@ -19,9 +19,7 @@
           Войти
         </v-btn>
       </v-app-bar>
-      <v-main
-        style="background-image: url('/bg.jpg');   background-size: cover;"
-      >
+      <v-main class="bg">
         <ConfirmDialog/>
         <Snack></Snack>
         <slot />
@@ -49,10 +47,6 @@ const appTitle = computed(() => {
   }
   return result;
 });
-
-
-
-
 const logOut = async () => {
   logUserOut();
   await navigateTo('/login');
@@ -61,3 +55,9 @@ const redirectLogin = async () => {
   await navigateTo('/login');
 }
 </script>
+<style>
+.bg {
+  background-image: url('/bg.jpg');
+  background-size: cover;
+}
+</style>

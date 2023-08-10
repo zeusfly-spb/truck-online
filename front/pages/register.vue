@@ -4,16 +4,16 @@
         class="d-flex align-center justify-center flex-column"
         style="margin-top: 3em!important;"
       >
-      <v-form>
         <v-card
           class="pa-md-4 mx-lg-auto register-class register-card"
+          style="background: transparent!important;"
         >
           <v-card-text
             class="register-class"
           >
             <v-row>
               <v-col>
-                <img src="/register_logo.png" alt="register_logo" class="logo">
+                <img src="/register_logo2.png" alt="register_logo" class="logo">
                 <v-radio-group
                   label="Зарегистрируйте меня как"
                   v-model="accountType"
@@ -137,9 +137,7 @@
             </v-row>
           </v-card-text>
         </v-card>
-      </v-form>
     </v-main>
-
   </v-layout>
 </template>
 

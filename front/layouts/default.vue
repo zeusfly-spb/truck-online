@@ -7,8 +7,8 @@
         <v-spacer/>
         <v-btn
           v-if="authenticated"
-          @click="logOut"
           variant="tonal"
+          @click="logOut"
         >
           Выйти
         </v-btn>
@@ -22,22 +22,22 @@
       <v-main class="bg">
         <ConfirmDialog/>
         <Snack></Snack>
-        <slot />
+        <slot/>
       </v-main>
     </v-app>
   </div>
 </template>
 
 
-<script setup lang="ts">
-import { useAuthStore } from "~/store/auth";
+<script lang="ts" setup>
+import {useAuthStore} from "~/store/auth";
 import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
 
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
-const { logUserOut } = authStore;
+const {logUserOut} = authStore;
 
-const { currentRoute } = useRouter();
+const {currentRoute} = useRouter();
 const routeName = computed(() => currentRoute.value.name);
 
 const appTitle = computed(() => {

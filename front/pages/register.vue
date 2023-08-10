@@ -1,150 +1,154 @@
 <template>
   <v-layout class="rounded rounded-md">
     <v-main
-        class="d-flex align-center justify-center flex-column"
-        style="margin-top: 3em!important;"
+      class="d-flex align-center justify-center flex-column"
+      style=" margin-top: 3em!important; cursor: none"
+    >
+      <v-card
+        class="pa-md-4 mx-lg-auto register-class register-card"
+        style="background: transparent!important;"
       >
-        <v-card
-          class="pa-md-4 mx-lg-auto register-class register-card"
-          style="background: transparent!important;"
+        <v-card-text
+          class="register-class"
         >
-          <v-card-text
-            class="register-class"
-          >
-            <v-row>
-              <v-col>
-                <img src="/register_logo2.png" alt="register_logo" class="logo">
-                <v-radio-group
-                  label="Зарегистрируйте меня как"
-                  v-model="accountType"
-                >
-                  <v-radio label="Заказчик" value="customer"/>
-                  <v-radio label="Перевозчик" value="transporter"/>
-                </v-radio-group>
-              </v-col>
-              <v-col>
-                <v-text-field
-                  hide-details
-                  label="ИНН организации"
-                  v-model="inn"
-                  placeholder="0000 0000 0000"
-                  :readonly="companyConfirmed"
+          <v-row>
+            <v-col>
+              <img alt="register_logo" class="logo" src="/register_logo2.png">
+              <v-radio-group
+                v-model="accountType"
+                label="Зарегистрируйте меня как"
+              >
+                <v-radio label="Заказчик" value="customer"/>
+                <v-radio label="Перевозчик" value="transporter"/>
+              </v-radio-group>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="inn"
+                :readonly="companyConfirmed"
+                hide-details
+                label="ИНН организации"
+                placeholder="0000 0000 0000"
+              />
+              <div
+                v-if="company && companyConfirmed"
+              >
+                <v-icon
+                  color="green"
+                  icon="mdi-check-bold"
                 />
-                <div
-                  v-if="company && companyConfirmed"
-                >
+                {{ company.short_name }}
+              </div>
+              <v-btn
+                v-if="company && !companyConfirmed"
+                color="#BBDEFB"
+                @click="confirmCompany"
+              >
+                {{ company.short_name }}
+              </v-btn>
+              <v-radio-group
+                v-model="ndsPayer"
+                class="mt-4"
+                inline
+                label="Являетесь ли вы плательщиком НДС?"
+              >
+                <v-radio label="Да" value="yes"/>
+                <v-radio label="Нет" value="no"/>
+              </v-radio-group>
+              <v-text-field
+                v-model="contactPerson"
+                :rules="[]"
+                density="compact"
+                label="Контактное лицо"
+                placeholder="Иванов Иван Иванович"
+                required
+              />
+              <v-text-field
+                v-model="phone"
+                :readonly="phoneConfirmed"
+                :rules="[rules.required, rules.phoneLength, rules.digits]"
+                density="compact"
+                label="Мобильный телефон"
+                maxlength="10"
+                placeholder="+7 900 000-00-00"
+                required
+              >
+                <template v-slot:append-inner>
                   <v-icon
+                    v-if="phone.length === 10"
+                    :color="phoneConfirmed ? 'green' : 'black'"
+                    :title="phoneConfirmed ? 'Номер телефона подтвержден' : 'Подтвердить номер телефона'"
                     icon="mdi-check-bold"
-                    color="green"
+                    style="cursor: pointer"
+                    @click.prevent="phoneAppendClick"
                   />
-                  {{ company.short_name }}
-                </div>
-                <v-btn
-                  v-if="company && !companyConfirmed"
-                  color="#BBDEFB"
-                  @click="confirmCompany"
-                >
-                  {{ company.short_name }}
-                </v-btn>
-                <v-radio-group
-                  class="mt-4"
-                  inline
-                  label="Являетесь ли вы плательщиком НДС?"
-                  v-model="ndsPayer"
-                >
-                  <v-radio label="Да" value="yes"/>
-                  <v-radio label="Нет" value="no"/>
-                </v-radio-group>
-                <v-text-field
-                  required
-                  :rules="[]"
-                  label="Контактное лицо"
-                  v-model="contactPerson"
-                  placeholder="Иванов Иван Иванович"
-                  density="compact"
-                />
-                <v-text-field
-                  required
-                  :rules="[rules.required, rules.phoneLength, rules.digits]"
-                  label="Мобильный телефон"
-                  v-model="phone"
-                  placeholder="+7 900 000-00-00"
-                  density="compact"
-                  :readonly="phoneConfirmed"
-                >
-                  <template v-slot:append-inner>
-                    <v-icon
-                      v-if="phone.length === 10"
-                      @click.prevent="phoneAppendClick"
-                      :color="phoneConfirmed ? 'green' : null "
-                      style="cursor: pointer"
-                      icon="mdi-check-bold"
-                    />
-                  </template>
-                </v-text-field>
+                </template>
+              </v-text-field>
 
-                <v-text-field
-                  required
-                  :rules="[rules.required, rules.email]"
-                  label="E-mail"
-                  v-model="email"
-                  placeholder="example@mail.ru"
-                  density="compact"
-                  :readonly="emailConfirmed"
-                >
-                  <template v-slot:append-inner>
-                    <v-icon
-                      v-if="email.length && isEmail(email)"
-                      @click.prevent="emailAppendClick"
-                      :color="emailConfirmed ? 'green' : null "
-                      style="cursor: pointer"
-                      icon="mdi-check-bold"
-                    />
-                  </template>
-                </v-text-field>
-                <v-text-field
-                  required
-                  :rules="[]"
-                  label="Пароль"
-                  v-model="password"
-                  type="password"
-                  density="compact"
-                />
-                <v-text-field
-                  required
-                  :rules="[]"
-                  label="Повтор пароля"
-                  v-model="passwordConfirm"
-                  type="password"
-                  density="compact"
-                />
-                <v-checkbox
-                  label="Даю согласие на обработку персональных данных"
-                  v-model="processPersonal"
-                />
-                <v-checkbox
-                  label="Принимаю пользовательское соглашение и политику конфиденциальности"
-                  v-model="termsNConditions"
-                />
-                <v-btn
-                  :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed"
-                  @click="smartRegister"
-                  class="mb-2"
-                >
-                  Зарегистрироваться
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+              <v-text-field
+                v-model="email"
+                :readonly="emailConfirmed"
+                :rules="[rules.required, rules.email]"
+                density="compact"
+                label="E-mail"
+                placeholder="example@mail.ru"
+                required
+              >
+                <template v-slot:append-inner>
+                  <v-icon
+                    v-if="email.length && isEmail(email)"
+                    :color="emailConfirmed ? 'green' : 'black'"
+                    :title="emailConfirmed ? 'Адрес email подтвержден' : 'Подтвердить адрес email'"
+                    icon="mdi-check-bold"
+                    style="cursor: pointer"
+                    @click.prevent="emailAppendClick"
+                  />
+                </template>
+              </v-text-field>
+              <v-text-field
+                v-model="password"
+                :rules="[]"
+                density="compact"
+                label="Пароль"
+                required
+                type="password"
+              />
+              <v-text-field
+                v-model="passwordConfirm"
+                :rules="[]"
+                density="compact"
+                label="Повтор пароля"
+                required
+                type="password"
+              />
+              <v-checkbox
+                v-model="processPersonal"
+                label="Даю согласие на обработку персональных данных"
+              />
+              <v-checkbox
+                v-model="termsNConditions"
+                label="Принимаю пользовательское соглашение и политику конфиденциальности"
+              />
+              <v-btn
+                :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed"
+                class="mb-2"
+                @click="smartRegister"
+              >
+                Зарегистрироваться
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-main>
   </v-layout>
 </template>
 
 <script setup>
 import {useAuthStore} from "~/store/auth";
+
 const authStore = useAuthStore();
-const { getCompanyByInn, setModalConfigField, setRegistrationStepsField } = authStore;
+const {getCompanyByInn, setModalConfigField, setRegistrationStepsField, setValue} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -156,21 +160,32 @@ const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
 const company = computed(() => authStore.company);
-const phoneConfirmed = computed(() => authStore.registrationSteps.phoneConfirmed);
-const emailConfirmed = computed(() => authStore.registrationSteps.emailConfirmed);
-const companyConfirmed = computed({
-  get () {
-    return authStore.registrationSteps.companyConfirmed;
+
+const phoneConfirmed = computed({
+  get() {
+    return authStore.phoneConfirmed;
   },
   set(val) {
-    setRegistrationStepsField({key: 'companyConfirmed', value: val})
+    authStore.setPhoneConfirmed(val)
   }
 });
+const emailConfirmed = computed(() => authStore.emailConfirmed);
+const companyConfirmed = computed({
+  get() {
+    return authStore.companyConfirmed;
+  },
+  set(val) {
+    authStore.setValue({key: 'companyConfirmed', value: val});
+  }
+});
+
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
 
+const modalConfig = computed(() => authStore.modalConfig);
 
-const { registerUser } = authStore;
+
+const {registerUser} = authStore;
 
 const registered = async () => {
   useSnack({
@@ -185,74 +200,55 @@ const company_id = computed(() => company.value && company.value.id);
 
 const smartRegister = async () => {
   const success = await
-      registerUser({username, password, passwordConfirm, company_id });
+    registerUser({username, password, passwordConfirm, company_id});
   success ? registered() : null;
 }
 
-
-
-const phoneCode = '9898';
-const emailCode = '9898';
-
-const dialog = computed({
-  get() {
-    return authStore.confirmDialog.dialog;
-  },
-  set (val) {
-    setModalConfigField({key: 'dialog', value: val});
-  }
-});
-
 const dialogMode = computed({
   get() {
-    return authStore.confirmDialog.dialogMode;
+    return authStore.dialogMode;
   },
   set(val) {
-    setModalConfigField({key: 'confirmDialog', value: val});
+    authStore.setValue({key: 'dialogMode', value: val});
   }
 });
-
 const dialogTitle = computed({
   get() {
-    return authStore.confirmDialog.dialogTitle
+    return authStore.dialogTitle;
   },
   set(val) {
-    setModalConfigField({key: 'dialogTitle', value: val})
+    authStore.setValue({key: 'dialogTitle', value: val});
   }
 });
-
-const dialogEnter = () => {
-  // if (dialogMode.value === 'phone' && dialogText.value === phoneCode) {
-  //   phoneConfirmed.value = true;
-  //   return dialog.value = false;
-  // }
-  // if (dialogMode.value === 'email' && dialogText.value === emailCode) {
-  //   emailConfirmed.value = true;
-  //   return dialog.value = false;
-  // }
-}
+const dialog = computed({
+  get() {
+    return authStore.dialog;
+  },
+  set(val) {
+    authStore.setValue({key: 'dialog', value: val});
+  }
+});
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {
-    return phoneConfirmed.value = false;
+    return;
   }
   dialogMode.value = 'phone';
-  dialogTitle.value = 'Введите код подтверждения телефона: ';
+  dialogTitle.value = 'Код подтверждения телефона';
   dialog.value = true;
 }
 
 const emailAppendClick = () => {
   if (emailConfirmed.value) {
-    return emailConfirmed.value = false;
+    return;
   }
   dialogMode.value = 'email';
-  dialogTitle.value = 'Введите код подтверждения электронной почты';
+  dialogTitle.value = 'Код подтверждения email';
   dialog.value = true;
 }
 
-
 const confirmCompany = () => {
   company_id.value = company.value.id;
-  companyConfirmed.value = true;
+  authStore.setValue({key: 'companyConfirmed', value: true});
 }
 
 watch(inn, async val => {
@@ -268,10 +264,10 @@ const isEmail = (val) => {
 };
 
 const rules = {
-    required: value => !!value || 'Поле обязательно для заполнения',
-    phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
-    digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
-    email: value =>  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
+  required: value => !!value || 'Поле обязательно для заполнения',
+  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
+  digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
+  email: value => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
 }
 
 </script>

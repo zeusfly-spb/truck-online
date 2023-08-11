@@ -19,7 +19,8 @@
           Войти
         </v-btn>
       </v-app-bar>
-      <v-main>
+      <v-main class="bg">
+        <ConfirmDialog/>
         <Snack></Snack>
         <slot />
       </v-main>
@@ -30,6 +31,8 @@
 
 <script setup lang="ts">
 import { useAuthStore } from "~/store/auth";
+import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
+
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
 const { logUserOut } = authStore;
@@ -44,7 +47,6 @@ const appTitle = computed(() => {
   }
   return result;
 });
-
 const logOut = async () => {
   logUserOut();
   await navigateTo('/login');
@@ -53,3 +55,9 @@ const redirectLogin = async () => {
   await navigateTo('/login');
 }
 </script>
+<style>
+.bg {
+  background-image: url('/bg.jpg');
+  background-size: cover;
+}
+</style>

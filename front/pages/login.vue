@@ -64,7 +64,7 @@
 
 <script setup lang="js">
 useHead({title: 'Вход'});
-definePageMeta({ middleware: 'auth' });
+// definePageMeta({ middleware: 'auth' });
 
 const router = useRouter();
 

@@ -5,6 +5,8 @@ export const useSnackTitle = () => useState(() => 'Snack title');
 export const useSnackMessage = () => useState<string | undefined>(() => '');
 import { UseFetchOptions } from "nuxt/dist/app/composables";
 
+export const URI = 'http://localhost/api/';
+
 /**
  * Method used to display snackbar
  * @param Snack data

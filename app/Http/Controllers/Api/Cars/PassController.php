@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api\Cars;
 
-use App\Http\Resources\Api\Cars\CarTypeResource;
+use App\Http\Resources\Api\Cars\PassResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\CarType;
+use App\Models\Pass;
 
-class CarTypeController extends Controller
+
+class PassController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/car/types",
-     *     summary="Get list of car types",
-     *     tags = {"Car Types"},
+     *     path="/api/car/pass/types",
+     *     summary="Get list of car pass types",
+     *     tags = {"Car Passes"},
      *     @OA\Response(
      *         response=200,
      *         description="SUCCESS",
@@ -23,8 +24,8 @@ class CarTypeController extends Controller
     public function index()
     {
         try{
-            $companies = CarType::orderBy('created_at', 'desc')->get();
-            return CarTypeResource::collection($companies);
+            $companies = Pass::orderBy('created_at', 'desc')->get();
+            return PassResource::collection($companies);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -40,9 +41,9 @@ class CarTypeController extends Controller
 
     /**
     * @OA\Post(
-    *     path="/api/car/types",
-    *     summary="Store Company",
-    *     tags = {"Car Types"},
+    *     path="/api/car/pass/types",
+    *     summary="Store Pass",
+    *     tags = {"Car Passes"},
     *      @OA\RequestBody(
     *         @OA\MediaType(
     *             mediaType="application/json",
@@ -50,7 +51,17 @@ class CarTypeController extends Controller
     *                 @OA\Property(
     *                     property="name",
     *                     type="string",
-    *                     example="Прицеп"
+    *                     example="МКАД"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="number",
+    *                     type="string",
+    *                     example="S123"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="date",
+    *                     type="string",
+    *                     example="2023-08-10"
     *                 ),
     *             )
     *         )
@@ -72,76 +83,39 @@ class CarTypeController extends Controller
     public function store(Request $request)
     {
         try{
-            $data = $request->all();
-            $carType = CarType::create($data);
-            return CarTypeResource::make($carType);
+          $pass = new Pass;
+          $pass->number = $request->number;
+          $pass->date = $request->date;
+          $pass->setTranslation('name', 'ru', $request->name)->save();
+          return PassResource::make($pass);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
-
     /**
-    * @OA\Get(
-    *      path="/api/car/types/{id}",
-    *      summary="Show Car Type",
-    *      tags={"Car Types"},
-    *      description="Show Car Type",
-    *      @OA\Parameter(
-    *      name="id",
-    *      in="path",
-    *      required=true,
-    *      @OA\Schema(
-    *           type="integer",
-    *           example="1"
-    *         )
-    *      ),
-    *     @OA\Parameter(
-     *         description="Localization",
-     *         in="header",
-     *         name="X-Localization",
-     *         required=false,
-     *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="ru", value="ru", summary="Russian")
-     *    ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *     )
-    */
-    public function show(CarType $carType)
+     * Display the specified resource.
+     */
+    public function show(Pass $pass)
     {
-      try{
-          return CarTypeResource::make($carType);
-      }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarType $carType)
+    public function edit(Pass $pass)
     {
         //
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\CarType  $province
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * Update the specified resource in storage.
-     */
+
+
     /**
     * @OA\Put(
-    *      path="/api/car/types/{id}",
-    *      operationId="Update Car Type",
-    *      tags={"Car Types"},
-    *      summary="Update Car Type",
-    *      description="Update Car Type",
+    *      path="/api/car/pass/types/{id}",
+    *      operationId="Update Pass",
+    *      tags={"Car Passes"},
+    *      summary="Update Pass",
+    *      description="Update Pass",
     *      @OA\RequestBody(
     *         @OA\MediaType(
     *             mediaType="application/json",
@@ -149,7 +123,17 @@ class CarTypeController extends Controller
     *                 @OA\Property(
     *                     property="name",
     *                     type="string",
-    *                     example="CarTypeUpdate"
+    *                     example="МКАД"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="number",
+    *                     type="string",
+    *                     example="S123"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="date",
+    *                     type="string",
+    *                     example="2023-08-10"
     *                 ),
     *             )
     *         )
@@ -177,9 +161,9 @@ class CarTypeController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            $carType = CarType::find($id);
-            $carType->update($request->all());
-            return CarTypeResource::make($carType);
+          $pass = Pass::find($id);
+          $pass->update($request->all());
+          return PassResource::make($pass);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -187,11 +171,11 @@ class CarTypeController extends Controller
 
     /**
     * @OA\Delete(
-    *      path="/api/car/types/{id}",
-    *      operationId="Delete car type",
-    *      tags={"Car Types"},
+    *      path="/api/car/pass/types/{id}",
+    *      operationId="Delete pass",
+    *      tags={"Car Passes"},
     *      summary="Summary",
-    *      description="Delete Car Type",
+    *      description="Cars",
     *      @OA\Parameter(
     *      name="id",
     *      in="path",
@@ -207,13 +191,13 @@ class CarTypeController extends Controller
     *       ),
     *     )
     */
-    public function destroy(CarType $carType)
+    public function destroy(Pass $pass)
     {
-      try{
-          $carType->delete();
-          return response()->json([ 'success' => true ]);
-      }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+        try{
+            $pass->delete();
+            return response()->json([ 'success' => true ]);
+        }catch(Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 }

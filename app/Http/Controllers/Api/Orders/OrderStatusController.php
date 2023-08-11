@@ -173,11 +173,11 @@ class OrderStatusController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, OrderStatus $orderStatus)
+    public function update(Request $request, $id)
     {
         try{
-            $input = $request->all();
-            $orderStatus->fill($input)->save();
+            $orderStatus = OrderStatus::find($id);
+            $orderStatus->update($request->all());
             return OrderStatusResource::make($orderStatus);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

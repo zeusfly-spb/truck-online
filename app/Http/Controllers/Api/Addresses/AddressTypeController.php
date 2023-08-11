@@ -176,11 +176,11 @@ class AddressTypeController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, AddressType $addressType)
+    public function update(Request $request, $id)
     {
         try{
-            $input = $request->all();
-            $addressType->fill($input)->save();
+            $addressType = AddressType::find($id);
+            $addressType->update($request->all());
             return AddressTypeResource::make($addressType);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

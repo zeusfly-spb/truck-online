@@ -65,6 +65,11 @@ class ContainerController extends Controller
      *                     type="string",
      *                     example="10 тонн"
      *                 ),
+     *                @OA\Property(
+     *                     property="kit",
+     *                     type="string",
+     *                     example="kit"
+     *                 ),
      *             )
      *         )
      *     ),
@@ -87,6 +92,7 @@ class ContainerController extends Controller
         try{
             $container = new Container;
             $container->weight = $request->weight;
+            $container->kit = $request->kit;
             $container->setTranslation('name', 'ru', $request->name)->save();
             return ContainerResource::make($container);
         }catch(Exception $exception){
@@ -156,6 +162,16 @@ class ContainerController extends Controller
     *                     type="string",
     *                     example="ContainerNameTestUpdate"
     *                 ),
+    *                 @OA\Property(
+    *                     property="weight",
+    *                     type="string",
+    *                     example="10 тонн"
+    *                 ),
+    *                @OA\Property(
+    *                     property="kit",
+    *                     type="string",
+    *                     example="kit"
+    *                 ),
     *             )
     *         )
     *     ),
@@ -179,11 +195,11 @@ class ContainerController extends Controller
     *     ),
     *   )
     */
-    public function update(Request $request, Container $container)
+    public function update(Request $request, $id)
     {
         try{
-            $input = $request->all();
-            $container->fill($input)->save();
+            $container = Container::find($id);
+            $container->update($request->all());
             return ContainerResource::make($container);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

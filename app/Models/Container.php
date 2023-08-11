@@ -13,7 +13,7 @@ class Container extends Model
 
     protected $table = 'containers';
 
-    protected $fillable = ['name', 'weight'];
+    protected $fillable = ['name', 'weight', 'kit'];
 
     public $translatable = [
         'name',

@@ -51,4 +51,7 @@ class Company extends Model
   public function post_address(){
     return $this->belongsTo(Address::class,'post_address_id');
   }
+  public function cars(){
+    return $this->hasMany(Car::class);
+  }
 }

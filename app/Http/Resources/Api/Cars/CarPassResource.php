@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Api\Containers;
+namespace App\Http\Resources\Api\Cars;
 
+use App\Http\Resources\Api\Cars\PassResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ContainerResource extends JsonResource
+class CarPassResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +16,7 @@ class ContainerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'  =>  $this->id,
-            'name' => $this->getTranslation('name', app()->getLocale()),
-            'weight' => $this->weight,
-            'kit' => $this->kit
+          'pass' => PassResource::make($this->pass)
         ];
     }
 }

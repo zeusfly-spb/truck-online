@@ -417,10 +417,24 @@
                 }
             }
         },
-        "/api/car/types": {
+        "/api/cars": {
             "get": {
                 "tags": [
                     "Cars"
+                ],
+                "summary": "Get list of cars",
+                "operationId": "cd52cf6030f0f08182fb90a2796f77af",
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/types": {
+            "get": {
+                "tags": [
+                    "Car Types"
                 ],
                 "summary": "Get list of car types",
                 "operationId": "dfd65de4134f27c2c24982423cb5069e",
@@ -432,7 +446,7 @@
             },
             "post": {
                 "tags": [
-                    "Cars"
+                    "Car Types"
                 ],
                 "summary": "Store Company",
                 "operationId": "1a44354ccc5b9610f585d42317a63721",
@@ -478,7 +492,7 @@
         "/api/car/types/{id}": {
             "get": {
                 "tags": [
-                    "Cars"
+                    "Car Types"
                 ],
                 "summary": "Show Car Type",
                 "description": "Show Car Type",
@@ -517,7 +531,7 @@
             },
             "put": {
                 "tags": [
-                    "Cars"
+                    "Car Types"
                 ],
                 "summary": "Update Car Type",
                 "description": "Update Car Type",
@@ -571,11 +585,305 @@
             },
             "delete": {
                 "tags": [
-                    "Cars"
+                    "Car Types"
                 ],
                 "summary": "Summary",
                 "description": "Delete Car Type",
                 "operationId": "Delete car type",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/pass/types": {
+            "get": {
+                "tags": [
+                    "Car Passes"
+                ],
+                "summary": "Get list of car pass types",
+                "operationId": "43af3744773e0ac12781d16dd815bb9c",
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Car Passes"
+                ],
+                "summary": "Store Pass",
+                "operationId": "f3b0a03e1321fdc9a0a2b49b36cd7b88",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "МКАД"
+                                    },
+                                    "number": {
+                                        "type": "string",
+                                        "example": "S123"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "example": "2023-08-10"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/pass/types/{id}": {
+            "put": {
+                "tags": [
+                    "Car Passes"
+                ],
+                "summary": "Update Pass",
+                "description": "Update Pass",
+                "operationId": "Update Pass",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "МКАД"
+                                    },
+                                    "number": {
+                                        "type": "string",
+                                        "example": "S123"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "example": "2023-08-10"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Car Passes"
+                ],
+                "summary": "Summary",
+                "description": "Cars",
+                "operationId": "Delete pass",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/right-uses": {
+            "get": {
+                "tags": [
+                    "Car Right Uses"
+                ],
+                "summary": "Get list of right use",
+                "operationId": "bde32252d213017863983de8674d7579",
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Car Right Uses"
+                ],
+                "summary": "Store right use",
+                "operationId": "e1d2ecf17ce5573e05a917333fef2651",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Собственность"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/right-uses/{id}": {
+            "put": {
+                "tags": [
+                    "Car Right Uses"
+                ],
+                "summary": "Update right use",
+                "description": "Update right use",
+                "operationId": "Update right use",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Собственность"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/car/pass/right-uses/{id}": {
+            "delete": {
+                "tags": [
+                    "Car Right Uses"
+                ],
+                "summary": "Summary",
+                "description": "Delete ight use",
+                "operationId": "Delete right use",
                 "parameters": [
                     {
                         "name": "id",
@@ -972,6 +1280,10 @@
                                     "weight": {
                                         "type": "string",
                                         "example": "10 тонн"
+                                    },
+                                    "kit": {
+                                        "type": "string",
+                                        "example": "kit"
                                     }
                                 },
                                 "type": "object"
@@ -1067,6 +1379,14 @@
                                     "name": {
                                         "type": "string",
                                         "example": "ContainerNameTestUpdate"
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "10 тонн"
+                                    },
+                                    "kit": {
+                                        "type": "string",
+                                        "example": "kit"
                                     }
                                 },
                                 "type": "object"
@@ -1253,6 +1573,168 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                }
+            }
+        },
+        "/api/orders": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Store Order",
+                "operationId": "46d26587acf3d4dd2ab1eec0eee086af",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "user_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "container_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "company_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "from_address_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "from_date": {
+                                        "type": "string",
+                                        "example": "2023-08-31"
+                                    },
+                                    "from_slot": {
+                                        "type": "string",
+                                        "example": "15:00"
+                                    },
+                                    "from_contact_name": {
+                                        "type": "string",
+                                        "example": "ConatctNAme"
+                                    },
+                                    "from_contact_phone": {
+                                        "type": "string",
+                                        "example": "COntactPhone"
+                                    },
+                                    "from_contact_email": {
+                                        "type": "string",
+                                        "example": "online@gmail.com"
+                                    },
+                                    "delivery_adress_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "delivery_date": {
+                                        "type": "string",
+                                        "example": "2023-08-31"
+                                    },
+                                    "delivery_slot": {
+                                        "type": "string",
+                                        "example": "15:00"
+                                    },
+                                    "delivery_contact_name": {
+                                        "type": "string",
+                                        "example": "ConatctNAme"
+                                    },
+                                    "delivery_contact_phone": {
+                                        "type": "string",
+                                        "example": "COntactPhone"
+                                    },
+                                    "delivery_contact_email": {
+                                        "type": "string",
+                                        "example": "online@gmail.com"
+                                    },
+                                    "return_address_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "return_date": {
+                                        "type": "string",
+                                        "example": "2023-08-31"
+                                    },
+                                    "return_slot": {
+                                        "type": "string",
+                                        "example": "15:00"
+                                    },
+                                    "return_contact_name": {
+                                        "type": "string",
+                                        "example": "ConatctNAme"
+                                    },
+                                    "return_contact_phone": {
+                                        "type": "string",
+                                        "example": "COntactPhone"
+                                    },
+                                    "return_contact_email": {
+                                        "type": "string",
+                                        "example": "online@gmail.com"
+                                    },
+                                    "car_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "price": {
+                                        "type": "string",
+                                        "example": "10000"
+                                    },
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "20000"
+                                    },
+                                    "length_algo": {
+                                        "type": "integer",
+                                        "example": "20000"
+                                    },
+                                    "length_real": {
+                                        "type": "integer",
+                                        "example": "20000"
+                                    },
+                                    "imo": {
+                                        "type": "boolean",
+                                        "example": "1"
+                                    },
+                                    "temp_reg": {
+                                        "type": "boolean",
+                                        "example": "1"
+                                    },
+                                    "tax_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "description"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "SUCCESS"

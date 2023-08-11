@@ -1,5 +1,10 @@
 import { defineStore } from 'pinia';
 
+//const detailsUrl = URI+'details';
+//const registerUrl = URI+'auth/register';/
+//const loginUrl = URI+'auth/login';
+//const getCompanyByInnUrl = URI+'company/find_by_inn';
+
 // const detailsUrl = 'http://localhost/api/details';
 // const registerUrl = 'http://localhost/api/auth/register';
 // const loginUrl = 'http://localhost/api/auth/login';

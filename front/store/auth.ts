@@ -29,9 +29,6 @@ export const useAuthStore = defineStore('auth', {
 		token: null,
 		user: null,
 		company: null,
-		companyConfirmed: false,
-		emailConfirmed: false,
-		phoneConfirmed: false,
 	}),
 	actions: {
 		setValue({key, value}) {

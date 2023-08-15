@@ -146,6 +146,10 @@
 
 <script setup>
 import {useAuthStore} from "~/store/auth";
+import {useConfigStore} from "~/store/config";
+
+const configStore = useConfigStore();
+const config = useRuntimeConfig();
 
 const authStore = useAuthStore();
 const {getCompanyByInn, setModalConfigField, setRegistrationStepsField, setValue} = authStore;

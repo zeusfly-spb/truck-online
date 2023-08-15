@@ -13,5 +13,8 @@ export const useConfigStore = defineStore('config', {
 			const {data: {_rawValue}} = await useFetchApi(getConfigUrl, {method: 'get'});
 			this.config = _rawValue;
 		},
+	},
+	getters: {
+		baseUrl: () => process.env.NUXT_PUBLIC_API_BASE,
 	}
 });

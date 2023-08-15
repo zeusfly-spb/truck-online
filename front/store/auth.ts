@@ -1,19 +1,10 @@
 import {defineStore} from 'pinia';
+import {opFetch} from "~/composables/opFetch";
 
-//const detailsUrl = URI+'details';
-//const registerUrl = URI+'auth/register';/
-//const loginUrl = URI+'auth/login';
-//const getCompanyByInnUrl = URI+'company/find_by_inn';
-
-// const detailsUrl = 'http://localhost/api/details';
-// const registerUrl = 'http://localhost/api/auth/register';
-// const loginUrl = 'http://localhost/api/auth/login';
-// const getCompanyByInnUrl = 'http://localhost/api/company/find_by_inn';
-
-const detailsUrl = 'http://217.197.237.54/api/details';
-const registerUrl = 'http://217.197.237.54/api/auth/register';
-const loginUrl = 'http://217.197.237.54/api/auth/login';
-const getCompanyByInnUrl = 'http://217.197.237.54/api/company/find_by_inn';
+const detailsUrl = '/details';
+const registerUrl = '/auth/register';
+const loginUrl = '/auth/login';
+const getCompanyByInnUrl = '/company/find_by_inn';
 
 interface UserPayloadInterface {
 	username: string;
@@ -47,7 +38,7 @@ export const useAuthStore = defineStore('auth', {
 			this[key] = value;
 		},
 		async getUserDetails() {
-			const res = await useFetchApi(detailsUrl);
+			const res = await opFetch(detailsUrl);
 			// @ts-ignore
 			this.user = res.data._rawValue;
 			if (this.user) {
@@ -55,7 +46,7 @@ export const useAuthStore = defineStore('auth', {
 			}
 		},
 		async registerUser({username, password, passwordConfirm, company_id}: UserRegisterPayloadInterface) {
-			const {data, pending}: any = await useFetchApi(registerUrl, {
+			const {data, pending}: any = await opFetch(registerUrl, {
 				method: 'post',
 				body: {username, password, password_confirmation: passwordConfirm, company_id},
 			});
@@ -64,7 +55,7 @@ export const useAuthStore = defineStore('auth', {
 			return success;
 		},
 		async authenticateUser({username, password}: UserPayloadInterface) {
-			const {data, pending}: any = await useFetchApi(loginUrl, {
+			const {data, pending}: any = await opFetch(loginUrl, {
 				method: 'post',
 				body: {username, password},
 			});
@@ -84,9 +75,8 @@ export const useAuthStore = defineStore('auth', {
 			token_cookie.value = null;
 		},
 		async getCompanyByInn(inn) {
-			const res = await useFetchApi(getCompanyByInnUrl, {method: 'post', body: {inn}});
+			const res = await opFetch(getCompanyByInnUrl, {method: 'post', body: {inn}});
 			this.company = res.data._rawValue.company;
 		}
-
 	},
 });

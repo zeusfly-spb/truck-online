@@ -7,8 +7,11 @@ use App\Http\Requests\CarRequest;
 use App\Http\Controllers\Controller;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
-use App\Models\Car;
 use App\Models\CarPass;
+use App\Models\Car;
+use Auth;
+use File;
+
 
 class CarController extends Controller
 {
@@ -32,7 +35,7 @@ class CarController extends Controller
     public function index()
     {
         try{
-            $cars = Car::orderBy('created_at', 'desc')->get();
+            $cars = Car::orderBy('created_at', 'desc')->where('company_id', Auth::user()->company_id)->get();
             return CarResource::collection($cars);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
@@ -55,7 +58,7 @@ class CarController extends Controller
       try{
         $car = new Car;
         $car->number = $request->number;
-        $car->company_id = $request->company_id;
+        $car->company_id = Auth::user()->company_id;
         $car->country_id = $request->country_id;
         $car->mark_model = $request->mark_model;
         $car->car_type_id = $request->car_type_id;
@@ -122,14 +125,20 @@ class CarController extends Controller
         $car->right_use_id = $request->right_use_id;
         $car->max_weigth = $request->max_weigth;
 
-        if ($request->hasFile('icon'))
-        $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+        if ($request->hasFile('icon')){
+          File::delete($car->icon);
+          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+        }
 
-        if ($request->hasFile('sts_file_1'))
-        $car->sts_file_1 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_1'));
+        if ($request->hasFile('sts_file_1')){
+          File::delete($car->sts_file_1);
+          $car->sts_file_1 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_1'));
+        }
 
-        if ($request->hasFile('sts_file_2'))
-        $car->sts_file_2 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_2'));
+        if ($request->hasFile('sts_file_2')){
+          $car->sts_file_2 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_2'));
+        }
+
         $car->save();
 
         if($request->has('passes')){

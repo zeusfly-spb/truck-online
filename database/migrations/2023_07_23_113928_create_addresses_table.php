@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->longtext('name');
+            $table->text('address');
             $table->point('location');
             $table->boolean('return');
             $table->boolean('from');
             $table->boolean('to');
-            $table->unsignedBigInteger('address_type_id')->nullable();
-            $table->foreign('address_type_id')->references('id')->on('address_types')->onDelete('cascade');
+            $table->boolean('accept_status');
             $table->timestamps();
         });
     }

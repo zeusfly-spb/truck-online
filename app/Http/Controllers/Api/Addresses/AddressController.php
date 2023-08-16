@@ -29,6 +29,9 @@ class AddressController extends Controller
      *     ),
      * )
     */
+    /**
+     * Admin Address Get
+     */
     public function index()
     {
         try{
@@ -37,6 +40,24 @@ class AddressController extends Controller
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+    /**
+     * Client Address get
+     */
+    public function addressCLient(Request $request){
+      try{
+
+        $addresses = Address::query()->where('accept_status', true);
+        if($request->has('name'))
+          $addresses = $addresses->filterByName($request->name);
+
+        if($request->has('address'))
+          $addresses = $addresses->filterByAddress($request->address);
+
+          return AddressResource::collection($addresses->get());
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
     }
 
     /**
@@ -96,14 +117,16 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         try{
+
             $address = new Address;
-            //$address->address_type_id = $request->address_type_id;
             $address->location = new Point($request->latitude, $request->longitude);
-            $address->accept_by_admin = false;
+            $address->accept_status = false;
             if($request->has('to') && $request->to) $address->to = true; else $address->to = false;
             if($request->has('from') && $request->from) $address->from = true; else $address->from = false;
             if($request->has('return') && $request->return) $address->return = true; else $address->return = false;
-            $address->setTranslation('name', 'ru', $request->name)->save();
+            $address->name = $request->name;
+            $address->address = $request->address;
+            $address->save();
 
             return AddressResource::make($address);
         }catch(Exception $exception){
@@ -116,6 +139,7 @@ class AddressController extends Controller
       $address = Address::find($id);
       $address->accept_status = true;
       $address->save();
+      return response()->json(['message' => 'Success'], 200);
     }
 
     /**

@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('address_types', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name', 60);
+            $table->date('value', 60);
+            $table->string('path', 150);
+            $table->string('table_owner', 60);
+            $table->integer('table_owner_id');
             $table->timestamps();
         });
     }
@@ -23,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('address_types');
+        Schema::dropIfExists('documents');
     }
 };

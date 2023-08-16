@@ -60,7 +60,8 @@ class Order extends Model
       'description'
     ];
 
-    public function status(){
+    //relations
+    public function order_status(){
       return $this->belongsTo(OrderStatus::class);
     }
     public function user(){
@@ -89,5 +90,67 @@ class Order extends Model
     }
     public function return2_address(){
       return $this->belongsTo(Address::class, 'return2_address_id');
+    }
+    //scopes
+
+    public function scopeFilterByOrderStatuses($query, array $ids)
+    {
+        return $query->whereHas('order_status', function ($query) use ($ids) {
+            $query->whereIn('id', $ids);
+        });
+    }
+    public function scopeFilterByOrderContainers($query, array $ids)
+    {
+        return $query->whereHas('container', function ($query) use ($ids) {
+            $query->whereIn('id', $ids);
+        });
+    }
+    public function scopeFilterByOrderFromAddresses($query, array $ids)
+    {
+        return $query->whereHas('from_address', function ($query) use ($ids) {
+            $query->whereIn('id', $ids);
+        });
+    }
+    public function scopeFilterByOrderDeliveryAddresses($query, array $ids)
+    {
+        return $query->whereHas('delivery_address', function ($query) use ($ids) {
+            $query->whereIn('id', $ids);
+        });
+    }
+    public function scopeFilterByWeight($query, $weight)
+    {
+        return $query->where('weight', 'like', '%' . $weight . '%');
+    }
+    public function scopeFilterByPrice($query, $price)
+    {
+        return $query->where('price', 'like', '%' . $price . '%');
+    }
+    public function scopeFilterByLengthAlgo($query, $length)
+    {
+        return $query->where('length_algo', 'like', '%' . $length . '%');
+    }
+    public function scopeFilterByLengthReal($query, $length)
+    {
+        return $query->where('length_real', 'like', '%' . $length . '%');
+    }
+    public function scopeFilterByImo($query, $status)
+    {
+        return $query->where('imo', $status);
+    }
+    public function scopeFilterByTemp($query, $status)
+    {
+        return $query->where('temp_reg', $status);
+    }
+    public function scopeFilterByInternational($query, $status)
+    {
+        return $query->where('is_international', $status);
+    }
+    public function scopeFromDate($query, $fromDate)
+    {
+        return $query->whereDate('from_date', '>=', $fromDate);
+    }
+    public function scopeDeliveryDate($query, $deliveryDate)
+    {
+        return $query->whereDate('delivery_date', '<=', $deliveryDate);
     }
 }

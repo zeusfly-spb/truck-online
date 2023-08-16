@@ -25,7 +25,7 @@ class CarResource extends JsonResource
         'mark_model' => $this->mark_model,
         'sts' => $this->sts,
         'max_weigth' => $this->max_weigth,
-        'company'   => CompanyResource::make($this->company),
+        //'company'   => CompanyResource::make($this->company),
         'country'  => CountryResource::make($this->country),
         'car_type' => CarTypeResource::make($this->car_type),
         'sts_file_1'    => $this->sts_file_1,

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Resources\Api\Orders\OrderResource;
@@ -13,9 +14,54 @@ use App\Http\Resources\Api\Orders\OrderResource;
 
 class OrderController extends Controller
 {
-    public function index(){
-      $orders = Auth::user()->orders;
-      return OrderResource::collection($orders)->collection;
+    public function index(Request $request){
+      //$orders = Auth::user()->orders;
+      $orders = Order::query();
+
+      if($request->has('order_statuses'))
+        $orders = $orders->filterByOrderStatuses(json_decode($request->order_statuses));
+
+      if($request->has('containers'))
+        $orders = $orders->filterByOrderContainers(json_decode($request->containers));
+
+      if($request->has('from_addresses'))
+        $orders = $orders->filterByOrderFromAddresses(json_decode($request->from_addresses));
+
+      if($request->has('delivery_addresses'))
+        $orders = $orders->filterByOrderDeliveryAddresses(json_decode($request->delivery_addresses));
+
+      if($request->has('companies'))
+        $orders = $orders->filterByOrderCompanies(json_decode($request->companies));
+
+      if($request->has('weight'))
+        $orders = $orders->filterByWeight($request->weight);
+
+      if($request->has('price'))
+        $orders = $orders->filterByPrice($request->price);
+
+      if($request->has('length_algo'))
+        $orders = $orders->filterByLengthAlgo($request->length_algo);
+
+      if($request->has('length_real'))
+        $orders = $orders->filterByLengthReal($request->length_real);
+
+      if($request->has('imo') && $request->imo){
+        $orders = $orders->filterByImo(true);
+      }
+      if($request->has('temp_reg') && $request->temp_reg)
+        $orders = $orders->filterByTemp(true);
+
+      if($request->has('is_international') && $request->is_international)
+        $orders = $orders->filterByInternational(true);
+
+      if($request->has('fromDate'))
+        $orders = $orders->filterByFromDate($request->fromDate);
+
+      if($request->has('deliveryDate'))
+        $orders = $orders->filterByDeliverydate($request->deliveryDate);
+
+      $orders = $orders->paginate(12);
+      return OrderResource::collection($orders);
     }
     /**
      * @OA\Post(
@@ -240,6 +286,7 @@ class OrderController extends Controller
       $order['length_real'] = $data['length_real'];
       $order['price'] = $data['price'];
       $order['weight'] = $data['weight'];
+      $order['order_status_id'] = OrderStatus::first() ? OrderStatus::first()['id'] : null;
 
       if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
       if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;

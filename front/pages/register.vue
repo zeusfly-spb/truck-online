@@ -149,9 +149,8 @@ import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
 
 const configStore = useConfigStore();
-
 const authStore = useAuthStore();
-const {getCompanyByInn, setModalConfigField, setRegistrationStepsField, setValue} = authStore;
+const {getCompanyByInn, setValue, registerUser} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -164,13 +163,12 @@ const processPersonal = ref(false);
 const termsNConditions = ref(false);
 const emailConfirmationStatus = ref('');
 const company = computed(() => authStore.company);
-
 const phoneConfirmed = computed({
   get() {
-    return authStore.phoneConfirmed;
+    return configStore.phoneConfirmed;
   },
   set(val) {
-    configStore.setPhoneConfirmed(val)
+    configStore.setValue({key: 'phoneConfirmed', value: val})
   }
 });
 const emailConfirmed = computed({
@@ -189,11 +187,8 @@ const companyConfirmed = computed({
     configStore.setValue({key: 'companyConfirmed', value: val});
   }
 });
-
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
-
-const {registerUser} = authStore;
 
 watch(email, () => emailConfirmationStatus.value = '');
 
@@ -238,9 +233,6 @@ const dialog = computed({
     authStore.setValue({key: 'dialog', value: val});
   }
 });
-
-const confirmedEmailConfirm = computed(() => configStore.confirmedEmailConfirm);
-watch(confirmedEmailConfirm, val => !!val ? emailConfirmed.value = true : null);
 
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {

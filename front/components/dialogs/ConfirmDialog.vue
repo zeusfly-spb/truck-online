@@ -13,6 +13,7 @@
         </v-card-title>
         <v-card-text>
           <v-text-field
+            id="dialog-text"
             v-model="dialogText"
             @keyup.enter="setValues"
           />
@@ -36,7 +37,6 @@ import {useConfigStore} from "~/store/config";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
-
 const dialog = computed({
   get() {
     return authStore.dialog;
@@ -59,7 +59,9 @@ const dialogText = computed({
 const phoneConfirmCode = computed(() => configStore.phoneConfirmCode);
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 
-watch(dialog, val => !val ? dialogText.value = '' : null);
+watch(dialog, val => {
+  !val ? dialogText.value = '' : null;
+});
 
 const setValues = async () => {
   if (dialogMode.value === 'phone' && dialogText.value === phoneConfirmCode.value) {

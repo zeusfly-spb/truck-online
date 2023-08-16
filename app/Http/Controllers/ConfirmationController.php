@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SendEmailConfirm;
 use App\Models\EmailConfirmation;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,7 @@ class ConfirmationController extends Controller
       'email' => $request->email,
       'code' => rand(100000, 999999)
     ]);
+    SendEmailConfirm::dispatch($conf);
     return response()->json(['confirmation' => $conf->toArray(), 'fresh' => true]);
   }
 

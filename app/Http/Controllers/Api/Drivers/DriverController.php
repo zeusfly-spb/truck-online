@@ -21,13 +21,89 @@ class DriverController extends BaseController
     public function __construct(FileUploadService $fileService){
         $this->documentService = $fileService;
     }
-
+    /**
+     * @OA\Get(
+     *     path="/api/drivers",
+     *     summary="Get list of Drivers",
+     *     tags = {"Drivers"},
+     *     security={{"bearer_token": {}}},
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+    */
     public function index(){
 
       $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
       return UserResource::collection($users);
     }
-
+    /**
+    * @OA\Post(
+    *     path="/api/drivers",
+    *     summary="Store Company",
+    *     security={{"bearer_token": {}}},
+    *     tags = {"Drivers"},
+    *      @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="first_name",
+    *                     type="string",
+    *                     example="first_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="middle_name",
+    *                     type="string",
+    *                     example="middle_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="last_name",
+    *                     type="string",
+    *                     example="last_name"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="email",
+    *                     type="string",
+    *                     example="email"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="phone",
+    *                     type="string",
+    *                     example="111111111"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="password",
+    *                     type="string",
+    *                     example="12345678"
+    *                 ),
+    *             )
+    *         )
+    *     ),
+    *      @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    * )
+    */
     public function store(Request $request){
 
       $user = $this->createUser($request);
@@ -51,7 +127,42 @@ class DriverController extends BaseController
         'company_id' => Auth::user()->company_id
       ]);
     }
-
+  /**
+    * @OA\Post(
+    *     path="/api/driver/documents/{driver_id}",
+    *     summary="Store Document of Driver",
+    *     security={{"bearer_token": {}}},
+    *     tags = {"Drivers"},
+    *      @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="document",
+    *                     type="file"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="document_date",
+    *                     type="string",
+    *                     example="2023-01-01"
+    *                 ),
+    *             )
+    *         )
+    *     ),
+    *      @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    * )
+    */
     public function uploadDocument(Request $request, $id){
 
       if ($request->hasFile('document')){
@@ -77,7 +188,26 @@ class DriverController extends BaseController
       ]);
 
     }
-
+    /**
+    * @OA\Post(
+    *     path="/api/drivers/{driver_id}",
+    *     summary="Delete Driver",
+    *     security={{"bearer_token": {}}},
+    *     tags = {"Drivers"},
+    *      @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    * )
+    */
     public function uploadFiles(Request $request, $id){
 
 
@@ -102,7 +232,27 @@ class DriverController extends BaseController
         'message' => 'Success'
       ]);
     }
-
+    /**
+    * @OA\Delete(
+    *      path="/api/drivers/{id}",
+    *      operationId="Delete Driver",
+    *     security={{"bearer_token": {}}},
+    *      tags={"Drivers"},
+    *      summary="Drivers",
+    *      description="Drivers",
+    *      @OA\Parameter(
+    *          description="Id",
+    *          in="path",
+    *          name="id",
+    *          required=true,
+    *          @OA\Examples(example="int", value="6", summary="an int value"),
+    *      ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    *     )
+    */
     public function destroy($id){
 
       $user = User::find($id);

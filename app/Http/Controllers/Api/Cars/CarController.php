@@ -24,11 +24,21 @@ class CarController extends Controller
     /**
      * @OA\Get(
      *     path="/api/cars",
-     *     summary="Get list of cars",
+     *     summary="Get list of Cars",
      *     tags = {"Cars"},
+     *     security={{"bearer_token": {}}},
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
      *     @OA\Response(
      *         response=200,
      *         description="SUCCESS",
+     *         @OA\JsonContent()
      *     ),
      * )
     */
@@ -51,8 +61,82 @@ class CarController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
+    * @OA\Post(
+    *     path="/api/cars",
+    *     summary="Store Cars",
+    *     security={{"bearer_token": {}}},
+    *     tags = {"Cars"},
+    *      @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="number",
+    *                     type="string",
+    *                     example="1234"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="country_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="mark_model",
+    *                     type="string",
+    *                     example="Mercedes"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="car_type_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts",
+    *                     type="string",
+    *                     example="sts"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="right_use_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="max_weigth",
+    *                     type="string",
+    *                     example="1000"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts_file_1",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts_file_2",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="icon",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *             )
+    *         )
+    *     ),
+    *      @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    * )
+    */
     public function store(CarRequest $request)
     {
       try{
@@ -110,8 +194,82 @@ class CarController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
+    * @OA\Post(
+    *     path="/api/cars/{id}",
+    *     summary="Update Cars",
+    *     security={{"bearer_token": {}}},
+    *     tags = {"Cars"},
+    *      @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="number",
+    *                     type="string",
+    *                     example="1234"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="country_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="mark_model",
+    *                     type="string",
+    *                     example="Mercedes"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="car_type_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts",
+    *                     type="string",
+    *                     example="sts"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="right_use_id",
+    *                     type="string",
+    *                     example="1"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="max_weigth",
+    *                     type="string",
+    *                     example="1000"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts_file_1",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="sts_file_2",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *                 @OA\Property(
+    *                     property="icon",
+    *                     type="string",
+    *                     example="File"
+    *                 ),
+    *             )
+    *         )
+    *     ),
+    *      @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    * )
+    */
     public function update(CarRequest $request, $id)
     {
       try{

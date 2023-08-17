@@ -42,8 +42,25 @@ class AddressController extends Controller
         }
     }
     /**
-     * Client Address get
-     */
+     * @OA\Get(
+     *     path="/api/address/client",
+     *     summary="Get list accepted addresses",
+     *     tags = {"Addresses"},
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+    */
     public function addressCLient(Request $request){
       try{
 
@@ -77,11 +94,16 @@ class AddressController extends Controller
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 @OA\Property(
+     *              @OA\Property(
      *                     property="name",
      *                     type="string",
      *                     example="Rossi Boutique Hotel & SPA"
-     *                 ),
+     *              ),
+     *              @OA\Property(
+     *                     property="address",
+     *                     type="string",
+     *                     example="Rossi Boutique Hotel & SPA"
+     *              ),
      *              @OA\Property(
      *                     property="latitude",
      *                     type="string",
@@ -94,6 +116,16 @@ class AddressController extends Controller
      *               ),
      *              @OA\Property(
      *                     property="to",
+     *                     type="string",
+     *                     example="true"
+     *               ),
+     *               @OA\Property(
+     *                     property="from",
+     *                     type="string",
+     *                     example="true"
+     *               ),
+     *               @OA\Property(
+     *                     property="return",
      *                     type="string",
      *                     example="true"
      *               ),
@@ -133,7 +165,33 @@ class AddressController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
-
+    /**
+     * @OA\Post(
+     *     path="/api/address/accept/{id}",
+     *     summary="Accept Addresses",
+     *     security={{"bearer_token": {}}},
+     *     tags = {"Addresses"},
+     *     @OA\Parameter(
+     *          description="ID",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Examples(example="int", value="1", summary="an int value"),
+     *      ),
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *     ),
+     * )
+     */
     public function accept($id){
 
       $address = Address::find($id);

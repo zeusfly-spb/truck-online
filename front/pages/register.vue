@@ -269,7 +269,7 @@ const emailAppendClick = async () => {
 
 const confirmCompany = () => {
   company_id.value = company.value.id;
-  authStore.setValue({key: 'companyConfirmed', value: true});
+  configStore.setValue({key: 'companyConfirmed', value: true});
 }
 
 watch(inn, async val => {

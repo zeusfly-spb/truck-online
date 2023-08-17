@@ -15,6 +15,7 @@
           <v-text-field
             id="dialog-text"
             v-model="dialogText"
+            autofocus
             @keyup.enter="setValues"
           />
         </v-card-text>

@@ -64,14 +64,15 @@
                 required
               />
               <v-text-field
-                v-model="phone"
+                :model-value="mask.masked(phone)"
                 :readonly="phoneConfirmed"
                 :rules="[rules.required, rules.phoneLength, rules.digits]"
                 density="compact"
                 label="Мобильный телефон"
-                maxlength="10"
+                maxlength="18"
                 placeholder="+7 900 000-00-00"
                 required
+                @update:model-value="value => phone = mask.unmasked(value)"
               >
                 <template v-slot:append-inner>
                   <v-icon
@@ -147,7 +148,9 @@
 <script setup>
 import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
+import {Mask} from "maska";
 
+const mask = new Mask({mask: '+7 (###) ###-##-##'});
 const configStore = useConfigStore();
 const authStore = useAuthStore();
 const {getCompanyByInn, setValue, registerUser} = authStore;
@@ -286,8 +289,6 @@ const isEmail = (val) => {
 
 const rules = {
   required: value => !!value || 'Поле обязательно для заполнения',
-  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
-  digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
   email: value => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
 }
 

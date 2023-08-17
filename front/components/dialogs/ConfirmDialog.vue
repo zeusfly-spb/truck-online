@@ -75,7 +75,7 @@ const setValues = async () => {
       message: 'Номер телефона успешно подтвержден',
     });
   }
-  if (dialogMode.value === 'email' && dialogText.value === emailConfirmCode.value) {
+  if (dialogMode.value === 'email' && dialogText.value.toString() === emailConfirmCode.value.toString()) {
     await configStore.markEmailConfirmation(configStore.confirmation.email);
     dialog.value = false;
     useSnack({

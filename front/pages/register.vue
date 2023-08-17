@@ -149,10 +149,8 @@ import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
 
 const configStore = useConfigStore();
-const config = useRuntimeConfig();
-
 const authStore = useAuthStore();
-const {getCompanyByInn, setModalConfigField, setRegistrationStepsField, setValue} = authStore;
+const {getCompanyByInn, setValue, registerUser} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -163,33 +161,36 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
+const emailConfirmationStatus = ref('');
 const company = computed(() => authStore.company);
-
 const phoneConfirmed = computed({
   get() {
-    return authStore.phoneConfirmed;
+    return configStore.phoneConfirmed;
   },
   set(val) {
-    authStore.setPhoneConfirmed(val)
+    configStore.setValue({key: 'phoneConfirmed', value: val})
   }
 });
-const emailConfirmed = computed(() => authStore.emailConfirmed);
+const emailConfirmed = computed({
+  get() {
+    return configStore.emailConfirmed;
+  },
+  set(val) {
+    configStore.setValue({key: 'emailConfirmed', value: val})
+  }
+});
 const companyConfirmed = computed({
   get() {
-    return authStore.companyConfirmed;
+    return configStore.companyConfirmed;
   },
   set(val) {
-    authStore.setValue({key: 'companyConfirmed', value: val});
+    configStore.setValue({key: 'companyConfirmed', value: val});
   }
 });
-
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
 
-const modalConfig = computed(() => authStore.modalConfig);
-
-
-const {registerUser} = authStore;
+watch(email, () => emailConfirmationStatus.value = '');
 
 const registered = async () => {
   useSnack({
@@ -232,6 +233,7 @@ const dialog = computed({
     authStore.setValue({key: 'dialog', value: val});
   }
 });
+
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {
     return;
@@ -241,7 +243,22 @@ const phoneAppendClick = () => {
   dialog.value = true;
 }
 
-const emailAppendClick = () => {
+const emailAppendClick = async () => {
+  if (emailConfirmed.value) {
+    return;
+  }
+  if (!emailConfirmationStatus.value) {
+    await configStore.getEmailConfirm(email.value);
+    if (configStore.newEmailConfirm) {
+      useSnack({
+        show: true,
+        type: 'success',
+        title: 'Код подтверждения',
+        message: 'На указанный адрес выслан код подтверждения',
+      });
+    }
+    emailConfirmationStatus.value = 'requested';
+  }
   if (emailConfirmed.value) {
     return;
   }

@@ -1,22 +1,22 @@
 <template>
   <VRow
-    no-gutters
-    justify="center"
     align="center"
     class="fill-height pa-0 ma-0"
+    justify="center"
+    no-gutters
   >
     <VCol cols="10" md="6" sm="8">
-      <VRow justify="center" align="center">
+      <VRow align="center" justify="center">
         <VCol cols="12" md="6" sm="10">
           <VForm
             :disabled="loading"
-            @submit.prevent="submit"
             class="mt-10"
+            @submit.prevent="submit"
           >
             <FormLabel for="email">Email | Номер телефона</FormLabel>
             <VTextField
-              v-model="username"
               id="username"
+              v-model="username"
               type="username"
             />
             <label
@@ -26,17 +26,17 @@
               Password
             </label>
             <VTextField
-              v-model="password"
               id="password"
-              type="password"
+              v-model="password"
               name="password"
+              type="password"
             />
             <p class="text-medium-emphasis text-body-2 mt-3">
               <p class="text-body-1 text-medium-emphasis mt-2">
                 Нет аккаунта?
                 <NuxtLink
-                  to="/register"
                   class="font-weight-medium text-primary"
+                  to="/register"
                 >
                   Регистрация
                 </NuxtLink>
@@ -46,11 +46,11 @@
               <VBtn
                 :disabled="!valid"
                 :loading="loading"
-                type="submit"
-                flat
-                class="gradient primary font-weight-bold text-body-2"
-                min-height="45"
                 block
+                class="gradient primary font-weight-bold text-body-2"
+                flat
+                min-height="45"
+                type="submit"
               >
                 Вход
               </VBtn>
@@ -62,13 +62,14 @@
   </VRow>
 </template>
 
-<script setup lang="js">
+<script lang="js" setup>
 useHead({title: 'Вход'});
 // definePageMeta({ middleware: 'auth' });
 
 const router = useRouter();
 
-import { useAuthStore } from "~/store/auth";
+import {useAuthStore} from "~/store/auth";
+
 const authStore = useAuthStore();
 const username = ref('');
 const password = ref('');
@@ -83,7 +84,7 @@ watch(authenticated, (val) => {
       title: 'Авторизован',
       message: 'Вы успешно авторизовались в системе',
     });
-    router.push('/profile');
+    router.push('/config');
   }
   val ? action() : null;
 })
@@ -106,7 +107,7 @@ const valid = computed(() => (isUsernameEmail || isUsernamePhone) && !!password.
 
 const submit = async () => {
   try {
-    await authStore.authenticateUser({ username, password });
+    await authStore.authenticateUser({username, password});
   } catch (e) {
     showError();
   }

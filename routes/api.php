@@ -35,6 +35,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:api')->group(function () {
+  Route::post('/update_user', [UserController::class, 'update']);
   Route::get('/details', [UserController::class, 'details']);
   Route::get('/config', [ConfigController::class, 'getConfig']);
   Route::prefix('dadata')->group(function () {

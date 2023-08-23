@@ -5,7 +5,7 @@
 
 <script setup>
 useHead({title: 'Личный кабинет'});
-definePageMeta({middleware: 'auth'});
+// definePageMeta({middleware: 'auth'});
 const text = ref('');
 
 const send = async () => {

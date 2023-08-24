@@ -65,9 +65,7 @@
 <script lang="js" setup>
 useHead({title: 'Вход'});
 // definePageMeta({ middleware: 'auth' });
-
 const router = useRouter();
-
 import {useAuthStore} from "~/store/auth";
 
 const authStore = useAuthStore();

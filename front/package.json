@@ -12,7 +12,6 @@
     "@nuxt/devtools": "latest",
     "@nuxtjs/vuetify": "^1.12.3",
     "@pinia/nuxt": "^0.4.11",
-    "@sidebase/nuxt-auth": "^0.5.0",
     "@types/node": "^18.17.0",
     "nuxt": "^3.6.5",
     "nuxt-delay-hydration": "^1.2.1",
@@ -25,6 +24,7 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@sidebase/nuxt-auth": "^0.4.3",
     "@vee-validate/i18n": "^4.10.8",
     "@vee-validate/rules": "^4.10.8",
     "import": "^0.0.6",

@@ -41,7 +41,7 @@ export default defineNuxtConfig({
   },
   auth: {
     globalAppMiddleware: true,
-    baseURL: process.env.NUXT_PUBLIC_API_URL,
+    baseURL: process.env.NUXT_PUBLIC_API_BASE,
     provider: {
       type: 'local',
       endpoints: {

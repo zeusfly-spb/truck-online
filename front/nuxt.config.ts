@@ -38,31 +38,6 @@ export default defineNuxtConfig({
     // enables nuxt-delay-hydration in dev mode for testing
     debug: process.env.NODE_ENV === 'development'
   },
-  // auth: {
-  //   globalAppMiddleware: true,
-  //   baseURL: process.env.NUXT_PUBLIC_API_BASE,
-  //   provider: {
-  //     type: 'local',
-  //     endpoints: {
-  //       signIn: {path: '/auth/login', method: 'post'},
-  //       signUp: {path: '/auth/register', method: 'post'},
-  //       getSession: {path: '/details', method: 'get'}
-  //     },
-  //     pages: {
-  //       login: '/login'
-  //     },
-  //     token: {
-  //       signInResponseTokenPointer: '/accessToken'
-  //     },
-  //     sessionDataType: {}
-  //   },
-  //   enableSessionRefreshPeriodically: 5000,
-  //   enableSessionRefreshOnWindowFocus: true,
-  //   globalMiddlewareOptions: {
-  //     allow404WithoutAuth: true, // Defines if the 404 page will be accessible while unauthenticated
-  //     addDefaultCallbackUrl: '/' // Where authenticated user will be redirected to by default
-  //   }
-  // },
   sourcemap: {
     server: false,
     client: false,

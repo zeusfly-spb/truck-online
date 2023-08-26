@@ -36,7 +36,9 @@
       </div>
 
     </v-col>
-    <v-col></v-col>
+    <v-col>
+      <NuxtLink to="/profile">Профиль</NuxtLink>
+    </v-col>
   </v-row>
 </template>
 

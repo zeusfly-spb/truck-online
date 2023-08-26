@@ -1,7 +1,9 @@
 <template>
   <div class="flex-col">
+    <div>
+    </div>
     <v-btn
-      @click="signIn"
+      @click="login"
     >
       GO
     </v-btn>

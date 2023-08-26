@@ -12,7 +12,6 @@ export default defineNuxtConfig({
   css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass",
     "@mdi/font/css/materialdesignicons.min.css"],
   buildModules: [
-    '@nuxtjs/vuetify',
     ['@nuxtjs/vuetify', {iconfont: 'mdi'}],
     '@nuxtjs/dotenv'
   ],

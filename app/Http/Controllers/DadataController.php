@@ -8,7 +8,8 @@ class DadataController extends Controller
 {
   private $dadata;
 
-  function __construct() {
+  function __construct()
+  {
     $this->dadata = new \Dadata\DadataClient(env('DADATA_API_KEY'), env('DADATA_SECRET_KEY'));
   }
 
@@ -47,6 +48,13 @@ class DadataController extends Controller
   public function suggestAddress(Request $request)
   {
     return response()->json($this->dadata->suggest('address', $request->input('str')));
+  }
+
+  public function getCompanyInfo(Request $request)
+  {
+    $source = new \Dadata\DadataClient(env('DADATA_API_KEY'), env('DADATA_SECRET_KEY'));
+    $info = $source->findById('party', $request->input('inn'), 1);
+    return response()->json($info);
   }
 
   /**

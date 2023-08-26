@@ -2,7 +2,7 @@
   <v-layout class="rounded rounded-md">
     <v-main
       class="d-flex align-center justify-center flex-column"
-      style=" margin-top: 3em!important; cursor: none"
+      style=" margin-top: 3em!important;"
     >
       <v-card
         class="pa-md-4 mx-lg-auto register-class register-card"

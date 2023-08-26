@@ -25,6 +25,11 @@
         v-model="company_id"
         label="Company ID"
       />
+      <v-text-field
+        v-model="company_inn"
+        label="Company INN"
+        readonly
+      />
       <div
         class="d-flex justify-center"
       >
@@ -37,7 +42,11 @@
 
     </v-col>
     <v-col>
-      <NuxtLink to="/profile">Профиль</NuxtLink>
+      <v-btn
+        @click="getCompanyInfo(company_inn)"
+      >
+        Get Company Details
+      </v-btn>
     </v-col>
   </v-row>
 </template>
@@ -54,12 +63,11 @@ const last_name = ref('');
 const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
+const company_inn = computed(() => user.value.company.inn);
 const user = computed(() => authStore.user);
-const keys = [];
+const {getCompanyInfo} = authStore;
+
 const spreadUserProps = () => {
-  if (!user.value) {
-    return;
-  }
   email.value = user.value.email || '';
   phone.value = user.value.phone || '';
   first_name.value = user.value.first_name || '';
@@ -79,6 +87,9 @@ const save = async () => {
   const options = {method: 'post', body};
   await opFetch('/update_user', options);
 }
+watchEffect(async () => {
+  user.value ? spreadUserProps() : null
+});
 spreadUserProps();
 </script>
 

@@ -1,12 +1,5 @@
 <template>
   <div class="flex-col">
-    <div>
-    </div>
-    <v-btn
-      @click="login"
-    >
-      GO
-    </v-btn>
   </div>
 </template>
 

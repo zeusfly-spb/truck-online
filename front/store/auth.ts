@@ -35,7 +35,6 @@ export const useAuthStore = defineStore('auth', {
       this[key] = value;
     },
     async getUserDetails() {
-      console.log('Getting user details');
       const res = await opFetch(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
@@ -72,9 +71,15 @@ export const useAuthStore = defineStore('auth', {
     async getCompanyByInn(inn) {
       const res = await opFetch(getCompanyByInnUrl, {method: 'post', body: {inn}});
       this.company = res.data._rawValue.company;
+    },
+    async getCompanyInfo(inn) {
+      console.log('Retrieving by :' + inn);
+      const res = await opFetch('/dadata/info', {method: 'post', body: {inn}});
+      console.log(res);
     }
   },
   getters: {
-    authenticated: state => !!state.user
+    authenticated: state => !!state.user,
+    userName: state => state.user.first_name || state.user.email
   }
 });

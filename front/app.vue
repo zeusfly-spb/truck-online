@@ -21,8 +21,7 @@ const startUp = async () => {
     headers.set('Accept', 'application/json');
     headers.set("Authorization", `Bearer ${token.value}`);
     const detailsPath = config.public.apiBase + '/details';
-    const res = await useFetch(detailsPath, {method: 'GET', headers});
-    console.log('%c' + JSON.stringify(res), 'color:green');
+    const {data: {_rawValue}} = await useFetch(detailsPath, {method: 'GET', headers});
   }
 }
 startUp();

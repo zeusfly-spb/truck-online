@@ -24,11 +24,11 @@ export const useAuthStore = defineStore('auth', {
     dialogMode: '',
     dialogText: '',
     dialog: false,
-    authenticated: false,
     loading: false,
     token: null,
     user: null,
     company: null,
+    loaded: true,
   }),
   actions: {
     setValue({key, value}) {
@@ -39,9 +39,6 @@ export const useAuthStore = defineStore('auth', {
       const res = await opFetch(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
-      if (this.user) {
-        this.authenticated = true;
-      }
     },
     async registerUser({username, password, passwordConfirm, company_id}: UserRegisterPayloadInterface) {
       const {data, pending}: any = await opFetch(registerUrl, {
@@ -68,7 +65,7 @@ export const useAuthStore = defineStore('auth', {
     },
     logUserOut() {
       const token_cookie = useCookie('online_port_token');
-      this.authenticated = false;
+      this.user = null;
       this.token = null;
       token_cookie.value = null;
     },
@@ -77,4 +74,7 @@ export const useAuthStore = defineStore('auth', {
       this.company = res.data._rawValue.company;
     }
   },
+  getters: {
+    authenticated: state => !!state.user
+  }
 });

@@ -19,7 +19,6 @@ export default defineNuxtConfig({
   build: {transpile: ['vuetify']},
   vite: {ssr: {noExternal: ['vuetify']}},
   modules: [
-    '@sidebase/nuxt-auth',
     '@pinia/nuxt',
     'nuxt-delay-hydration',
     'nuxt-icon',

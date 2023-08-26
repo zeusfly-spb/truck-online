@@ -9,9 +9,7 @@
 </template>
 
 <script setup>
-import {useAuth} from "@sidebase/nuxt-auth/dist/runtime/composables/local/useAuth";
-
-const {signIn} = useAuth();
+// const {signIn} = useAuth();
 useHead({title: 'Личный кабинет'});
 // definePageMeta({middleware: 'auth'});
 const text = ref('');

@@ -64,14 +64,15 @@
                 required
               />
               <v-text-field
-                v-model="phone"
+                :model-value="mask.masked(phone)"
                 :readonly="phoneConfirmed"
                 :rules="[rules.required, rules.phoneLength, rules.digits]"
                 density="compact"
                 label="Мобильный телефон"
-                maxlength="10"
+                maxlength="18"
                 placeholder="+7 900 000-00-00"
                 required
+                @update:model-value="value => phone = mask.unmasked(value)"
               >
                 <template v-slot:append-inner>
                   <v-icon
@@ -147,12 +148,12 @@
 <script setup>
 import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
+import {Mask} from "maska";
 
+const mask = new Mask({mask: '+7 (###) ###-##-##'});
 const configStore = useConfigStore();
-const config = useRuntimeConfig();
-
 const authStore = useAuthStore();
-const {getCompanyByInn, setModalConfigField, setRegistrationStepsField, setValue} = authStore;
+const {getCompanyByInn, setValue, registerUser} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -163,33 +164,36 @@ const password = ref('');
 const passwordConfirm = ref('');
 const processPersonal = ref(false);
 const termsNConditions = ref(false);
+const emailConfirmationStatus = ref('');
 const company = computed(() => authStore.company);
-
 const phoneConfirmed = computed({
   get() {
-    return authStore.phoneConfirmed;
+    return configStore.phoneConfirmed;
   },
   set(val) {
-    authStore.setPhoneConfirmed(val)
+    configStore.setValue({key: 'phoneConfirmed', value: val})
   }
 });
-const emailConfirmed = computed(() => authStore.emailConfirmed);
+const emailConfirmed = computed({
+  get() {
+    return configStore.emailConfirmed;
+  },
+  set(val) {
+    configStore.setValue({key: 'emailConfirmed', value: val})
+  }
+});
 const companyConfirmed = computed({
   get() {
-    return authStore.companyConfirmed;
+    return configStore.companyConfirmed;
   },
   set(val) {
-    authStore.setValue({key: 'companyConfirmed', value: val});
+    configStore.setValue({key: 'companyConfirmed', value: val});
   }
 });
-
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
 
-const modalConfig = computed(() => authStore.modalConfig);
-
-
-const {registerUser} = authStore;
+watch(email, () => emailConfirmationStatus.value = '');
 
 const registered = async () => {
   useSnack({
@@ -232,6 +236,7 @@ const dialog = computed({
     authStore.setValue({key: 'dialog', value: val});
   }
 });
+
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {
     return;
@@ -241,7 +246,22 @@ const phoneAppendClick = () => {
   dialog.value = true;
 }
 
-const emailAppendClick = () => {
+const emailAppendClick = async () => {
+  if (emailConfirmed.value) {
+    return;
+  }
+  if (!emailConfirmationStatus.value) {
+    await configStore.getEmailConfirm(email.value);
+    if (configStore.newEmailConfirm) {
+      useSnack({
+        show: true,
+        type: 'success',
+        title: 'Код подтверждения',
+        message: 'На указанный адрес выслан код подтверждения',
+      });
+    }
+    emailConfirmationStatus.value = 'requested';
+  }
   if (emailConfirmed.value) {
     return;
   }
@@ -252,7 +272,7 @@ const emailAppendClick = () => {
 
 const confirmCompany = () => {
   company_id.value = company.value.id;
-  authStore.setValue({key: 'companyConfirmed', value: true});
+  configStore.setValue({key: 'companyConfirmed', value: true});
 }
 
 watch(inn, async val => {
@@ -269,8 +289,6 @@ const isEmail = (val) => {
 
 const rules = {
   required: value => !!value || 'Поле обязательно для заполнения',
-  phoneLength: value => value.toString().length === 10 || 'Телефон должен быть длиной 10 цифр',
-  digits: value => /^\d+$/.test(value) || 'Допустимы только цифровые значения',
   email: value => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(value) || 'Неверный формат email'
 }
 

@@ -1,28 +1,27 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\Containers\ContainerController;
-use App\Http\Controllers\Api\Orders\OrderStatusController;
-use App\Http\Controllers\Api\Addresses\AddressTypeController;
 use App\Http\Controllers\Api\Addresses\AddressController;
-use App\Http\Controllers\Api\Companies\CompanyController;
+use App\Http\Controllers\Api\Addresses\AddressTypeController;
+use App\Http\Controllers\Api\Cars\CarController;
 use App\Http\Controllers\Api\Cars\CarTypeController;
 use App\Http\Controllers\Api\Drivers\DriverController;
 use App\Http\Controllers\Api\Cars\PassController;
 use App\Http\Controllers\Api\Cars\RightUseController;
-use App\Http\Controllers\Api\Cars\CarController;
+use App\Http\Controllers\Api\Companies\CompanyController;
+use App\Http\Controllers\Api\Containers\ContainerController;
+use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\Api\Orders\OrderController;
 use App\Http\Controllers\Api\Orders\OrderExecuterController;
 use App\Http\Controllers\Api\Orders\OrderSettingController;
 use App\Http\Controllers\Api\Orders\OrderActionController;
 use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\Api\Taxes\TaxController;
-use App\Http\Controllers\Api\Countries\CountryController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\DadataController;
 use App\Http\Controllers\ConfigController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ConfirmationController;
+use App\Http\Controllers\DadataController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,6 +38,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::middleware('auth:api')->group(function () {
+  Route::post('/update_user', [UserController::class, 'update']);
   Route::get('/details', [UserController::class, 'details']);
   Route::get('/config', [ConfigController::class, 'getConfig']);
   Route::prefix('dadata')->group(function () {
@@ -79,7 +79,13 @@ Route::middleware('auth:api')->group(function () {
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });
 
-Route::post('/company/find_by_inn',[CompanyController::class, 'findByInn']);
+Route::prefix('confirmation')->group(function () {
+  Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);
+  Route::post('/mark_email_confirm', [ConfirmationController::class, 'markConfirmation']);
+
+});
+
+Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
 
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('order-statuses', OrderStatusController::class);

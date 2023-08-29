@@ -2,36 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\Company;
-use Illuminate\Http\Request;
 use App\Http\Controllers\BaseController as BaseController;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends BaseController
 {
-  /**
-   * @return string
-   */
-  public function username()
-  {
-    $login = request()->input('username');
-    if (is_numeric($login)) {
-      $field = 'phone';
-    } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-      $field = 'email';
-    } else {
-      return $this->sendError('Username error!');
-    }
-    request()->merge([$field => $login]);
-    return $field;
-  }
-
   /**
    * @param Request $request
    * @return JsonResponse
@@ -58,6 +40,23 @@ class UserController extends BaseController
   }
 
   /**
+   * @return string
+   */
+  public function username()
+  {
+    $login = request()->input('username');
+    if (is_numeric($login)) {
+      $field = 'phone';
+    } elseif (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+      $field = 'email';
+    } else {
+      return $this->sendError('Username error!');
+    }
+    request()->merge([$field => $login]);
+    return $field;
+  }
+
+  /**
    * @param Request $request
    * @return JsonResponse
    */
@@ -66,8 +65,8 @@ class UserController extends BaseController
     $username = $this->username();
     if (Auth::attempt([$username => $request->input('username'), 'password' => $request->input('password')])) {
       $user = Auth::user();
-      $success['token'] = $user->createToken('MyApp')->accessToken;
-      $success[$username] = $user->{$username};
+      $success['token'] = $user->createToken('OnlinePort')->accessToken;
+      $success['user'] = new UserResource($user);
       return $this->sendResponse($success, 'User login successfully.');
     } else {
       return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
@@ -80,5 +79,10 @@ class UserController extends BaseController
   public function details()
   {
     return response()->json(new UserResource(Auth::user()));
+  }
+
+  public function update(Request $request)
+  {
+    return response()->json(['result' => Auth::user()->update($request->all())]);
   }
 }

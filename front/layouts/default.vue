@@ -19,7 +19,9 @@
           Войти
         </v-btn>
       </v-app-bar>
-      <v-main class="bg">
+      <v-main
+        class="bg"
+      >
         <ConfirmDialog/>
         <Snack></Snack>
         <slot/>

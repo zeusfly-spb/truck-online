@@ -13,7 +13,9 @@
         </v-card-title>
         <v-card-text>
           <v-text-field
+            id="dialog-text"
             v-model="dialogText"
+            autofocus
             @keyup.enter="setValues"
           />
         </v-card-text>
@@ -35,14 +37,13 @@ import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
 
 const authStore = useAuthStore();
-const {setValue} = authStore;
-
+const configStore = useConfigStore();
 const dialog = computed({
   get() {
     return authStore.dialog;
   },
   set(val) {
-    setValue({key: 'dialog', value: val})
+    authStore.setValue({key: 'dialog', value: val})
   }
 });
 const dialogTitle = computed(() => authStore.dialogTitle);
@@ -52,19 +53,20 @@ const dialogText = computed({
     return authStore.dialogText;
   },
   set(val) {
-    setValue({key: 'dialogText', value: val})
+    authStore.setValue({key: 'dialogText', value: val})
   }
 });
 
-const configStore = useConfigStore();
 const phoneConfirmCode = computed(() => configStore.phoneConfirmCode);
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 
-watch(dialog, val => !val ? dialogText.value = '' : null);
+watch(dialog, val => {
+  !val ? dialogText.value = '' : null;
+});
 
-const setValues = () => {
+const setValues = async () => {
   if (dialogMode.value === 'phone' && dialogText.value === phoneConfirmCode.value) {
-    setValue({key: 'phoneConfirmed', value: true});
+    configStore.setValue({key: 'phoneConfirmed', value: true});
     dialog.value = false;
     useSnack({
       show: true,
@@ -73,8 +75,8 @@ const setValues = () => {
       message: 'Номер телефона успешно подтвержден',
     });
   }
-  if (dialogMode.value === 'email' && dialogText.value === emailConfirmCode.value) {
-    setValue({key: 'emailConfirmed', value: true});
+  if (dialogMode.value === 'email' && dialogText.value.toString() === emailConfirmCode.value.toString()) {
+    await configStore.markEmailConfirmation(configStore.confirmation.email);
     dialog.value = false;
     useSnack({
       show: true,

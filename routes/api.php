@@ -13,12 +13,16 @@ use App\Http\Controllers\Api\Cars\PassController;
 use App\Http\Controllers\Api\Cars\RightUseController;
 use App\Http\Controllers\Api\Cars\CarController;
 use App\Http\Controllers\Api\Orders\OrderController;
+use App\Http\Controllers\Api\Orders\OrderExecuterController;
 use App\Http\Controllers\Api\Orders\OrderSettingController;
+use App\Http\Controllers\Api\Orders\OrderActionController;
+use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\Api\Countries\CountryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DadataController;
 use App\Http\Controllers\ConfigController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -45,9 +49,21 @@ Route::middleware('auth:api')->group(function () {
     Route::post('find_by_id', [DadataController::class, 'findById']);
   });
 
+  Route::middleware('super-admin')->group(function () {
+    Route::prefix('assign/role')->group(function () {
+      Route::post('executer', [AssignRoleController::class, 'assign_role_executer']);
+    });
+  });
+
   //orders
-  Route::apiResource('orders', OrderController::class);
-  Route::post('order/store', [OrderController::class, 'store']);
+  Route::prefix('orders')->group(function () {
+    Route::get('/', [OrderController::class, 'index']);
+    Route::post('store', [OrderController::class, 'store']);
+    Route::get('show/{order_id}',  [OrderController::class, 'show']);
+    Route::put('update/{order_id}',  [OrderController::class, 'update']);
+    Route::post('accept/action/{order_action_id}',  [OrderActionController::class, 'accept']);
+  });
+
   //drivers
   Route::apiResource('drivers', DriverController::class);
   Route::post('driver/documents/{driver_id}', [DriverController::class, 'uploadDocument']);

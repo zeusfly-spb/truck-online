@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('order_code')->nullable();
 
-            $table->unsignedBigInteger('order_status_id')->nullable();;
+            $table->unsignedBigInteger('order_status_id')->nullable();
             $table->foreign('order_status_id')->references('id')->on('order_statuses')->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unsignedBigInteger('company_id')->nullable();
+            $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->unsignedBigInteger('container_id');
             $table->foreign('container_id')->references('id')->on('containers')->onDelete('cascade');

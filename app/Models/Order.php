@@ -14,6 +14,7 @@ class Order extends Model
     protected $fillable = [
       'order_code',
       'order_status_id',
+      'order_status',
       'user_id',
       'container_id',
       'company_id',
@@ -91,6 +92,10 @@ class Order extends Model
     public function return2_address(){
       return $this->belongsTo(Address::class, 'return2_address_id');
     }
+    public function actions(){
+      return $this->hasMany(OrderAction::class);
+    }
+
     //scopes
 
     public function scopeFilterByOrderStatuses($query, array $ids)
@@ -153,4 +158,23 @@ class Order extends Model
     {
         return $query->whereDate('delivery_date', '<=', $deliveryDate);
     }
+
+    //mutators
+    public function legalForUpdate(){
+      if ($this->order_status_id == 1 || $this->order_status_id == 2)
+        return true;
+      return false;
+    }
+
+    public function selectedByExecuter(){
+      if($this->order_status_id==3){
+        return true;
+      }
+    }
+
+    // public function finish(){
+    //   if($this->order_status_id==4 || $this->order_status_id){
+    //     return true;
+    //   }
+    // }
 }

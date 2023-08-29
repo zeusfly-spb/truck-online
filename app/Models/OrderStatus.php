@@ -4,18 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Translatable\HasTranslations;
 
 class OrderStatus extends Model
 {
     use HasFactory;
-    use HasTranslations;
 
-    protected $table = 'order_statuses';
+    const DRAFT = 'Черновик';
+    const CREATED = 'Создан';
+    const SELECTED = 'Выбран';
+    const EXECUTED = 'Исполнен';
+    const CLOSED = 'Закрыт';
+    const APPROVAL_PENDING = 'На согласовании';
+    const CANCELED = 'Отмена';
 
-    protected $fillable = ['name'];
+    // protected $table = 'order_statuses';
 
-    public $translatable = [
-        'name'
-    ];
+    // protected $fillable = ['name'];
+
 }

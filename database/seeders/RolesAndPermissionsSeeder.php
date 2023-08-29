@@ -21,7 +21,11 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'publish orders']);
         Permission::create(['name' => 'unpublish orders']);
 
-        // create roles and assign created permissions
+
+        // api Roles
+        Role::create(['guard_name' => 'api','name' => 'driver']);
+        Role::create(['guard_name' => 'api','name' => 'executer']);
+        Role::create(['guard_name' => 'api','name' => 'super-admin']);
 
         // this can be done as separate statements
         $role = Role::create(['name' => 'manager']);

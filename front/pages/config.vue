@@ -63,7 +63,7 @@ const last_name = ref('');
 const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
-const company_inn = computed(() => user.value.company.inn);
+const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
 const user = computed(() => authStore.user);
 const {getCompanyInfo} = authStore;
 

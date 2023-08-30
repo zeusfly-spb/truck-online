@@ -26,9 +26,12 @@
               <v-text-field
                 v-model="inn"
                 :readonly="companyConfirmed"
+                class="inputInn"
                 hide-details
                 label="ИНН организации"
+                maxLength="12"
                 placeholder="0000 0000 0000"
+                type="number"
               />
               <div
                 v-if="company && companyConfirmed"
@@ -295,6 +298,17 @@ const rules = {
 </script>
 
 <style lang="css" scoped>
+.inputInn >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputInn >>> input::-webkit-outer-spin-button,
+.inputInn >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 .logo {
   width: 300px;
 }

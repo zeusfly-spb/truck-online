@@ -82,7 +82,7 @@ watch(authenticated, (val) => {
       title: 'Авторизован',
       message: 'Вы успешно авторизовались в системе',
     });
-    router.push('/config');
+    await router.push('/config');
   }
   val ? action() : null;
 })

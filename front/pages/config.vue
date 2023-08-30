@@ -39,20 +39,14 @@
           Сохранить
         </v-btn>
       </div>
-
     </v-col>
-    <v-col>
-      <v-btn
-        @click="getCompanyInfo(company_inn)"
-      >
-        Get Company Details
-      </v-btn>
-    </v-col>
+    <CompanyInfo/>
   </v-row>
 </template>
 
 <script setup>
 import {useAuthStore} from "~/store/auth";
+import CompanyInfo from "~/components/CompanyInfo/index.vue";
 
 useHead({title: 'Настройки'});
 // definePageMeta({middleware: 'auth'});
@@ -63,10 +57,8 @@ const last_name = ref('');
 const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
-const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
 const user = computed(() => authStore.user);
-const {getCompanyInfo} = authStore;
-
+const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
 const spreadUserProps = () => {
   email.value = user.value.email || '';
   phone.value = user.value.phone || '';

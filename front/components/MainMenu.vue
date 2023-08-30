@@ -32,7 +32,9 @@ const logOut = async () => {
   authStore.logUserOut();
   await navigateTo('/login');
 }
-const toPage = async link => await navigateTo(link);
+const toPage = async link => {
+  await navigateTo(link);
+}
 </script>
 
 <style lang="scss" scoped>

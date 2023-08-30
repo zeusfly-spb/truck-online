@@ -29,6 +29,7 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     company: null,
     loaded: true,
+    companyInfo: null
   }),
   actions: {
     setValue({key, value}) {
@@ -72,10 +73,16 @@ export const useAuthStore = defineStore('auth', {
       const res = await opFetch(getCompanyByInnUrl, {method: 'post', body: {inn}});
       this.company = res.data._rawValue.company;
     },
-    async getCompanyInfo(inn) {
+    async getCompanyInfo() {
+      const inn = this.user.company.inn || null;
+      if (!inn) {
+        console.log('Не определен инн компании пользователя');
+        return;
+      }
       console.log('Retrieving by :' + inn);
-      const res = await opFetch('/dadata/info', {method: 'post', body: {inn}});
-      console.log(res);
+      const {data: {_rawValue}} = await opFetch('/dadata/info', {method: 'post', body: {inn}});
+      // this.companyInfo = _rawValue && _rawValue[0] && _rawValue[0].data || null;
+      console.log('From store: ' + _rawValue);
     }
   },
   getters: {

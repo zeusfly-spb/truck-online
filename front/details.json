@@ -1,0 +1,146 @@
+[
+  {
+    "original": "management",
+    "translation": "Руководство"
+  },
+  {
+    "original": "state",
+    "translation": "Состояние"
+  },
+  {
+    "original": "status",
+    "translation": "Статус"
+  },
+  {
+    "original": "opf",
+    "translation": "Организационно-правовая форма"
+  },
+  {
+    "original": "company_name",
+    "translation": "Наименование"
+  },
+  {
+    "original": "name",
+    "translation": "ФИО"
+  },
+  {
+    "original": "address",
+    "translation": "Адрес"
+  },
+  {
+    "original": "post",
+    "translation": "Должность"
+  },
+  {
+    "original": "type",
+    "translation": "Версия справочника ОКОПФ"
+  },
+  {
+    "original": "code",
+    "translation": "Код ОКОПФ"
+  },
+  {
+    "original": "full",
+    "translation": "Полное название ОПФ"
+  },
+  {
+    "original": "short",
+    "translation": "Краткое название ОПФ"
+  },
+  {
+    "original": "value",
+    "translation": "Адрес одной строкой"
+  },
+  {
+    "original": "unrestricted_value",
+    "translation": "Гранулярный адрес"
+  },
+  {
+    "original": "full_with_opf",
+    "translation": "Полное наименование с ОПФ"
+  },
+  {
+    "original": "short_with_opf",
+    "translation": "Короткое наименование с ОПФ"
+  },
+  {
+    "original": "actuality_date",
+    "translation": "Дата последних изменений"
+  },
+  {
+    "original": "registration_date",
+    "translation": "Дата регистрации"
+  },
+  {
+    "original": "ACTIVE",
+    "translation": "Действующая"
+  },
+  {
+    "original": "company_type",
+    "translation": "Тип"
+  },
+  {
+    "original": "LEGAL",
+    "translation": "Юридическое Лицо"
+  },
+  {
+    "original": "INDIVIDUAL",
+    "translation": "Индивидуальный Предприниматель"
+  },
+  {
+    "original": "inn",
+    "translation": "ИНН"
+  },
+  {
+    "original": "kpp",
+    "translation": "КПП"
+  },
+  {
+    "original": "ogrn",
+    "translation": "ОГРН"
+  },
+  {
+    "original": "branch_type",
+    "translation": "Тип подразделения"
+  },
+  {
+    "original": "MAIN",
+    "translation": "Головная организация"
+  },
+  {
+    "original": "BRANCH",
+    "translation": "Филиал"
+  },
+  {
+    "original": "okpo",
+    "translation": "Код ОКПО"
+  },
+  {
+    "original": "okato",
+    "translation": "Код ОКАТО"
+  },
+  {
+    "original": "oktmo",
+    "translation": "Код ОКТМО"
+  },
+  {
+    "original": "okogu",
+    "translation": "Код ОКОГУ"
+  },
+  {
+    "original": "okfs",
+    "translation": "Код ОКФС"
+  },
+  {
+    "original": "okved",
+    "translation": "Код ОКВЭД"
+  },
+  {
+    "original": "okved_type",
+    "translation": "Версия справочника ОКВЭД"
+  },
+  {
+    "original": "ogrn_date",
+    "translation": "Дата выдачи ОГРН"
+  }
+]

@@ -74,8 +74,8 @@ const password = ref('');
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
 
-watch(authenticated, (val) => {
-  const action = async () => {
+watchEffect(async () => {
+  if (authenticated.value) {
     useSnack({
       show: true,
       type: 'success',
@@ -84,9 +84,7 @@ watch(authenticated, (val) => {
     });
     await router.push('/config');
   }
-  val ? action() : null;
 })
-
 
 const showError = async () => {
   useSnack({

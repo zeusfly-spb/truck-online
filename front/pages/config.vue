@@ -69,8 +69,6 @@ const spreadUserProps = () => {
 }
 const save = async () => {
   const body = {
-    email: email.value,
-    phone: phone.value,
     first_name: first_name.value,
     last_name: last_name.value,
     middle_name: middle_name.value,
@@ -82,7 +80,6 @@ const save = async () => {
 watchEffect(async () => {
   user.value ? spreadUserProps() : null
 });
-spreadUserProps();
 </script>
 
 <style lang="scss" scoped>

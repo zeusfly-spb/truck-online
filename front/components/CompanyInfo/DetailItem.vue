@@ -5,15 +5,17 @@
     <span
       v-if="['string', 'number'].includes(type)"
     >
-      {{ title }} : {{ content }}
+      {{ translate(title) }}: <strong>{{ translate(content) }}</strong>
     </span>
     <v-expansion-panels
       v-if="type === 'object'"
       v-model="panel"
     >
-      <v-expansion-panel>
+      <v-expansion-panel
+        style="background-color: transparent!important;"
+      >
         <v-expansion-panel-title>
-          {{ title }}
+          {{ translate(title) }}
         </v-expansion-panel-title>
         <v-expansion-panel-text>
           <div
@@ -29,6 +31,9 @@
 </template>
 
 <script setup>
+import {useTranslatorStore} from "~/store/translator";
+
+const translatorStore = useTranslatorStore();
 const props = defineProps({
   title: {
     type: String,
@@ -39,6 +44,9 @@ const props = defineProps({
     required: true
   }
 });
+const translate = word => {
+  return translatorStore.translate(word, 'details');
+}
 const {title, content} = toRefs(props);
 const type = computed(() => content.value && typeof content.value);
 const panel = ref([]);

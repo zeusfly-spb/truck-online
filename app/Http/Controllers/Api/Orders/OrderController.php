@@ -8,14 +8,20 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Charge;
 use App\Models\User;
+use App\Models\Tax;
 use App\Models\OrderStatus;
 use App\Models\OrderAction;
+use App\Models\CaclHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Resources\Api\Orders\OrderResource;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 use Validator;
-
+use App\Models\Address;
+use App\Models\Container;
+use App\Models\OrderSetting;
+use App\Models\CalcHistory;
 
 class OrderController extends Controller
 {
@@ -258,21 +264,30 @@ class OrderController extends Controller
      *     @OA\Response(
      *         response=200,
      *         description="SUCCESS",
-     *     ),
-     * )
+     *    ),
+     * ),
+
      */
     public function store(Request $request){
 
       $data = $request['data'];
-      $order = $this->order_create($data);
-      if($order) return response()->json([ 'success'=> true ], 201);
+      if($data['calc']){
 
+        $calc_history = $this->calcHistoryCreate($data);
+        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
+      }else{
+        $order = $this->order_create($data);
+        if($order) return response()->json([ 'data'=> $order ], 201);
+      }
     }
+
     public function order_create($data){
 
       $order = new Order;
-      $order['user_id'] = Auth::user() ? Auth::user()->id : null;
-      $order['company_id'] = Auth::user() ? Auth::user()->company_id : null;
+      $order['user_id'] = Auth::user()->id ;
+      $order['company_id'] = Auth::user()->company_id;
+      $tax = Tax::firstOrCreate(['name' => '20%']);
+      $order['tax_id'] = $tax->id;
       $order['from_address_id'] = $data['from_address_id'];
       $order['from_date'] = $data['from_date'];
       $order['from_slot'] = $data['from_slot'];
@@ -294,12 +309,26 @@ class OrderController extends Controller
       $order['return_date'] = $data['return_date'];
       $order['return_slot'] = $data['return_slot'];
 
+      $order['delivery2_address_id'] = $data['delivery2_address_id'] ?? null;
+      $order['delivery2_contact_name'] = $data['delivery2_contact_name'] ?? null;
+      $order['delivery2_contact_phone'] = $data['delivery2_contact_phone'] ?? null;
+      $order['delivery2_contact_email'] = $data['delivery2_contact_email'] ?? null;
+      $order['delivery2_date'] = $data['delivery2_date'] ?? null;
+      $order['delivery2_slot'] = $data['delivery2_slot'] ?? null;
+
+      $order['return2_address_id'] = $data['return2_address_id'] ?? null;
+      $order['return2_contact_name'] = $data['return2_contact_name'] ?? null;
+      $order['return2_contact_phone'] = $data['return2_contact_phone'] ?? null;
+      $order['return2_contact_email'] = $data['return2_contact_email'] ?? null;
+      $order['return2_date'] = $data['return2_date'] ?? null;
+      $order['return2_slot'] = $data['return2_slot'] ?? null;
+
       $order['container_id'] = $data['container_id'];
       $order['length_algo'] = $data['length_algo'];
       $order['length_real'] = $data['length_real'];
       $order['price'] = $data['price'];
       $order['weight'] = $data['weight'];
-      $order['order_status_id'] = OrderStatus::first() ? OrderStatus::first()['id'] : null;
+      $order['order_status'] = OrderStatus::DRAFT;
 
       if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
       if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
@@ -310,32 +339,150 @@ class OrderController extends Controller
       return $order;
     }
 
+    public function calcHistoryCreate($data){
+
+      $points = array();
+      //from
+      if(array_key_exists('from_address_id', $data)){
+        $fromAddress = Address::find($data['from_address_id']);
+        $fromAddressPoints['lat'] = $fromAddress?->location?->latitude;
+        $fromAddressPoints['lon'] = $fromAddress?->location?->longitude;
+        $fromAddressPoints['type'] = "stop";
+        array_push($points, $fromAddressPoints);
+      }
+      //to
+      if(array_key_exists('delivery_address_id', $data)){
+         $deliveryAddress = Address::find($data['delivery_address_id']);
+         $deliveryAddressPoints['lat'] = $deliveryAddress?->location?->latitude;
+         $deliveryAddressPoints['lon'] = $deliveryAddress?->location?->longitude;
+         $deliveryAddressPoints['type'] = "stop";
+         array_push($points, $deliveryAddressPoints);
+      }
+      //return
+      if(array_key_exists('return_address_id',$data)){
+        $returnAddress = Address::find($data['return_address_id']);
+        $returnAddressPoints['lat'] = $returnAddress?->location?->latitude;
+        $returnAddressPoints['lon'] = $returnAddress?->location?->longitude;
+        $returnAddressPoints['type'] = "stop";
+        array_push($points, $returnAddressPoints);
+      }
+      //delivery 2
+      if(array_key_exists('delivery2_address_id', $data)){
+        $delivery2Address = Address::find($data['delivery2_address_id']);
+        $delivery2AddressPoints['lat'] = $delivery2Address?->location?->latitude;
+        $delivery2AddressPoints['lon'] = $delivery2Address?->location?->longitude;
+        $delivery2AddressPoints['type'] = "stop";
+        array_push($points, $delivery2AddressPoints);
+      }
+      //return 2
+      if(array_key_exists('return2_address_id',$data)){
+        $return2Address = Address::find($data['return2_address_id']);
+        $return2AddressPoints['lat'] = $return2Address?->location?->latitude;
+        $return2AddressPoints['lon'] = $return2Address?->location?->longitude;
+        $return2AddressPoints['type'] = "stop";
+        array_push($points, $return2AddressPoints);
+      }
+
+      $orderSetting = OrderSetting::first();
+      $fullDistanceLength = 0;
+      $overWeightSum = 0;
+      $defaultCarPrice = OrderSetting::first()['default_car_price'];
+
+      for($i=0; $i<count($points)-1; $i++){
+
+        $requestData['points'] = [$points[$i], $points[$i+1]];
+        $fullDistanceLength += $this->getDistance($requestData['points']);
+      }
+      $overWeightSum = $this->getOverWeight($data);
+      $price = ($fullDistanceLength*$orderSetting?->default_distance) + $overWeightSum + $defaultCarPrice;
+
+      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
+      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
+      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
+
+      $tax = Tax::firstOrCreate(['name' => '20%']);
+
+      $calc_history = CalcHistory::firstOrCreate([
+          'user_id' => Auth::user()->id,
+          'from_address_id' => $data['from_address_id'],
+          'delivery_address_id' => $data['delivery_address_id'],
+          'return_address_id' => $data['return_address_id'],
+          'container_id' => $data['container_id'],
+          'price' => $price,
+          'weight' => $data['weight'],
+          'tax_id' => $tax->id,
+          'imo' => $data['imo'],
+          'is_international' => $data['is_international'],
+          'temp_reg' => $data['temp_reg'],
+      ]);
+      $calc_history->updated_at = \Carbon\Carbon::now();
+      $calc_history->save();
+      return $calc_history;
+    }
+
+    private function getDistance($points){
+
+      //$proxy = 'http://127.0.0.1:10809';
+      try {
+        $response = Http::timeout(30)
+          //->withOptions([
+                //  'proxy' => $proxy,'verify' => false])
+          ->withHeaders([
+                  'Accept' => 'application/json',])
+          ->post('https://routing.api.2gis.com/routing/7.0.0/global?key=cb315652-4a77-4656-b55c-2485e210e675', [
+                'points' => $points,
+                'locale' => 'ru',
+                'transport'  => 'truck',
+                "route_mode"=> "fastest",
+                "traffic_mode"=> "jam",
+                "output" => 'summary'
+            ]);
+        if ($response->successful()){
+          $body = json_decode($response->body());
+          return $body?->result[0]?->length;
+        }else return 0;
+      } catch (RequestException $e) {
+          // Handle the error after multiple retries
+      }
+    }
+
+    private function getOverWeight($data){
+
+      $overWeightSum = 0;
+      $containerWeight = Container::find($data['container_id'])['weight'];
+      if($containerWeight < $data['weight']){
+        $overWeight = $data['weight'] - $containerWeight;
+        $overWeightSum = $overWeight*OrderSetting::first()['default_over_weight_price'];
+      }
+      return $overWeightSum;
+    }
+
     /**
-    * @OA\Get(
-    *      path="/api/orders/show/{order_id}",
-    *      summary="Show Order with waiting actions",
-    *      security={{"bearer_token": {}}},
-    *      tags={"Orders"},
-    *      description="Show Order with waiting actions",
-    *     @OA\Parameter(
-    *         in="path",
-    *         name="order_id",
-    *         required=true,
-    *         @OA\Schema(type="integer", example="1"),
-    *     ),
-    *     @OA\Parameter(
-    *         description="Localization",
-    *         in="header",
-    *         name="X-Localization",
-    *         required=false,
-    *         @OA\Schema(type="string"),
-    *         @OA\Examples(example="ru", value="ru", summary="Russian")
-    *    ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *     )
+      * @OA\Get(
+      *      path="/api/orders/show/{order_id}",
+      *      summary="Show Order with waiting actions",
+      *      security={{"bearer_token": {}}},
+      *      tags={"Orders"},
+      *      description="Show Order with waiting actions",
+      *     @OA\Parameter(
+      *         in="path",
+      *         name="order_id",
+      *         required=true,
+      *         @OA\Schema(type="integer", example="1"),
+      *     ),
+      *     @OA\Parameter(
+      *         description="Localization",
+      *         in="header",
+      *         name="X-Localization",
+      *         required=false,
+      *         @OA\Schema(type="string"),
+      *         @OA\Examples(example="ru", value="ru", summary="Russian")
+      *    ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="SUCCESS",
+      *     ),
+      *     )
     */
     public function show($orderId){
 
@@ -356,49 +503,50 @@ class OrderController extends Controller
     }
 
     /**
-    * @OA\Post(
-    *      path="/api/orders/update/{id}",
-    *      operationId="Order can be updated by executer and by customer",
-    *     security={{"bearer_token": {}}},
-    *      tags={"Orders"},
-    *      summary="Order can be updated by executer and by customer",
-    *      description="Order can be updated by executer and by customer",
-    *      @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *                 @OA\Property(
-    *                     property="from_contact_name",
-    *                     type="string",
-    *                     example="from_contact_name"
-    *                 ),
-    *             )
-    *         )
-    *     ),
-    *     @OA\Parameter(
-    *         in="path",
-    *         name="id",
-    *         required=true,
-    *         @OA\Schema(type="integer", example="1"),
-    *     ),
-    *     @OA\Parameter(
-    *         description="Localization",
-    *         in="header",
-    *         name="X-Localization",
-    *         required=false,
-    *         @OA\Schema(type="string"),
-    *         @OA\Examples(example="ru", value="ru", summary="Russian")
-    *     ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *   )
+      * @OA\Post(
+      *      path="/api/orders/update/{id}",
+      *      operationId="Order can be updated by executer and by customer",
+      *     security={{"bearer_token": {}}},
+      *      tags={"Orders"},
+      *      summary="Order can be updated by executer and by customer",
+      *      description="Order can be updated by executer and by customer",
+      *      @OA\RequestBody(
+      *         @OA\MediaType(
+      *             mediaType="application/json",
+      *             @OA\Schema(
+      *                 @OA\Property(
+      *                     property="from_contact_name",
+      *                     type="string",
+      *                     example="from_contact_name"
+      *                 ),
+      *             )
+      *         )
+      *     ),
+      *     @OA\Parameter(
+      *         in="path",
+      *         name="id",
+      *         required=true,
+      *         @OA\Schema(type="integer", example="1"),
+      *     ),
+      *     @OA\Parameter(
+      *         description="Localization",
+      *         in="header",
+      *         name="X-Localization",
+      *         required=false,
+      *         @OA\Schema(type="string"),
+      *         @OA\Examples(example="ru", value="ru", summary="Russian")
+      *     ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="SUCCESS",
+      *     ),
+      *   )
     */
     public function update(Request $request, $orderId){
 
       $order = Order::find($orderId);
       $status = $order->order_status;
+
       switch ($status) {
         case OrderStatus::DRAFT:
             return $this->handleDraftStatus($order, $request, $status);

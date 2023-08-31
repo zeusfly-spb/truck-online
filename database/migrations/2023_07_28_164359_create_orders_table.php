@@ -14,52 +14,52 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_code')->nullable();
-
-            $table->unsignedBigInteger('order_status_id')->nullable();
-            $table->foreign('order_status_id')->references('id')->on('order_statuses')->onDelete('cascade');
+            $table->enum('order_status',["Черновик","Создан","Выбран","Исполнен","Закрыт","На согласовании","Отмена"]);
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->unsignedBigInteger('container_id');
             $table->foreign('container_id')->references('id')->on('containers')->onDelete('cascade');
+            $table->unsignedBigInteger('tax_id');
+            $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade');
 
             $table->unsignedBigInteger('from_address_id');
             $table->foreign('from_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->date('from_date');
-            $table->time('from_slot');
-            $table->string('from_contact_name');
-            $table->string('from_contact_phone');
-            $table->string('from_contact_email');
+            $table->date('from_date')->nullable();
+            $table->time('from_slot')->nullable();
+            $table->string('from_contact_name')->nullable();
+            $table->string('from_contact_phone')->nullable();
+            $table->string('from_contact_email')->nullable();
 
             $table->unsignedBigInteger('delivery_address_id');
             $table->foreign('delivery_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->date('delivery_date');
-            $table->time('delivery_slot');
-            $table->string('delivery_contact_name');
-            $table->string('delivery_contact_phone');
-            $table->string('delivery_contact_email');
+            $table->date('delivery_date')->nullable();
+            $table->time('delivery_slot')->nullable();
+            $table->string('delivery_contact_name')->nullable();
+            $table->string('delivery_contact_phone')->nullable();
+            $table->string('delivery_contact_email')->nullable();
 
             $table->unsignedBigInteger('return_address_id');
             $table->foreign('return_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            $table->date('return_date');
-            $table->time('return_slot');
-            $table->string('return_contact_name');
-            $table->string('return_contact_phone');
-            $table->string('return_contact_email');
+            $table->date('return_date')->nullable();
+            $table->time('return_slot')->nullable();
+            $table->string('return_contact_name')->nullable();
+            $table->string('return_contact_phone')->nullable();
+            $table->string('return_contact_email')->nullable();
             $table->unsignedBigInteger('car_id')->nullable();
             $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
             // car trailer
-            $table->unsignedBigInteger('delivery2_adress_id')->nullable();
-            $table->foreign('delivery2_adress_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->unsignedBigInteger('delivery2_address_id')->nullable();
+            $table->foreign('delivery2_address_id')->references('id')->on('addresses')->onDelete('cascade');
             $table->date('delivery2_date')->nullable();
             $table->time('delivery2_slot')->nullable();
             $table->string('delivery2_contact_name')->nullable();
             $table->string('delivery2_contact_phone')->nullable();
             $table->string('delivery2_contact_email')->nullable();
 
-            $table->unsignedBigInteger('return2_adress_id')->nullable();
-            $table->foreign('return2_adress_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->unsignedBigInteger('return2_address_id')->nullable();
+            $table->foreign('return2_address_id')->references('id')->on('addresses')->onDelete('cascade');
             $table->date('return2_date')->nullable();
             $table->time('return2_slot')->nullable();
             $table->string('return2_contact_name')->nullable();
@@ -71,14 +71,18 @@ return new class extends Migration
             $table->double('price');
             $table->double('weight');
             $table->integer('length_algo');
-            $table->integer('length_real');
+            $table->integer('length_real')->nullable();
             $table->boolean('imo');
             $table->boolean('temp_reg');
             $table->boolean('is_international');
-            $table->unsignedBigInteger('tax_id')->nullable();
-            $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade');
-            $table->longText('description')->nullable();
 
+            $table->longText('description')->nullable();
+            $table->unsignedBigInteger('driver_id')->nullable();
+            $table->foreign('driver_id')->references('id')->on('taxes')->onDelete('cascade');
+            $table->unsignedBigInteger('executer_id')->nullable();
+            $table->foreign('executer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('executer_company_id')->nullable();
+            $table->foreign('executer_company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->timestamps();
         });
     }

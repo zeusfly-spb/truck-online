@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Orders\OrderController;
 use App\Http\Controllers\Api\Orders\OrderExecuterController;
 use App\Http\Controllers\Api\Orders\OrderSettingController;
 use App\Http\Controllers\Api\Orders\OrderActionController;
+use App\Http\Controllers\Api\CalcHistories\CalcHistoryController;
 use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\ConfigController;
@@ -75,6 +76,8 @@ Route::middleware('auth:api')->group(function () {
   Route::apiResource('car/right-uses', RightUseController::class);
   Route::apiResource('cars', CarController::class);
 
+  //calcHistories
+  Route::apiResource('calc/histories', CalcHistoryController::class);
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });

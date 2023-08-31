@@ -153,11 +153,19 @@ class AddressController extends Controller
             $address = new Address;
             $address->location = new Point($request->latitude, $request->longitude);
             $address->accept_status = false;
-            if($request->has('to') && $request->to) $address->to = true; else $address->to = false;
+            if($request->has('to') && $request->to) {
+              $address->to = true;
+              $address->accept_status = true;
+            }else {
+              $address->to = false;
+            }
             if($request->has('from') && $request->from) $address->from = true; else $address->from = false;
             if($request->has('return') && $request->return) $address->return = true; else $address->return = false;
             $address->name = $request->name;
             $address->address = $request->address;
+            if(!Auth::user()->hasRole('super-admin')){
+              $address->user_id = Auth::user()->id;
+            }
             $address->save();
 
             return AddressResource::make($address);
@@ -307,7 +315,9 @@ class AddressController extends Controller
           $address = Address::find($id);
           $address->address_type_id = $request->address_type_id;
           $address->location = new Point($request->latitude, $request->longitude);
-          $address->setTranslation('name', 'ru', $request->name)->save();
+          $address->name = $request->name;
+          $address->accept_status = true;
+          $address->save();
           return AddressResource::make($address);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

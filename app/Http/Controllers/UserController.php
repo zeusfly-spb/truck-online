@@ -78,7 +78,7 @@ class UserController extends BaseController
    */
   public function details()
   {
-    return response()->json(new UserResource(Auth::user()));
+    return response()->json(new UserResource(User::with('company')->find(Auth::id())));
   }
 
   public function update(Request $request)

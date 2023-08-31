@@ -2,7 +2,7 @@
   <v-layout class="rounded rounded-md">
     <v-main
       class="d-flex align-center justify-center flex-column"
-      style=" margin-top: 3em!important; cursor: none"
+      style=" margin-top: 3em!important;"
     >
       <v-card
         class="pa-md-4 mx-lg-auto register-class register-card"
@@ -26,9 +26,12 @@
               <v-text-field
                 v-model="inn"
                 :readonly="companyConfirmed"
+                class="inputInn"
                 hide-details
                 label="ИНН организации"
+                maxLength="12"
                 placeholder="0000 0000 0000"
+                type="number"
               />
               <div
                 v-if="company && companyConfirmed"
@@ -121,7 +124,16 @@
                 label="Повтор пароля"
                 required
                 type="password"
-              />
+              >
+                <template v-slot:append-inner>
+                  <v-icon
+                    v-if="passwordConfirmValid"
+                    color="green"
+                    icon="mdi-check-bold"
+                    title="Правильный повтор пароля"
+                  />
+                </template>
+              </v-text-field>
               <v-checkbox
                 v-model="processPersonal"
                 label="Даю согласие на обработку персональных данных"
@@ -131,7 +143,7 @@
                 label="Принимаю пользовательское соглашение и политику конфиденциальности"
               />
               <v-btn
-                :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed"
+                :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed || !passwordConfirmValid"
                 class="mb-2"
                 @click="smartRegister"
               >
@@ -152,8 +164,9 @@ import {Mask} from "maska";
 
 const mask = new Mask({mask: '+7 (###) ###-##-##'});
 const configStore = useConfigStore();
+const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 const authStore = useAuthStore();
-const {getCompanyByInn, setValue, registerUser} = authStore;
+const {getCompanyByInn, registerUser} = authStore;
 const accountType = ref('');
 const inn = ref('');
 const ndsPayer = ref('no');
@@ -192,7 +205,7 @@ const companyConfirmed = computed({
 });
 const credentialsConfirmed = computed(() => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value);
 const username = computed(() => email.value || phone.value);
-
+const passwordConfirmValid = computed(() => passwordConfirm.value && passwordConfirm.value === password.value);
 watch(email, () => emailConfirmationStatus.value = '');
 
 const registered = async () => {
@@ -209,7 +222,7 @@ const company_id = computed(() => company.value && company.value.id);
 const smartRegister = async () => {
   const success = await
     registerUser({username, password, passwordConfirm, company_id});
-  success ? registered() : null;
+  success ? await registered() : null;
 }
 
 const dialogMode = computed({
@@ -295,6 +308,17 @@ const rules = {
 </script>
 
 <style lang="css" scoped>
+.inputInn >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputInn >>> input::-webkit-outer-spin-button,
+.inputInn >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
 .logo {
   width: 300px;
 }

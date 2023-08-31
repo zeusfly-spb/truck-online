@@ -29,13 +29,13 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     company: null,
     loaded: true,
+    companyInfo: null
   }),
   actions: {
     setValue({key, value}) {
       this[key] = value;
     },
     async getUserDetails() {
-      console.log('Getting user details');
       const res = await opFetch(detailsUrl);
       // @ts-ignore
       this.user = res.data._rawValue;
@@ -72,9 +72,21 @@ export const useAuthStore = defineStore('auth', {
     async getCompanyByInn(inn) {
       const res = await opFetch(getCompanyByInnUrl, {method: 'post', body: {inn}});
       this.company = res.data._rawValue.company;
+    },
+    async getCompanyInfo() {
+      const inn = this.user.company.inn || null;
+      if (!inn) {
+        console.log('Не определен инн компании пользователя');
+        return;
+      }
+      console.log('Retrieving by :' + inn);
+      const {data: {_rawValue}} = await opFetch('/dadata/info', {method: 'post', body: {inn}});
+      // this.companyInfo = _rawValue && _rawValue[0] && _rawValue[0].data || null;
+      console.log('From store: ' + _rawValue);
     }
   },
   getters: {
-    authenticated: state => !!state.user
+    authenticated: state => !!state.user,
+    userName: state => state.user.first_name || state.user.email
   }
 });

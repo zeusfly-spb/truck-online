@@ -7,8 +7,8 @@
   </div>
 </template>
 <script setup>
-import {useAuthStore} from "~/store/auth";
 import {storeToRefs} from "pinia";
+import {useAuthStore} from "~/store/auth";
 
 const authStore = useAuthStore();
 const {user} = storeToRefs(authStore);
@@ -29,3 +29,4 @@ watchEffect(async () => {
   }
 })
 </script>
+

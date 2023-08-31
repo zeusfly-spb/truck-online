@@ -74,19 +74,17 @@ const password = ref('');
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
 
-watch(authenticated, (val) => {
-  const action = async () => {
+watchEffect(async () => {
+  if (authenticated.value) {
     useSnack({
       show: true,
       type: 'success',
       title: 'Авторизован',
       message: 'Вы успешно авторизовались в системе',
     });
-    router.push('/config');
+    await router.push('/config');
   }
-  val ? action() : null;
 })
-
 
 const showError = async () => {
   useSnack({

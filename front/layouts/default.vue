@@ -5,13 +5,9 @@
         :title="appTitle"
       >
         <v-spacer/>
-        <v-btn
+        <MainMenu
           v-if="authenticated"
-          variant="tonal"
-          @click="logOut"
-        >
-          Выйти
-        </v-btn>
+        />
         <v-btn
           v-if="!authenticated && 'login' !== routeName"
           @click="redirectLogin"

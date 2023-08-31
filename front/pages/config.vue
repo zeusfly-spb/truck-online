@@ -25,6 +25,11 @@
         v-model="company_id"
         label="Company ID"
       />
+      <v-text-field
+        v-model="company_inn"
+        label="Company INN"
+        readonly
+      />
       <div
         class="d-flex justify-center"
       >
@@ -34,16 +39,14 @@
           Сохранить
         </v-btn>
       </div>
-
     </v-col>
-    <v-col>
-      <NuxtLink to="/profile">Профиль</NuxtLink>
-    </v-col>
+    <CompanyInfo/>
   </v-row>
 </template>
 
 <script setup>
 import {useAuthStore} from "~/store/auth";
+import CompanyInfo from "~/components/CompanyInfo/index.vue";
 
 useHead({title: 'Настройки'});
 // definePageMeta({middleware: 'auth'});
@@ -55,11 +58,8 @@ const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
 const user = computed(() => authStore.user);
-const keys = [];
+const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
 const spreadUserProps = () => {
-  if (!user.value) {
-    return;
-  }
   email.value = user.value.email || '';
   phone.value = user.value.phone || '';
   first_name.value = user.value.first_name || '';
@@ -69,8 +69,6 @@ const spreadUserProps = () => {
 }
 const save = async () => {
   const body = {
-    email: email.value,
-    phone: phone.value,
     first_name: first_name.value,
     last_name: last_name.value,
     middle_name: middle_name.value,
@@ -79,7 +77,9 @@ const save = async () => {
   const options = {method: 'post', body};
   await opFetch('/update_user', options);
 }
-spreadUserProps();
+watchEffect(async () => {
+  user.value ? spreadUserProps() : null
+});
 </script>
 
 <style lang="scss" scoped>

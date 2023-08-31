@@ -48,6 +48,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('geo_ip_city', [DadataController::class, 'geoIpCity']);
     Route::post('suggest_address', [DadataController::class, 'suggestAddress']);
     Route::post('find_by_id', [DadataController::class, 'findById']);
+    Route::post('info', [DadataController::class, 'getCompanyInfo']);
   });
 
   Route::middleware('super-admin')->group(function () {

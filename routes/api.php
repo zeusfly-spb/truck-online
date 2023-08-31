@@ -64,6 +64,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('show/{order_id}',  [OrderController::class, 'show']);
     Route::put('update/{order_id}',  [OrderController::class, 'update']);
     Route::post('accept/action/{order_action_id}',  [OrderActionController::class, 'accept']);
+
+    Route::middleware('executer')->group(function () {
+        Route::post('{id}/updates', [OrderExecuterController::class, 'updates']);
+    });
   });
 
   //drivers

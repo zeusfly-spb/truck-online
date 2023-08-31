@@ -2060,13 +2060,13 @@
                 ]
             }
         },
-        "/api/calc/histories/store": {
+        "/api/orders/store": {
             "post": {
                 "tags": [
-                    "CalcHistory"
+                    "Orders"
                 ],
-                "summary": "Store Calc History",
-                "operationId": "a7d5c3f6ac511f1153fda876a39c8782",
+                "summary": "Store Order",
+                "operationId": "e99cabc845ac77b9836899e8c3fd3a30",
                 "parameters": [
                     {
                         "name": "X-Localization",
@@ -2306,6 +2306,75 @@
                                     "from_contact_name": {
                                         "type": "string",
                                         "example": "from_contact_name"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
+        },
+        "/api/orders/{id}/updates": {
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Executer update order drivers & cars",
+                "description": "Executer update order drivers & cars",
+                "operationId": "Executer update order drivers & cars",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": "1"
+                        }
+                    },
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "driver_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "car_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "car2_id": {
+                                        "type": "integer",
+                                        "example": "1"
                                     }
                                 },
                                 "type": "object"

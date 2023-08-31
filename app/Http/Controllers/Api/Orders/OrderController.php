@@ -265,8 +265,7 @@ class OrderController extends Controller
      *         response=200,
      *         description="SUCCESS",
      *    ),
-     * ),
-
+     * )
      */
     public function store(Request $request){
 

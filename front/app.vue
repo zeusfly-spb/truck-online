@@ -11,14 +11,15 @@ import {storeToRefs} from "pinia";
 import {useAuthStore} from "~/store/auth";
 
 const authStore = useAuthStore();
-const {user} = storeToRefs(authStore);
+const authenticated = computed(() => authStore.authenticated);
+const {user, autostart} = storeToRefs(authStore);
 const token = computed(() => {
   const tokenCookie = useCookie('online_port_token');
   return tokenCookie.value || null;
 });
 const config = useRuntimeConfig();
 watchEffect(async () => {
-  if (token.value) {
+  if (token.value && !authenticated.value && autostart.value) {
     const headers = new Headers();
     headers.set('Content-Type', 'application/json');
     headers.set('Accept', 'application/json');

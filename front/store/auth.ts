@@ -29,7 +29,10 @@ export const useAuthStore = defineStore('auth', {
     user: null,
     company: null,
     loaded: true,
-    companyInfo: null
+    companyInfo: null,
+    autostart: true,
+    authDialog: false,
+    registerDialog: false
   }),
   actions: {
     setValue({key, value}) {
@@ -55,19 +58,21 @@ export const useAuthStore = defineStore('auth', {
         body: {username, password},
       });
       this.loading = pending;
-      const {_rawValue: {success, data: {token}}} = data;
+      const {_rawValue: {success, data: {token, user}}} = data;
       if (success) {
         this.token = token;
         const token_cookie = useCookie('online_port_token');
         token_cookie.value = token;
-        setTimeout(async () => await this.getUserDetails(), 300);
+        this.user = user;
       }
     },
-    logUserOut() {
+    async logUserOut() {
+      this.autostart = false;
       const token_cookie = useCookie('online_port_token');
+      token_cookie.value = null;
       this.user = null;
       this.token = null;
-      token_cookie.value = null;
+      await navigateTo('/')
     },
     async getCompanyByInn(inn) {
       const res = await opFetch(getCompanyByInnUrl, {method: 'post', body: {inn}});
@@ -87,6 +92,6 @@ export const useAuthStore = defineStore('auth', {
   },
   getters: {
     authenticated: state => !!state.user,
-    userName: state => state.user.first_name || state.user.email
+    userName: state => state.user && state.user.first_name || state.user && state.user.email
   }
 });

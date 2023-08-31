@@ -218,13 +218,11 @@ const registered = async () => {
   await navigateTo('/login');
 }
 const company_id = computed(() => company.value && company.value.id);
-
 const smartRegister = async () => {
   const success = await
     registerUser({username, password, passwordConfirm, company_id});
   success ? await registered() : null;
 }
-
 const dialogMode = computed({
   get() {
     return authStore.dialogMode;
@@ -249,7 +247,6 @@ const dialog = computed({
     authStore.setValue({key: 'dialog', value: val});
   }
 });
-
 const phoneAppendClick = () => {
   if (phoneConfirmed.value) {
     return;
@@ -258,7 +255,6 @@ const phoneAppendClick = () => {
   dialogTitle.value = 'Код подтверждения телефона';
   dialog.value = true;
 }
-
 const emailAppendClick = async () => {
   if (emailConfirmed.value) {
     return;

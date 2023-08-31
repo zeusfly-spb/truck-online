@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "online-port",
   "private": true,
   "scripts": {
     "build": "nuxt build",

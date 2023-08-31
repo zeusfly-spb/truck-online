@@ -1,22 +1,27 @@
 <template>
   <v-col>
     <div
+      v-if="companyInfo"
       class="d-flex justify-center"
     >
       <strong>{{ companyInfo[0].value || '' }}</strong>
     </div>
-    <div
-      v-for="(item, index) in textDetails"
-      :key="index"
+    <template
+      v-if="companyDetails"
     >
-      <DetailItem :content="item" :title="index"/>
-    </div>
-    <div
-      v-for="(item, index) in objectDetails"
-      :key="index"
-    >
-      <DetailItem :content="item" :title="index"/>
-    </div>
+      <div
+        v-for="(item, index) in textDetails"
+        :key="index"
+      >
+        <DetailItem :content="item" :title="index"/>
+      </div>
+      <div
+        v-for="(item, index) in objectDetails"
+        :key="index"
+      >
+        <DetailItem :content="item" :title="index"/>
+      </div>
+    </template>
   </v-col>
 </template>
 
@@ -44,6 +49,9 @@ const getInfo = async () => {
 };
 const companyDetails = computed(() => {
   const unchanged = companyInfo.value && companyInfo.value[0] && companyInfo.value[0].data;
+  if (!unchanged) {
+    return null;
+  }
   const changed = JSON.parse(JSON.stringify(unchanged));
   changed.ogrn_date = realDate(changed.ogrn_date);
   changed.state.registration_date = realDate(changed.state.registration_date);
@@ -67,7 +75,7 @@ const realDate = timestamp => {
 }
 const textDetails = computed(() => {
   if (!companyDetails.value) {
-    return [];
+    return {};
   }
   const result = {};
   for (let key in companyDetails.value) {
@@ -88,14 +96,15 @@ const emptyObject = obj => {
   return true;
 }
 const objectDetails = computed(() => {
+  if (!companyDetails.value) {
+    return {};
+  }
   const result = {};
-  if (companyDetails.value) {
-    for (let key in companyDetails.value) {
-      const detail = companyDetails.value[key];
-      const type = typeof detail;
-      if (type === 'object' && !emptyObject(detail)) {
-        result[key] = detail;
-      }
+  for (let key in companyDetails.value) {
+    const detail = companyDetails.value[key];
+    const type = typeof detail;
+    if (type === 'object' && !emptyObject(detail)) {
+      result[key] = detail;
     }
   }
   return result;

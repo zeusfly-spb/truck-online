@@ -2,7 +2,6 @@ import vuetify from 'vite-plugin-vuetify'
 
 // @ts-ignore
 export default defineNuxtConfig({
-  ssr: false,
   app: {baseURL: '/dev'},
   devtools: {enabled: true, componentInspector: false},
   runtimeConfig: {
@@ -25,7 +24,7 @@ export default defineNuxtConfig({
     async (options, nuxt) => {
       nuxt.hooks.hook('vite:extendConfig', (config) =>
         // @ts-ignore
-        config.plugins.push(
+        config.plugins?.push(
           vuetify({
             styles: {configFile: 'assets/variables.scss'},
           })

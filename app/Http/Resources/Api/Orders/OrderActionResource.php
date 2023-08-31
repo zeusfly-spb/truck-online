@@ -14,6 +14,12 @@ class OrderActionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+      return [
+        'id' => $this->id,
+        'column_name' => $this->column_name,
+        'old_value' => $this->old_value,
+        'update_value' => $this->update_value,
+        'status' => $this->status,
+      ];
     }
 }

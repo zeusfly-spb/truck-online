@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderAction;
+use App\Http\Resources\Api\Orders\OrderActionResource;
 use Auth;
 
 class OrderActionController extends Controller
@@ -70,5 +71,11 @@ class OrderActionController extends Controller
     return response()->json([
       'message' => 'noPermission'
     ]);
+  }
+
+  public function show($id){
+
+    $orderActions = OrderAction::where('order_id', $id)->get();
+    return OrderActionResource::collection($orderActions);
   }
 }

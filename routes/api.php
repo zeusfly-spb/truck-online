@@ -53,8 +53,9 @@ Route::middleware('auth:api')->group(function () {
 
   Route::middleware('super-admin')->group(function () {
     Route::prefix('assign/role')->group(function () {
-      Route::post('executer', [AssignRoleController::class, 'assign_role_executer']);
-    });
+      Route::post('executer', [AssignRoleController::class, 'assign_role_executer']); });
+
+    Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
   });
 
   //orders

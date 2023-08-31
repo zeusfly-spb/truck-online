@@ -1,45 +1,70 @@
 <template>
-  <v-container>
-    <v-btn
-        class="text-none"
-        color="grey-lighten-3"
-        size="x-large"
+  <v-container class="mb-2 bg-white">
+    <v-row class="filter-container">
+      <v-col cols="12" md="2">
+        <label for="priceFilter">Price Filter:</label>
+        <v-text-field
+          type="number"
+          id="priceFilter"
+          v-model="priceFilter"
+          @input="applyFilters"
         >
-      <NuxtLink
-        to="/orders/create"
-        class=""
-      >
-        Создать заказ
-      </NuxtLink>
-    </v-btn>
+        </v-text-field>
+      </v-col>
+      <v-col cols="12" md="2">
+        <label for="priceFilter">Weight Filter:</label>
+        <v-text-field
+          type="number"
+          id="weightFilter"
+          v-model="weightFilter"
+          @input="applyFilters"
+        >
+        </v-text-field>
+      </v-col>
+    </v-row>
     <table>
-      <tr>
-        <th v-for="head in heads">{{ head.title }}</th>
-      </tr>
-      <tr v-for="order in orders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.from_address?.name }}</td>
-        <td>{{ order.delivery_address?.name }}</td>
-        <td>{{ order.container?.name }}</td>
-        <td>{{ order.weight }}</td>
-        <td>{{ order.price }}</td>
-      </tr>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>From Address</th>
+          <th>Delivery Address</th>
+          <th>Container</th>
+          <th>Weight</th>
+          <th>Price</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="order in orders" :key="order.id">
+          <td>{{ order.id }}</td>
+          <td>{{ order.from_address.name }}</td>
+          <td>{{ order.delivery_address.name }}</td>
+          <td>{{ order.container.name }}</td>
+          <td>{{ order.weight }}</td>
+          <td>{{ order.price }}</td>
+          <td>{{ order.status.name }}</td>
+        </tr>
+      </tbody>
     </table>
-    <!-- <v-btn
-        class="text-none mb-4"
-        color="indigo-darken-3"
-        size="large"
-        variant="flat"
-        @click.prevent="createOrder"
-      >
-        Create Order
-      </v-btn> -->
+    <div class="pagination">
+      <button @click="loadPage(ordersMeta.prev)" :disabled=!ordersMeta.prev>Previous</button>
+      <button @click="loadPage(ordersMeta.next)" :disabled=!ordersMeta.next>Next</button>
+    </div>
   </v-container>
-
 </template>
 <style>
+.bg-white{
+  background-color: #fff;
+  padding: 50px;
+}
+.pagination button{
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid#ddd;
+  width: 120px;
+}
 a { text-decoration: none; }
-table {
+  table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
@@ -59,23 +84,49 @@ tr:nth-child(even) {
   margin-top:20px
 }
 </style>
-<script setup>
-  const headers = new Headers();
-  const token_cookie = useCookie('online_port_token');
-  if (token_cookie.value) {
-    headers.set("Authorization", `Bearer ${ token_cookie.value }`);
-  }
 
-  const { data: orders } = await useFetch(URI+'orders',{ headers});
-  const itemsPerPage = 5;
-  const heads = [
-          { title: 'ID', align: 'start', sortable: false, key: 'id'},
-          { title: 'From Address', align: 'start', sortable: false, key: 'from_address' },
-          { title: 'To Address', align: 'start', sortable: false, key: 'to_address' },
-          { title: 'Conatiner', align: 'start', sortable: false, key: 'container' },
-          { title: 'Weight', align: 'start', sortable: false, key: 'weight' },
-          { title: 'Price', align: 'start', sortable: false, key: 'price' },
-        ];
-  console.log(orders._rawValue);
-  console.log(headers);
+<script setup>
+  const { data: addresses } = useFetch(URI+'addresses');
+  const orders = ref([]);
+  const ordersMeta = {
+      prev: null,
+      next: null,
+      current_page: 1
+    };
+  const priceFilter = ref(null);
+  const weightFilter = ref(null);
+
+  const loadPage = async (url) => {
+  try {
+      const headers = new Headers();
+      const token_cookie = useCookie('online_port_token');
+    if (token_cookie.value) {
+      headers.set("Authorization", `Bearer ${ token_cookie.value }`);
+    }
+    let query = '';
+    if (priceFilter.value) {
+      query += `&price=${priceFilter.value}`;
+    }
+    if (weightFilter.value) {
+      query += `&weight=${weightFilter.value}`;
+    }
+
+    const response = await $fetch(url+query, { headers });
+    orders.value = response.data;
+    ordersMeta.prev = response.links.prev;
+    ordersMeta.next = response.links.next;
+    ordersMeta.current_page = response.meta.current_page;
+    console.log(orders.value);
+  } catch (error) {
+    console.error('Error loading data:', error);
+  }
+};
+// Apply the filters
+const applyFilters = () => {
+  loadPage(URI+`orders?page=${ordersMeta.current_page}`);
+};
+
+onMounted(() => {
+  loadPage(URI+'orders?page=1');
+});
 </script>

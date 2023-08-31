@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->boolean('accept_status');
+        Schema::create('files', function (Blueprint $table) {
+            $table->id();
+            $table->string('path', 150);
+            $table->string('table_owner', 60);
+            $table->integer('table_owner_id');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->boolean('accept_status');
-        });
+        Schema::dropIfExists('files');
     }
 };

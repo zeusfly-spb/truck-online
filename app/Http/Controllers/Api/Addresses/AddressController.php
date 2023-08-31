@@ -29,6 +29,9 @@ class AddressController extends Controller
      *     ),
      * )
     */
+    /**
+     * Admin Address Get
+     */
     public function index()
     {
         try{
@@ -37,6 +40,41 @@ class AddressController extends Controller
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/address/client",
+     *     summary="Get list accepted addresses",
+     *     tags = {"Addresses"},
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+    */
+    public function addressCLient(Request $request){
+      try{
+
+        $addresses = Address::query()->where('accept_status', true);
+        if($request->has('name'))
+          $addresses = $addresses->filterByName($request->name);
+
+        if($request->has('address'))
+          $addresses = $addresses->filterByAddress($request->address);
+
+          return AddressResource::collection($addresses->get());
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
     }
 
     /**
@@ -56,11 +94,16 @@ class AddressController extends Controller
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 @OA\Property(
+     *              @OA\Property(
      *                     property="name",
      *                     type="string",
      *                     example="Rossi Boutique Hotel & SPA"
-     *                 ),
+     *              ),
+     *              @OA\Property(
+     *                     property="address",
+     *                     type="string",
+     *                     example="Rossi Boutique Hotel & SPA"
+     *              ),
      *              @OA\Property(
      *                     property="latitude",
      *                     type="string",
@@ -73,6 +116,16 @@ class AddressController extends Controller
      *               ),
      *              @OA\Property(
      *                     property="to",
+     *                     type="string",
+     *                     example="true"
+     *               ),
+     *               @OA\Property(
+     *                     property="from",
+     *                     type="string",
+     *                     example="true"
+     *               ),
+     *               @OA\Property(
+     *                     property="return",
      *                     type="string",
      *                     example="true"
      *               ),
@@ -96,26 +149,55 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         try{
+
             $address = new Address;
-            //$address->address_type_id = $request->address_type_id;
             $address->location = new Point($request->latitude, $request->longitude);
-            $address->accept_by_admin = false;
+            $address->accept_status = false;
             if($request->has('to') && $request->to) $address->to = true; else $address->to = false;
             if($request->has('from') && $request->from) $address->from = true; else $address->from = false;
             if($request->has('return') && $request->return) $address->return = true; else $address->return = false;
-            $address->setTranslation('name', 'ru', $request->name)->save();
+            $address->name = $request->name;
+            $address->address = $request->address;
+            $address->save();
 
             return AddressResource::make($address);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
-
+    /**
+     * @OA\Post(
+     *     path="/api/address/accept/{id}",
+     *     summary="Accept Addresses",
+     *     security={{"bearer_token": {}}},
+     *     tags = {"Addresses"},
+     *     @OA\Parameter(
+     *          description="ID",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Examples(example="int", value="1", summary="an int value"),
+     *      ),
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *     ),
+     * )
+     */
     public function accept($id){
 
       $address = Address::find($id);
       $address->accept_status = true;
       $address->save();
+      return response()->json(['message' => 'Success'], 200);
     }
 
     /**

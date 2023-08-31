@@ -16,8 +16,8 @@ class AddressResource extends JsonResource
     {
         return [
           'id'    => $this->id,
-          //'address_type' => $this->address_type?->name,
-          'name' => $this->getTranslation('name', app()->getLocale()),
+          'name' => $this->name,
+          'address' => $this->address,
           'coordinates' => $this->location,
           'return' => $this->return,
           'from' => $this->from,

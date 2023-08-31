@@ -6,38 +6,100 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderRequest;
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Charge;
+use App\Models\User;
+use App\Models\OrderStatus;
+use App\Models\OrderAction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Resources\Api\Orders\OrderResource;
+use Carbon\Carbon;
+use Validator;
 
 
 class OrderController extends Controller
 {
-    public function index(){
-      $orders = Auth::user()->orders;
-      return OrderResource::collection($orders)->collection;
+    /**
+     * @OA\Get(
+     *     path="/api/orders",
+     *     summary="Get list of Orders",
+     *     security={{"bearer_token": {}}},
+     *     tags = {"Orders"},
+     *     @OA\Parameter(
+     *         description="Localization",
+     *         in="header",
+     *         name="X-Localization",
+     *         required=false,
+     *         @OA\Schema(type="string"),
+     *         @OA\Examples(example="ru", value="ru", summary="Russian")
+     *    ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="SUCCESS",
+     *         @OA\JsonContent()
+     *     ),
+     * )
+    */
+    public function index(Request $request){
+      //$orders = Auth::user()->orders;
+      $orders = Order::query();
+
+      if($request->has('order_statuses'))
+        $orders = $orders->filterByOrderStatuses(json_decode($request->order_statuses));
+
+      if($request->has('containers'))
+        $orders = $orders->filterByOrderContainers(json_decode($request->containers));
+
+      if($request->has('from_addresses'))
+        $orders = $orders->filterByOrderFromAddresses(json_decode($request->from_addresses));
+
+      if($request->has('delivery_addresses'))
+        $orders = $orders->filterByOrderDeliveryAddresses(json_decode($request->delivery_addresses));
+
+      if($request->has('companies'))
+        $orders = $orders->filterByOrderCompanies(json_decode($request->companies));
+
+      if($request->has('weight'))
+        $orders = $orders->filterByWeight($request->weight);
+
+      if($request->has('price'))
+        $orders = $orders->filterByPrice($request->price);
+
+      if($request->has('length_algo'))
+        $orders = $orders->filterByLengthAlgo($request->length_algo);
+
+      if($request->has('length_real'))
+        $orders = $orders->filterByLengthReal($request->length_real);
+
+      if($request->has('imo') && $request->imo){
+        $orders = $orders->filterByImo(true);
+      }
+      if($request->has('temp_reg') && $request->temp_reg)
+        $orders = $orders->filterByTemp(true);
+
+      if($request->has('is_international') && $request->is_international)
+        $orders = $orders->filterByInternational(true);
+
+      if($request->has('fromDate'))
+        $orders = $orders->filterByFromDate($request->fromDate);
+
+      if($request->has('deliveryDate'))
+        $orders = $orders->filterByDeliverydate($request->deliveryDate);
+
+      $orders = $orders->paginate(12);
+      return OrderResource::collection($orders);
     }
     /**
      * @OA\Post(
-     *     path="/api/orders",
+     *     path="/api/orders/store",
      *     summary="Store Order",
      *     tags = {"Orders"},
      *      @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="user_id",
-     *                     type="string",
-     *                     example="1"
-     *                 ),
      *                  @OA\Property(
      *                     property="container_id",
-     *                     type="string",
-     *                     example="1"
-     *                 ),
-     *                  @OA\Property(
-     *                     property="company_id",
      *                     type="string",
      *                     example="1"
      *                 ),
@@ -71,10 +133,8 @@ class OrderController extends Controller
      *                     type="string",
      *                     example="online@gmail.com"
      *                 ),
-     *
-     *
      *                @OA\Property(
-     *                     property="delivery_adress_id",
+     *                     property="delivery_address_id",
      *                     type="string",
      *                     example="1"
      *                 ),
@@ -96,15 +156,13 @@ class OrderController extends Controller
      *               @OA\Property(
      *                     property="delivery_contact_phone",
      *                     type="string",
-     *                     example="COntactPhone"
+     *                     example="ContactPhone"
      *                 ),
      *               @OA\Property(
      *                     property="delivery_contact_email",
      *                     type="string",
      *                     example="online@gmail.com"
      *                 ),
-     *
-     *
      *                @OA\Property(
      *                     property="return_address_id",
      *                     type="string",
@@ -214,6 +272,7 @@ class OrderController extends Controller
 
       $order = new Order;
       $order['user_id'] = Auth::user() ? Auth::user()->id : null;
+      $order['company_id'] = Auth::user() ? Auth::user()->company_id : null;
       $order['from_address_id'] = $data['from_address_id'];
       $order['from_date'] = $data['from_date'];
       $order['from_slot'] = $data['from_slot'];
@@ -240,6 +299,7 @@ class OrderController extends Controller
       $order['length_real'] = $data['length_real'];
       $order['price'] = $data['price'];
       $order['weight'] = $data['weight'];
+      $order['order_status_id'] = OrderStatus::first() ? OrderStatus::first()['id'] : null;
 
       if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
       if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
@@ -247,5 +307,231 @@ class OrderController extends Controller
 
       $order['description'] = $data['description'];
       $order->save();
+      return $order;
+    }
+
+    /**
+    * @OA\Get(
+    *      path="/api/orders/show/{order_id}",
+    *      summary="Show Order with waiting actions",
+    *      security={{"bearer_token": {}}},
+    *      tags={"Orders"},
+    *      description="Show Order with waiting actions",
+    *     @OA\Parameter(
+    *         in="path",
+    *         name="order_id",
+    *         required=true,
+    *         @OA\Schema(type="integer", example="1"),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *    ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    *     )
+    */
+    public function show($orderId){
+
+      $order = Order::find($orderId);
+      $orderActions = [];
+      foreach($order->actions->where('status', false) as $action){
+
+        if(!OrderAction::where('order_action_id', $action->id)->exists()){
+          array_push($orderActions, $action);
+        }
+      }
+      $order['actions'] = $orderActions;
+      return response()->json([
+        'order' => Order::find($orderId),
+        'orderActions' => $orderActions
+      ]);
+
+    }
+
+    /**
+    * @OA\Post(
+    *      path="/api/orders/update/{id}",
+    *      operationId="Order can be updated by executer and by customer",
+    *     security={{"bearer_token": {}}},
+    *      tags={"Orders"},
+    *      summary="Order can be updated by executer and by customer",
+    *      description="Order can be updated by executer and by customer",
+    *      @OA\RequestBody(
+    *         @OA\MediaType(
+    *             mediaType="application/json",
+    *             @OA\Schema(
+    *                 @OA\Property(
+    *                     property="from_contact_name",
+    *                     type="string",
+    *                     example="from_contact_name"
+    *                 ),
+    *             )
+    *         )
+    *     ),
+    *     @OA\Parameter(
+    *         in="path",
+    *         name="id",
+    *         required=true,
+    *         @OA\Schema(type="integer", example="1"),
+    *     ),
+    *     @OA\Parameter(
+    *         description="Localization",
+    *         in="header",
+    *         name="X-Localization",
+    *         required=false,
+    *         @OA\Schema(type="string"),
+    *         @OA\Examples(example="ru", value="ru", summary="Russian")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="SUCCESS",
+    *     ),
+    *   )
+    */
+    public function update(Request $request, $orderId){
+
+      $order = Order::find($orderId);
+      $status = $order->order_status;
+      switch ($status) {
+        case OrderStatus::DRAFT:
+            return $this->handleDraftStatus($order, $request, $status);
+            break;
+        case OrderStatus::CREATED:
+            return $this->handleCreatedStatus($order, $request, $status);
+            break;
+        case OrderStatus::SELECTED:
+            return $this->handleSelectedStatus($order, $request, $status);
+            break;
+        default:
+            // Handle unknown status
+            break;
+      }
+      return response()->json([
+        'message' => 'Succaess'
+      ]);
+    }
+
+    private function handleDraftStatus(Order $order, $request, $status)
+    {
+      if(Auth::user()->id == $order->user_id){
+        if($request->has('order_status') && $request->order_status == OrderStatus::CREATED || $request->order_status == OrderStatus::CANCELED){
+          $order->update($request->all());
+        }else{
+          $order->update($request->all());
+        }
+      }
+    }
+
+    private function handleCreatedStatus(Order $order, $request, $status)
+    {
+      //customer checked for if has order status and order status cancel or draft, another way not work update for customer
+      if(Auth::user()->id == $order->user_id){
+        if($request->has('order_status')){
+          if($request->order_status == OrderStatus::CANCELED || $request->order_status == OrderStatus::DRAFT)
+            $order->update($request->all());
+        }else{
+          $order->update($request->all());
+        }
+      }
+
+      if(Auth::user()->hasRole('executer') && $request->order_status == OrderStatus::SELECTED){
+        $order->order_status = OrderStatus::SELECTED;
+        $order->executer_id = Auth::user()->id;
+        $order->executer_company_id = Auth::user()->company_id;
+        $changes = $order->getDirty();
+
+        foreach($changes as $key => $change){
+          $order_action = OrderAction::create([
+            'order_id' => $order->id,
+            'column_name' => $key,
+            'old_value' => Order::find($order->id)[$key] ?? null,
+            'update_value' => $change,
+            'status' => 1, //accept
+            'user_id' => Auth::user()->id,
+          ]);
+          $order_action->order_action_id = $order_action->id;
+          $order_action->save();
+        }
+        $order->save();
+      }
+    }
+
+    private function handleSelectedStatus(Order $order, $request, $status)
+    {
+      $permitted_day = Carbon::createFromFormat('Y-m-d H:i', $order->from_date.' 17:00')->subDay();
+      $order->fill($request->all());
+      $changes = $order->getDirty();
+
+      if(!$permitted_day->greaterThan(Carbon::now()) && $request->order_status == OrderStatus::CANCELED){
+
+        $this->orderActionCreate($changes, $order, 1, null);
+
+        if(Auth::user()->id == $order->executer_id){
+          $order->order_status = OrderStatus::CREATED;
+          $order->save();
+        }else{
+          $order->order_status = OrderStatus::CANCELED;
+          $order->save();
+        }
+
+        $from_company = Auth::user()->company_id;
+        $to_company = Auth::user()->id == $order->user_id ? User::find($order->executer_id)['company_id'] : User::find($order->user_id)['company_id'];
+        $fine_amount = $order->price/100*20;
+
+        Charge::create([
+          'company_from_id' => $from_company,
+          'company_to_id' =>  $to_company,
+          'order_id' => $order->id,
+          'amount' => $fine_amount,
+          'notified' => 0,  //update when do notification
+          'fine' => true,
+          'payed' => false
+        ]);
+        //return 'noPermission';
+      }elseif($request->has('order_status') && $request->order_status == OrderStatus::EXECUTED){
+        if(Auth::user()->id == $order->executer_id){
+          $this->orderActionCreate($changes, $order, 1, null);
+          $order->order_status = OrderStatus::EXECUTED;
+          $order->save();
+
+        }
+      }else{
+        $this->orderActionCreate($changes, $order, 0, null);  //checked
+      }
+    }
+
+    private function orderActionCreate($changes, $order, $status, $order_action_id){
+
+      foreach($changes as $key => $change){
+
+        //if($this->checkForExistAcceptColumn($orderId, $key)==true){
+
+          $order_action = OrderAction::create([
+            'order_id' => $order->id,
+            'column_name' => $key,
+            'old_value' => Order::find($order->id)[$key],
+            'update_value' => $change,
+            'status' => $status, // 0 = waiting // 1 = accept // 2 = decline
+            'user_id' => Auth::user()->id,  //id otpravitelya
+          ]);
+          $order_action->order_action_id = null;  //null if ApprovalPending // orderActionId if Accept the or Decline
+          $order_action->save();
+       // } //utachnit
+      }
+    }
+
+    public function checkForExistAcceptColumn($orderId, $key){
+
+      $orderAction = OrderAction::where('order_id', $orderId)->where('colum_name', $key)->where('status', 1)->get();
+      if(count($orderAction)>0){
+        return false;
+      } return true;
     }
 }

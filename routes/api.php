@@ -54,7 +54,6 @@ Route::middleware('auth:api')->group(function () {
   Route::middleware('super-admin')->group(function () {
     Route::prefix('assign/role')->group(function () {
       Route::post('executer', [AssignRoleController::class, 'assign_role_executer']); });
-
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
   });
 
@@ -84,6 +83,13 @@ Route::middleware('auth:api')->group(function () {
 
   //calcHistories
   Route::apiResource('calc/histories', CalcHistoryController::class);
+
+  //address
+  Route::apiResource('addresses', AddressController::class);
+
+  //addressClient
+  Route::get('address/client', [AddressController::class, 'addressCLient']);
+  
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });
@@ -98,10 +104,7 @@ Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
 
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('order-statuses', OrderStatusController::class);
-//address
-Route::apiResource('addresses', AddressController::class);
-//addressClient
-Route::get('address/client', [AddressController::class, 'addressCLient']);
+
 //company
 Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);

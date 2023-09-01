@@ -263,7 +263,12 @@
                     "200": {
                         "description": "SUCCESS"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [

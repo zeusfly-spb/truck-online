@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Orders\OrderController;
 use App\Http\Controllers\Api\Orders\OrderExecuterController;
 use App\Http\Controllers\Api\Orders\OrderSettingController;
 use App\Http\Controllers\Api\Orders\OrderActionController;
+use App\Http\Controllers\Api\WayPoints\WayPointController;
 use App\Http\Controllers\Api\CalcHistories\CalcHistoryController;
 use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\Api\Taxes\TaxController;
@@ -70,6 +71,10 @@ Route::middleware('auth:api')->group(function () {
     });
   });
 
+  //Route::middleware('driver')->group(function () {
+    Route::apiResource('way/points', WayPointController::class);
+  //});
+
   //drivers
   Route::apiResource('drivers', DriverController::class);
   Route::post('driver/documents/{driver_id}', [DriverController::class, 'uploadDocument']);
@@ -89,7 +94,7 @@ Route::middleware('auth:api')->group(function () {
 
   //addressClient
   Route::get('address/client', [AddressController::class, 'addressCLient']);
-  
+
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });

@@ -2592,6 +2592,124 @@
                     }
                 }
             }
+        },
+        "/api/way/points": {
+            "get": {
+                "tags": [
+                    "WayPoints"
+                ],
+                "summary": "Get list of WayPoints",
+                "operationId": "316569c77bf8905bca5e781e4db31819",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "WayPoints"
+                ],
+                "summary": "Store WayPoints",
+                "operationId": "e64a42949115d3c023e1fa5669bdcb3e",
+                "parameters": [
+                    {
+                        "name": "X-Localization",
+                        "in": "header",
+                        "description": "Localization",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ru": {
+                                "summary": "Russian",
+                                "value": "ru"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "order_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "type_id": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "address_id": {
+                                        "type": "string",
+                                        "example": "2023-08-31"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "example": "37.2377193"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "example": "55.6617422"
+                                    },
+                                    "document": {
+                                        "type": "string",
+                                        "example": null
+                                    },
+                                    "document_name": {
+                                        "type": "string",
+                                        "example": null
+                                    },
+                                    "file_id": {
+                                        "type": "string",
+                                        "example": null
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SUCCESS"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer_token": []
+                    }
+                ]
+            }
         }
     },
     "components": {

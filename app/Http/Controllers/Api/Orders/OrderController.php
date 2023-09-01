@@ -546,7 +546,16 @@ class OrderController extends Controller
       $order = Order::find($orderId);
       $status = $order->order_status;
 
-      switch ($status) {
+      if(Auth::user()->hasRole('super-admin')){
+
+        $order->fill($request->all());
+        $changes = $order->getDirty();
+        $this->orderActionCreate($changes, $order, 1, null);  //checked
+        $order->update($request->all());
+
+      }else{
+
+        switch ($status) {
         case OrderStatus::DRAFT:
             return $this->handleDraftStatus($order, $request, $status);
             break;
@@ -559,9 +568,11 @@ class OrderController extends Controller
         default:
             // Handle unknown status
             break;
+        }
       }
+
       return response()->json([
-        'message' => 'Succaess'
+        'message' => 'Success'
       ]);
     }
 

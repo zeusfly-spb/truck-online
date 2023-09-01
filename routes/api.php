@@ -71,9 +71,9 @@ Route::middleware('auth:api')->group(function () {
     });
   });
 
-  //Route::middleware('driver')->group(function () {
+  Route::middleware('driver')->group(function () {
     Route::apiResource('way/points', WayPointController::class);
-  //});
+  });
 
   //drivers
   Route::apiResource('drivers', DriverController::class);

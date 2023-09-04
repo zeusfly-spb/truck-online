@@ -24,8 +24,7 @@
               class="d-flex align-center justify-center flex-column"
             >
               <v-card
-                class="pa-md-4 mx-lg-auto register-class register-card"
-                style="background: transparent!important;"
+                class="pa-md-4 mx-lg-auto register-class register-card unselect"
               >
                 <v-card-text
                   class="register-class"
@@ -161,16 +160,20 @@
                         v-model="termsNConditions"
                         label="Принимаю пользовательское соглашение и политику конфиденциальности"
                       />
-                      <v-btn
-                        :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed || !passwordConfirmValid"
-                        class="mb-2"
-                        @click="smartRegister"
-                      >
-                        Зарегистрироваться
-                      </v-btn>
                     </v-col>
                   </v-row>
                 </v-card-text>
+                <v-card-actions
+                  class="flex-row justify-center"
+                >
+                  <v-btn
+                    :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed || !passwordConfirmValid"
+                    class="mb-2"
+                    @click="smartRegister"
+                  >
+                    Зарегистрироваться
+                  </v-btn>
+                </v-card-actions>
               </v-card>
             </div>
           </v-layout>
@@ -346,5 +349,14 @@ const rules = {
 
 .register-card {
   width: 650px;
+}
+.unselect {
+  -webkit-user-select: none;
+  /* user-select -- это нестандартное свойство */
+
+  -moz-user-select: none;
+  /* поэтому нужны префиксы */
+
+  -ms-user-select: none;
 }
 </style>

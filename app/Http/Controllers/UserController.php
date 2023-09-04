@@ -83,6 +83,7 @@ class UserController extends BaseController
 
   public function update(Request $request)
   {
-    return response()->json(['result' => Auth::user()->update($request->all())]);
+    Auth::user()->update($request->all());
+    return response()->json(new UserResource(User::with('company')->find(Auth::id())));
   }
 }

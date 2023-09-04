@@ -37,7 +37,7 @@
         class="d-flex justify-center"
       >
         <v-btn
-          :disabled="!detailsChanged.value"
+          :disabled="!detailsChanged"
           @click="save"
         >
           Сохранить
@@ -49,11 +49,11 @@
 </template>
 
 <script setup>
+import {storeToRefs} from "pinia";
+
 useHead({title: 'Настройки'});
 import {useAuthStore} from "~/store/auth";
 import CompanyInfo from "~/components/CompanyInfo/index.vue";
-
-
 const email = ref('');
 const phone = ref('');
 const first_name = ref('');
@@ -61,7 +61,7 @@ const last_name = ref('');
 const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
-const user = computed(() => authStore.user);
+const {user} = storeToRefs(authStore);
 const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
 
 const userData = reactive({
@@ -82,7 +82,13 @@ const save = async () => {
     middle_name: userData.middle_name,
   };
   const options = {method: 'post', body};
-  await opFetch('/update_user', options);
+  try {
+    const {data: {_rawValue}} = await opFetch('/update_user', options);
+    user.value = _rawValue;
+    backup.value = JSON.stringify(userData)
+  } catch (e) {
+    console.error(e);
+  }
 }
 watchEffect(async () => {
   user.value ? spreadUserProps() : null

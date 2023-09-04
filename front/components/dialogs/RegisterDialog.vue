@@ -95,15 +95,24 @@
                         required
                         @update:model-value="value => phone = mask.unmasked(value)"
                       >
-                        <template v-slot:append-inner>
+                        <template
+                          v-if="phone.length === 10"
+                          v-slot:append-inner
+                        >
                           <v-icon
-                            v-if="phone.length === 10"
-                            :color="phoneConfirmed ? 'green' : 'black'"
-                            :title="phoneConfirmed ? 'Номер телефона подтвержден' : 'Подтвердить номер телефона'"
+                            v-if="phoneConfirmed"
+                            color="green"
                             icon="mdi-check-bold"
                             style="cursor: pointer"
-                            @click.prevent="phoneAppendClick"
+                            title="'Номер телефона подтвержден"
                           />
+                          <small
+                            v-else
+                            style="cursor: pointer"
+                            @click.prevent="phoneAppendClick"
+                          >
+                            Подтвердить
+                          </small>
                         </template>
                       </v-text-field>
 
@@ -116,15 +125,24 @@
                         placeholder="example@mail.ru"
                         required
                       >
-                        <template v-slot:append-inner>
+                        <template
+                          v-if="email.length && isEmail(email)"
+                          v-slot:append-inner
+                        >
                           <v-icon
-                            v-if="email.length && isEmail(email)"
-                            :color="emailConfirmed ? 'green' : 'black'"
-                            :title="emailConfirmed ? 'Адрес email подтвержден' : 'Подтвердить адрес email'"
+                            v-if="emailConfirmed"
+                            color="green"
                             icon="mdi-check-bold"
                             style="cursor: pointer"
-                            @click.prevent="emailAppendClick"
+                            title="Адрес email подтвержден"
                           />
+                          <small
+                            v-else
+                            style="cursor: pointer"
+                            @click.prevent="emailAppendClick"
+                          >
+                            Подтвердить
+                          </small>
                         </template>
                       </v-text-field>
                       <v-text-field
@@ -187,6 +205,7 @@ import {storeToRefs} from "pinia";
 import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
 import {Mask} from "maska";
+
 const authStore = useAuthStore();
 const configStore = useConfigStore();
 const {authDialog, registerDialog} = storeToRefs(authStore)
@@ -350,6 +369,7 @@ const rules = {
 .register-card {
   width: 650px;
 }
+
 .unselect {
   -webkit-user-select: none;
   /* user-select -- это нестандартное свойство */

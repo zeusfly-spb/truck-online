@@ -2,36 +2,30 @@
   <v-row>
     <v-col>
       <v-text-field
+        :model-value="mask.masked(userData.phone)"
+        :readonly="true"
+        label="Phone"
+        @update:model-value="value => phone = mask.unmasked(value)"
+      />
+      <v-text-field
         v-model="userData.email"
         :readonly="true"
         label="Email"
       />
       <v-text-field
-        v-model="userData.phone"
-        :readonly="true"
-        label="Phone"
-      />
-      <v-text-field
         v-model="userData.first_name"
-        label="First Name"
+        label="Имя"
+        @keyup.enter="save"
       />
       <v-text-field
         v-model="userData.last_name"
-        label="Last Name"
+        label="Фамилия"
+        @keyup.enter="save"
       />
       <v-text-field
         v-model="userData.middle_name"
-        label="Middle name"
-      />
-      <v-text-field
-        v-model="userData.company_id"
-        :readonly="true"
-        label="Company ID"
-      />
-      <v-text-field
-        v-model="company_inn"
-        :readonly="true"
-        label="Company INN"
+        label="Отчество"
+        @keyup.enter="save"
       />
       <div
         class="d-flex justify-center"
@@ -49,11 +43,14 @@
 </template>
 
 <script setup>
-import {storeToRefs} from "pinia";
-
 useHead({title: 'Настройки'});
+definePageMeta({middleware: 'auth'});
+import {storeToRefs} from "pinia";
 import {useAuthStore} from "~/store/auth";
-import CompanyInfo from "~/components/CompanyInfo/index.vue";
+import CompanyInfo from "~/components/CompanyInfo.vue";
+import {Mask} from "maska";
+
+const mask = new Mask({mask: '+7 (###) ###-##-##'});
 const email = ref('');
 const phone = ref('');
 const first_name = ref('');
@@ -62,8 +59,6 @@ const middle_name = ref('');
 const company_id = ref('');
 const authStore = useAuthStore();
 const {user} = storeToRefs(authStore);
-const company_inn = computed(() => user.value && user.value.company && user.value.company.inn || null);
-
 const userData = reactive({
   email, phone, first_name, last_name, middle_name, company_id
 })

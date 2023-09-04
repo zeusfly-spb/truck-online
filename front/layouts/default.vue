@@ -1,9 +1,15 @@
 <template>
   <div>
     <v-app>
-      <v-app-bar
-        :title="appTitle"
-      >
+      <v-app-bar>
+        <span
+          class="ml-5 unselectable"
+          style="cursor: pointer"
+          title="На главную"
+          @click="navigateTo('/')"
+        >
+          OnlinePort
+        </span>
         <v-spacer/>
         <MainMenu
           v-if="authenticated"
@@ -63,4 +69,12 @@ const logOut = async () => {
 </script>
 <style>
 a {text-decoration: none;}
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 </style>

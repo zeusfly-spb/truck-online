@@ -21,7 +21,7 @@
   },
   {
     "original": "name",
-    "translation": "ФИО"
+    "translation": "Имя"
   },
   {
     "original": "address",
@@ -142,5 +142,17 @@
   {
     "original": "ogrn_date",
     "translation": "Дата выдачи ОГРН"
+  },
+  {
+    "original": "surname",
+    "translation": "Фамилия"
+  },
+  {
+    "original": "patronymic",
+    "translation": "Отчество"
+  },
+  {
+    "original": "fio",
+    "translation": "ФИО"
   }
 ]

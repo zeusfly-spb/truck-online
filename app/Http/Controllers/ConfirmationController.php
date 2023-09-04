@@ -5,10 +5,15 @@ namespace App\Http\Controllers;
 use App\Events\SendEmailConfirm;
 use App\Models\EmailConfirmation;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ConfirmationController extends Controller
 {
+  /**
+   * @param Request $request
+   * @return JsonResponse
+   */
   public function getEmailConfirmation(Request $request)
   {
     if ($registered = User::whereEmail($request->email)->first()) {
@@ -27,10 +32,13 @@ class ConfirmationController extends Controller
     return response()->json(['confirmation' => $conf->toArray(), 'fresh' => true]);
   }
 
+  /**
+   * @param Request $request
+   * @return bool
+   */
   public function markConfirmation(Request $request)
   {
-    EmailConfirmation::whereEmail($request->email)->first()->update(['confirmed' => true]);
-    return true;
+    return !!EmailConfirmation::whereEmail($request->email)->first()->update(['confirmed' => true]);
   }
 
 }

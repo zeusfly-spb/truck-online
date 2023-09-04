@@ -12,10 +12,15 @@ export const useConfigStore = defineStore('config', {
     companyConfirmed: false,
     phoneConfirmed: false,
     emailConfirmed: false,
+    panelsChanged: false,
   }),
   actions: {
     async setValue({key, value}) {
       this[key] = value;
+    },
+    changePanels() {
+      setTimeout(() => this.panelsChanged = false, 100);
+      this.panelsChanged = true;
     },
     async getConfig() {
       const {data: {_rawValue}} = await opFetch('/config', {method: 'get'});
@@ -31,7 +36,7 @@ export const useConfigStore = defineStore('config', {
       if (error) {
         useSnack({
           show: true,
-          type: 'warning',
+          type: 'error',
           title: 'Ошибка подтверждения',
           message: error,
         });

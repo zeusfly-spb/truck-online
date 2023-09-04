@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    id="app"
+  >
     <NuxtLayout>
       <NuxtLoadingIndicator/>
       <NuxtPage/>
@@ -9,6 +11,7 @@
 <script setup>
 import {storeToRefs} from "pinia";
 import {useAuthStore} from "~/store/auth";
+import "@fontsource/saira";
 
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
@@ -30,4 +33,9 @@ watchEffect(async () => {
   }
 })
 </script>
+<style>
+#app{
+  font-family: "Saira";
+}
+</style>
 

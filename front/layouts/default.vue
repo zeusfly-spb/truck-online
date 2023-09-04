@@ -63,8 +63,4 @@ const logOut = async () => {
 </script>
 <style>
 a {text-decoration: none;}
-.bg {
-  background-image: url('/bg.jpg');
-  background-size: cover;
-}
 </style>

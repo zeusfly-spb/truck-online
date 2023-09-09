@@ -80,15 +80,17 @@ Route::middleware('auth:api')->group(function () {
   Route::apiResource('car/pass/types', PassController::class);
   Route::apiResource('car/right-uses', RightUseController::class);
   Route::apiResource('cars', CarController::class);
-
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });
 
 Route::prefix('confirmation')->group(function () {
   Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);
+  Route::post('/get_phone_confirm', [ConfirmationController::class, 'getPhoneConfirmation']);
   Route::post('/mark_email_confirm', [ConfirmationController::class, 'markConfirmation']);
+  Route::post('/mark_phone_confirm', [ConfirmationController::class, 'markPhoneConfirmation']);
 });
+
 Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
 
 Route::apiResource('containers', ContainerController::class);

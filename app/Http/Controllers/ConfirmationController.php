@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Events\SendEmailConfirm;
+use App\Events\SendPhoneConfirm;
 use App\Models\EmailConfirmation;
+use App\Models\PhoneConfirmation;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -41,4 +43,30 @@ class ConfirmationController extends Controller
     return !!EmailConfirmation::whereEmail($request->email)->first()->update(['confirmed' => true]);
   }
 
+  public function getPhoneConfirmation(Request $request)
+  {
+    if ($registered = User::wherePhone($request->phone)->first()) {
+      $errorMessage = 'Пользователь с номером ' . $registered->phone . ' уже зарегистрирован';
+      return response()->json(['error' => $errorMessage]);
+    }
+    $exists = PhoneConfirmation::wherePhone($request->phone)->first();
+    if ($exists) {
+      return response()->json(['confirmation' => $exists->toArray(), 'fresh' => false, 'confirmed' => $exists->confirmed]);
+    }
+    $conf = PhoneConfirmation::create([
+      'phone' => $request->phone,
+      'code' => rand(100000, 999999)
+    ]);
+    SendPhoneConfirm::dispatch($conf);
+    return response()->json(['confirmation' => $conf->toArray(), 'fresh' => true]);
+  }
+
+  /**
+   * @param Request $request
+   * @return bool
+   */
+  public function markPhoneConfirmation(Request $request)
+  {
+    return !!PhoneConfirmation::wherePhone($request->phone)->first()->update(['confirmed' => true]);
+  }
 }

@@ -35,38 +35,21 @@
 <script setup>
 import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
+import {storeToRefs} from "pinia";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
-const dialog = computed({
-  get() {
-    return authStore.dialog;
-  },
-  set(val) {
-    authStore.setValue({key: 'dialog', value: val})
-  }
-});
+const {dialog, dialogText} = storeToRefs(authStore);
+
 const dialogTitle = computed(() => authStore.dialogTitle);
 const dialogMode = computed(() => authStore.dialogMode);
-const dialogText = computed({
-  get() {
-    return authStore.dialogText;
-  },
-  set(val) {
-    authStore.setValue({key: 'dialogText', value: val})
-  }
-});
-
 const phoneConfirmCode = computed(() => configStore.phoneConfirmCode);
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 
-watch(dialog, val => {
-  !val ? dialogText.value = '' : null;
-});
+watch(dialog, val => !val ? dialogText.value = '' : null);
 
 const setValues = async () => {
   if (dialogMode.value === 'phone' && dialogText.value === phoneConfirmCode.value) {
-    console.log('Phonecode true');
     await configStore.markPhoneConfirmation(configStore.phoneConfirmation.phone);
     dialog.value = false;
     useSnack({

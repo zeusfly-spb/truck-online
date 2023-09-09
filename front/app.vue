@@ -31,7 +31,7 @@ watchEffect(async () => {
     const {data: {_rawValue}} = await useFetch(detailsPath, {method: 'GET', headers});
     user.value = _rawValue;
   }
-})
+});
 </script>
 <style>
 #app{

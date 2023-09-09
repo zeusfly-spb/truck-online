@@ -66,7 +66,8 @@ watch(dialog, val => {
 
 const setValues = async () => {
   if (dialogMode.value === 'phone' && dialogText.value === phoneConfirmCode.value) {
-    configStore.setValue({key: 'phoneConfirmed', value: true});
+    console.log('Phonecode true');
+    await configStore.markPhoneConfirmation(configStore.phoneConfirmation.phone);
     dialog.value = false;
     useSnack({
       show: true,
@@ -76,7 +77,7 @@ const setValues = async () => {
     });
   }
   if (dialogMode.value === 'email' && dialogText.value.toString() === emailConfirmCode.value.toString()) {
-    await configStore.markEmailConfirmation(configStore.confirmation.email);
+    await configStore.markEmailConfirmation(configStore.emailConfirmation.email);
     dialog.value = false;
     useSnack({
       show: true,

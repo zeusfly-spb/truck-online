@@ -87,6 +87,13 @@ export const useConfigStore = defineStore('config', {
       if (result) {
         this.emailConfirmed = true;
       }
+    },
+    async markPhoneConfirmation(param) {
+      const result =
+        await opFetch('/confirmation/mark_phone_confirm', {method: 'post', body: {phone: param}});
+      if (result) {
+        this.phoneConfirmed = true;
+      }
     }
   }
 });

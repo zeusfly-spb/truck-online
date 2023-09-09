@@ -51,11 +51,10 @@ class ConfirmationController extends Controller
         if ($exists = PhoneConfirmation::wherePhone($request->phone)->first()) {
             return response()->json(['confirmation' => $exists->toArray(), 'fresh' => false]);
         }
-        $conf = PhoneConfirmation::create([
-            'phone' => $request->phone,
-            'code' => rand(1000, 9999)
-        ]);
-        SmsController::send('7' . $conf->phone, $conf->code);
+        if ($conf = PhoneConfirmation::create(['phone' => $request->phone, 'code' => rand(1000, 9999)])) {
+            $number = '7' . $conf->phone;
+            SmsController::send($number, $conf->code);
+        }
         return response()->json(['confirmation' => $conf->toArray(), 'fresh' => true]);
     }
 

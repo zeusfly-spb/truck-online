@@ -37,7 +37,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/login', [UserController::class, 'login']);
 });
-
 Route::middleware('auth:api')->group(function () {
     Route::post('/update_user', [UserController::class, 'update']);
     Route::get('/details', [UserController::class, 'details']);

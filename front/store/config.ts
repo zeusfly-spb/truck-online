@@ -4,11 +4,14 @@ import {opFetch} from "~/composables/opFetch";
 export const useConfigStore = defineStore('config', {
   state: () => ({
     config: [],
-    phoneConfirmCode: '9898',
-    newEmailConfirm: false,
+    phoneConfirmCode: '',
     emailConfirmCode: '',
+    newPhoneConfirm: false,
+    newEmailConfirm: false,
     confirmedEmailConfirm: false,
-    confirmation: {},
+    confirmedPhoneConfirm: false,
+    emailConfirmation: {},
+    phoneConfirmation: {},
     companyConfirmed: false,
     phoneConfirmed: false,
     emailConfirmed: false,
@@ -26,6 +29,31 @@ export const useConfigStore = defineStore('config', {
       const {data: {_rawValue}} = await opFetch('/config', {method: 'get'});
       this.config = _rawValue;
     },
+    async getPhoneConfirm(param) {
+      const res =
+        await opFetch('/confirmation/get_phone_confirm', {method: 'post', body: {phone: param}});
+      if (!res) {
+        return;
+      }
+      const {data: {_rawValue: {confirmation, fresh, error}}} = res;
+      if (error) {
+        useSnack({
+          show: true,
+          type: 'error',
+          title: 'Ошибка подтверждения',
+          message: error,
+        });
+        return;
+      } else {
+        this.phoneConfirmation = confirmation;
+        if (confirmation.confirmed) {
+          this.phoneConfirmed = true;
+          return;
+        }
+        this.phoneConfirmCode = confirmation.code;
+        this.newPhoneConfirm = fresh;
+      }
+    },
     async getEmailConfirm(param) {
       const res =
         await opFetch('/confirmation/get_email_confirm', {method: 'post', body: {email: param}});
@@ -40,13 +68,17 @@ export const useConfigStore = defineStore('config', {
           title: 'Ошибка подтверждения',
           message: error,
         });
+        return;
+      } else {
+        this.emailConfirmation = confirmation;
+        if (confirmation.confirmed) {
+          this.emailConfirmed = true;
+          return;
+        }
+        this.emailConfirmCode = confirmation.code;
+        this.newEmailConfirm = fresh;
       }
-      this.confirmation = confirmation;
-      if (confirmation.confirmed) {
-        this.emailConfirmed = true;
-      }
-      this.emailConfirmCode = confirmation.code;
-      this.newEmailConfirm = fresh;
+
     },
     async markEmailConfirmation(param) {
       console.log(param);

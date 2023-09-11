@@ -4,9 +4,8 @@
 </template>
 
 <script setup>
-// const {signIn} = useAuth();
 useHead({title: 'Личный кабинет'});
-// definePageMeta({middleware: 'auth'});
+definePageMeta({middleware: 'auth'});
 const text = ref('');
 
 </script>

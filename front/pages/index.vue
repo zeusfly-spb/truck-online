@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-useHead({title: 'OnlinePort'});
+useHead({title: 'Главная'});
 
 </script>
 

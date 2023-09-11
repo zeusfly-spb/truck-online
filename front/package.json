@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "online-port",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -22,6 +22,7 @@
     "typescript": "*"
   },
   "dependencies": {
+    "@fontsource/saira": "^5.0.11",
     "@mdi/font": "^7.2.96",
     "@nuxtjs/dotenv": "^1.4.1",
     "@vee-validate/i18n": "^4.10.8",

@@ -27,10 +27,10 @@ import {useAuthStore} from "~/store/auth";
 
 const authStore = useAuthStore();
 const userName = computed(() => authStore.userName);
-const items = [{title: 'Личный кабинет', link: '/profile'}, {title: 'Настройки', link: '/config'}];
+const items = [{title: 'Личный кабинет', link: '/profile'}, {title: 'Настройки', link: '/config'},
+  {title: 'Главная', link: '/'}];
 const logOut = async () => {
-  authStore.logUserOut();
-  await navigateTo('/login');
+  await authStore.logUserOut();
 }
 const toPage = async link => {
   await navigateTo(link);

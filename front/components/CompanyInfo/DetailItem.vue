@@ -32,7 +32,11 @@
 
 <script setup>
 import {useTranslatorStore} from "~/store/translator";
+import {useConfigStore} from "~/store/config";
 
+const panel = ref([]);
+const configStore = useConfigStore();
+const panelsChanged = computed(() => configStore.panelsChanged);
 const translatorStore = useTranslatorStore();
 const props = defineProps({
   title: {
@@ -49,7 +53,7 @@ const translate = word => {
 }
 const {title, content} = toRefs(props);
 const type = computed(() => content.value && typeof content.value);
-const panel = ref([]);
+
 </script>
 
 <style lang="scss" scoped>

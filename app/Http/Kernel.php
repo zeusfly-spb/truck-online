@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'localization' => \App\Http\Middleware\Localization::class,
         'super-admin' => \App\Http\Middleware\SuperAdmin::class,
         'executer' => \App\Http\Middleware\Executer::class,
+        'driver' => \App\Http\Middleware\Driver::class,
     ];
 }

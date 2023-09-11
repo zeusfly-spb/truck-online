@@ -6,49 +6,50 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderAction;
+use App\Http\Resources\Api\Orders\OrderActionResource;
 use Auth;
 
 class OrderActionController extends Controller
 {
     /**
-    * @OA\Post(
-    *      path="/api/orders/accept/action/{action_id}",
-    *      operationId="Order action accept if not action creater",
-    *     security={{"bearer_token": {}}},
-    *      tags={"Orders"},
-    *      summary="Order action accept if not action creater",
-    *      description="Order action accept if not action creater",
-    *      @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *                 @OA\Property(
-    *                     property="status",
-    *                     type="integer",
-    *                     example="1"
-    *                 ),
-    *             )
-    *         )
-    *     ),
-    *     @OA\Parameter(
-    *         in="path",
-    *         name="action_id",
-    *         required=true,
-    *         @OA\Schema(type="integer", example="1"),
-    *     ),
-    *     @OA\Parameter(
-    *         description="Localization",
-    *         in="header",
-    *         name="X-Localization",
-    *         required=false,
-    *         @OA\Schema(type="string"),
-    *         @OA\Examples(example="ru", value="ru", summary="Russian")
-    *     ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *   )
+      * @OA\Post(
+      *      path="/api/orders/accept/action/{action_id}",
+      *      operationId="Order action accept if not action creater",
+      *     security={{"bearer_token": {}}},
+      *      tags={"Orders"},
+      *      summary="Order action accept if not action creater",
+      *      description="Order action accept if not action creater",
+      *      @OA\RequestBody(
+      *         @OA\MediaType(
+      *             mediaType="application/json",
+      *             @OA\Schema(
+      *                 @OA\Property(
+      *                     property="status",
+      *                     type="integer",
+      *                     example="1"
+      *                 ),
+      *             )
+      *         )
+      *     ),
+      *     @OA\Parameter(
+      *         in="path",
+      *         name="action_id",
+      *         required=true,
+      *         @OA\Schema(type="integer", example="1"),
+      *     ),
+      *     @OA\Parameter(
+      *         description="Localization",
+      *         in="header",
+      *         name="X-Localization",
+      *         required=false,
+      *         @OA\Schema(type="string"),
+      *         @OA\Examples(example="ru", value="ru", summary="Russian")
+      *     ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="SUCCESS",
+      *     ),
+      *   )
     */
   public function accept(Request $request, $orderActionId){
 
@@ -70,5 +71,11 @@ class OrderActionController extends Controller
     return response()->json([
       'message' => 'noPermission'
     ]);
+  }
+
+  public function show($id){
+
+    $orderActions = OrderAction::where('order_id', $id)->get();
+    return OrderActionResource::collection($orderActions);
   }
 }

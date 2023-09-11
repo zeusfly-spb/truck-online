@@ -7,6 +7,7 @@ use MatanYadaev\EloquentSpatial\Objects\Point;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Address;
+use Auth;
 
 class AddressController extends Controller
 {
@@ -153,11 +154,19 @@ class AddressController extends Controller
             $address = new Address;
             $address->location = new Point($request->latitude, $request->longitude);
             $address->accept_status = false;
-            if($request->has('to') && $request->to) $address->to = true; else $address->to = false;
+            if($request->has('to') && $request->to) {
+              $address->to = true;
+              $address->accept_status = true;
+            }else {
+              $address->to = false;
+            }
             if($request->has('from') && $request->from) $address->from = true; else $address->from = false;
             if($request->has('return') && $request->return) $address->return = true; else $address->return = false;
             $address->name = $request->name;
             $address->address = $request->address;
+            if(!Auth::user()->hasRole('super-admin')){
+              $address->user_id = Auth::user()->id;
+            }
             $address->save();
 
             return AddressResource::make($address);
@@ -201,33 +210,33 @@ class AddressController extends Controller
     }
 
     /**
-    * @OA\Get(
-    *      path="/api/addresses/{id}",
-    *      summary="Show Address",
-    *      tags={"Addresses"},
-    *      description="Show Address",
-    *      @OA\Parameter(
-    *      name="id",
-    *      in="path",
-    *      required=true,
-    *      @OA\Schema(
-    *           type="integer",
-    *           example="1"
-    *         )
-    *      ),
-    *     @OA\Parameter(
-     *         description="Localization",
-     *         in="header",
-     *         name="X-Localization",
-     *         required=false,
-     *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="ru", value="ru", summary="Russian")
-     *    ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *     )
+      * @OA\Get(
+      *      path="/api/addresses/{id}",
+      *      summary="Show Address",
+      *      tags={"Addresses"},
+      *      description="Show Address",
+      *      @OA\Parameter(
+      *      name="id",
+      *      in="path",
+      *      required=true,
+      *      @OA\Schema(
+      *           type="integer",
+      *           example="1"
+      *         )
+      *      ),
+      *     @OA\Parameter(
+      *         description="Localization",
+      *         in="header",
+      *         name="X-Localization",
+      *         required=false,
+      *         @OA\Schema(type="string"),
+      *         @OA\Examples(example="ru", value="ru", summary="Russian")
+      *    ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="SUCCESS",
+      *     ),
+      *     )
     */
     public function show(Address $address)
     {
@@ -248,67 +257,77 @@ class AddressController extends Controller
     }
 
     /**
-    * @OA\Put(
-    *      path="/api/addresses/{id}",
-    *      operationId="Update Address",
-    *      tags={"Addresses"},
-    *      summary="Update Address",
-    *      description="Update Address",
-    *      @OA\RequestBody(
-    *         @OA\MediaType(
-    *             mediaType="application/json",
-    *             @OA\Schema(
-    *                 @OA\Property(
-    *                     property="name",
-    *                     type="string",
-    *                     example="Rossi Boutique Hotel & SPA"
-    *                 ),
-    *              @OA\Property(
-    *                     property="latitude",
-    *                     type="string",
-    *                     example="59.9310551"
-    *               ),
-    *              @OA\Property(
-    *                     property="longitude",
-    *                     type="string",
-    *                     example="30.3338147"
-    *               ),
-    *              @OA\Property(
-    *                     property="address_type_id",
-    *                     type="integer",
-    *                     example="1"
-    *               ),
-    *             )
-    *         )
-    *     ),
-    *     @OA\Parameter(
-    *         in="path",
-    *         name="id",
-    *         required=true,
-    *         @OA\Schema(type="integer", example="1"),
-    *     ),
-    *     @OA\Parameter(
-    *         description="Localization",
-    *         in="header",
-    *         name="X-Localization",
-    *         required=false,
-    *         @OA\Schema(type="string"),
-    *         @OA\Examples(example="ru", value="ru", summary="Russian")
-    *     ),
-    *     @OA\Response(
-    *         response=200,
-    *         description="SUCCESS",
-    *     ),
-    *   )
+      * @OA\Put(
+      *      path="/api/addresses/{id}",
+      *      operationId="Update Address",
+      *      tags={"Addresses"},
+      *      security={{"bearer_token": {}}},
+      *      summary="Update Address",
+      *      description="Update Address",
+      *      @OA\RequestBody(
+      *         @OA\MediaType(
+      *             mediaType="application/json",
+      *             @OA\Schema(
+      *                 @OA\Property(
+      *                     property="name",
+      *                     type="string",
+      *                     example="Rossi Boutique Hotel & SPA"
+      *                 ),
+      *              @OA\Property(
+      *                     property="latitude",
+      *                     type="string",
+      *                     example="59.9310551"
+      *               ),
+      *              @OA\Property(
+      *                     property="longitude",
+      *                     type="string",
+      *                     example="30.3338147"
+      *               ),
+      *              @OA\Property(
+      *                     property="address_type_id",
+      *                     type="integer",
+      *                     example="1"
+      *               ),
+      *             )
+      *         )
+      *     ),
+      *     @OA\Parameter(
+      *         in="path",
+      *         name="id",
+      *         required=true,
+      *         @OA\Schema(type="integer", example="1"),
+      *     ),
+      *     @OA\Parameter(
+      *         description="Localization",
+      *         in="header",
+      *         name="X-Localization",
+      *         required=false,
+      *         @OA\Schema(type="string"),
+      *         @OA\Examples(example="ru", value="ru", summary="Russian")
+      *     ),
+      *     @OA\Response(
+      *         response=200,
+      *         description="SUCCESS",
+      *     ),
+      *   )
     */
     public function update(Request $request, $id)
     {
         try{
           $address = Address::find($id);
-          $address->address_type_id = $request->address_type_id;
-          $address->location = new Point($request->latitude, $request->longitude);
-          $address->setTranslation('name', 'ru', $request->name)->save();
+
+          $accept_accept = false;
+          if(Auth::user()->hasRole('super-admin')) $accept_accept = true;
+          else $request->user_id = Auth::user()->id;
+
+          if($request->has('to') && $request->to) {
+            $request->to = true;
+            $accept_accept = true;
+          }else $request->to = false;
+
+          $address->update($request->all());
           return AddressResource::make($address);
+
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

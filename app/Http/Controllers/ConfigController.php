@@ -13,7 +13,7 @@ class ConfigController extends Controller
   {
     return response()->json([
       'dadataApiKey' => env('DADATA_API_KEY'),
-      'dadataSecretKey' => env('DADATA_SECRET_KEY')
+      'dadataSecretKey' => env('DADATA_SECRET_KEY'),
     ]);
   }
 }

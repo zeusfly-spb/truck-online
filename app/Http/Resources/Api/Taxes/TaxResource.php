@@ -16,7 +16,7 @@ class TaxResource extends JsonResource
     {
         return [
           'id' => $this->id,
-          'name' => $this->getTranslation('name', app()->getLocale()),
+          'name' => $this->name,
         ];
     }
 }

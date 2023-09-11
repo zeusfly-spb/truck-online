@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\Orders\OrderActionController;
 use App\Http\Controllers\Api\Orders\OrderController;
 use App\Http\Controllers\Api\Orders\OrderExecuterController;
 use App\Http\Controllers\Api\Orders\OrderSettingController;
+use App\Http\Controllers\Api\WayPoints\WayPointController;
+use App\Http\Controllers\Api\CalcHistories\CalcHistoryController;
 use App\Http\Controllers\Api\Taxes\TaxController;
 use App\Http\Controllers\AssignRoleController;
 use App\Http\Controllers\ConfigController;
@@ -50,12 +52,28 @@ Route::middleware('auth:api')->group(function () {
         Route::post('info', [DadataController::class, 'getCompanyInfo']);
     });
 
-    Route::middleware('super-admin')->group(function () {
-        Route::prefix('assign/role')->group(function () {
-            Route::post('executer', [AssignRoleController::class, 'assign_role_executer']);
-        });
-    });
+  Route::middleware('super-admin')->group(function () {
+    Route::prefix('assign/role')->group(function () {
+      Route::post('executer', [AssignRoleController::class, 'assign_role_executer']); });
+    Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
+  });
 
+  //orders
+  Route::prefix('orders')->group(function () {
+    Route::get('/', [OrderController::class, 'index']);
+    Route::post('store', [OrderController::class, 'store']);
+    Route::get('show/{order_id}',  [OrderController::class, 'show']);
+    Route::put('update/{order_id}',  [OrderController::class, 'update']);
+    Route::post('accept/action/{order_action_id}',  [OrderActionController::class, 'accept']);
+
+    Route::middleware('executer')->group(function () {
+        Route::post('{id}/updates', [OrderExecuterController::class, 'updates']);
+    });
+  });
+
+  Route::middleware('driver')->group(function () {
+    Route::apiResource('way/points', WayPointController::class);
+  });
     //orders
     Route::prefix('orders')->group(function () {
         Route::get('/', [OrderController::class, 'index']);
@@ -77,6 +95,23 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('cars', CarController::class);
     //SuperAdmin user
     Route::post('address/accept/{id}', [AddressController::class, 'accept']);
+  //cars
+  Route::apiResource('car/types', CarTypeController::class);
+  Route::apiResource('car/pass/types', PassController::class);
+  Route::apiResource('car/right-uses', RightUseController::class);
+  Route::apiResource('cars', CarController::class);
+
+  //calcHistories
+  Route::apiResource('calc/histories', CalcHistoryController::class);
+
+  //address
+  Route::apiResource('addresses', AddressController::class);
+
+  //addressClient
+  Route::get('address/client', [AddressController::class, 'addressCLient']);
+
+  //SuperAdmin user
+  Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });
 
 Route::prefix('confirmation')->group(function () {
@@ -90,10 +125,7 @@ Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
 
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('order-statuses', OrderStatusController::class);
-//address
-Route::apiResource('addresses', AddressController::class);
-//addressClient
-Route::get('address/client', [AddressController::class, 'addressCLient']);
+
 //company
 Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);

@@ -33,10 +33,10 @@
 <script setup>
 import {useTranslatorStore} from "~/store/translator";
 import {useConfigStore} from "~/store/config";
+import {storeToRefs} from "pinia";
 
 const panel = ref([]);
-const configStore = useConfigStore();
-const panelsChanged = computed(() => configStore.panelsChanged);
+const {activePanel} = storeToRefs(useConfigStore());
 const translatorStore = useTranslatorStore();
 const props = defineProps({
   title: {
@@ -53,7 +53,9 @@ const translate = word => {
 }
 const {title, content} = toRefs(props);
 const type = computed(() => content.value && typeof content.value);
-
+const panelName = computed(() => type.value === 'object' && title.value || null);
+watch(activePanel, val => val !== panelName.value ? panel.value = undefined : null);
+watch(panel, val => val === 0 ? activePanel.value = panelName.value : null);
 </script>
 
 <style lang="scss" scoped>

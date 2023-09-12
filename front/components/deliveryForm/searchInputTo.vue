@@ -64,7 +64,8 @@
   </v-row>
 </template>
 <script>
-import { useAddressesStore } from "~/store/address";
+import {useAddressesStore} from "~/store/address";
+
 export default {
   setup(props, { emit }) {
     const addressesStore = useAddressesStore();
@@ -76,9 +77,6 @@ export default {
     const listNewAddresses = ref([]);
     const showDropdownNew = ref(false);
 
-    onBeforeMount(async () => {
-      await addressesStore.getAddresses();
-    });
     watch(selectedAddress, (coordinates) => {
       if (coordinates) {
         emit("updateSelectedAddressTo", coordinates.coordinates);

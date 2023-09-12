@@ -9,16 +9,12 @@ export const useAddressesStore = defineStore("addressesStore", {
   }),
   actions: {
     async getAddresses() {
-      try {
-        const response = await opFetch(getAddressesUrl, {method: "get"});
-        const d = response.data._rawValue;
-        this.addresses = d.map((item) => {
-          const decodedName = item.name;
-          return { ...item, name: decodedName };
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      const response = await opFetch(getAddressesUrl, {method: "get"});
+      const d = response.data._rawValue;
+      this.addresses = d.map((item) => {
+        const decodedName = item.name;
+        return { ...item, name: decodedName };
+      });
     },
   },
   getters: {},

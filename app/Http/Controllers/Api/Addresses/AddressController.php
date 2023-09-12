@@ -36,8 +36,8 @@ class AddressController extends Controller
     public function index()
     {
         try{
-            $addresses = Address::orderBy('created_at', 'desc')->get();
-            return response()->json(AddressResource::collection($addresses));
+            $addresses = Address::get();
+            return response()->json($addresses->toArray());
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

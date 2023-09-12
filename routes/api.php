@@ -104,16 +104,16 @@ Route::middleware('auth:api')->group(function () {
   //calcHistories
   Route::apiResource('calc/histories', CalcHistoryController::class);
 
-  //address
-  Route::apiResource('addresses', AddressController::class);
-
+  
+  
   //addressClient
   Route::get('address/client', [AddressController::class, 'addressCLient']);
-
+  
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
 });
-
+//address
+Route::apiResource('addresses', AddressController::class);
 Route::prefix('confirmation')->group(function () {
     Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);
     Route::post('/get_phone_confirm', [ConfirmationController::class, 'getPhoneConfirmation']);

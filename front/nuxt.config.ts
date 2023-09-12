@@ -2,6 +2,7 @@ import vuetify from 'vite-plugin-vuetify'
 
 // @ts-ignore
 export default defineNuxtConfig({
+  ssr: false,
   app: {baseURL: '/dev'},
   devtools: {enabled: true, componentInspector: false},
   runtimeConfig: {

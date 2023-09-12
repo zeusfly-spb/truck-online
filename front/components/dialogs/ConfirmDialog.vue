@@ -49,7 +49,7 @@ const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 watch(dialog, val => !val ? dialogText.value = '' : null);
 
 const setValues = async () => {
-  if (dialogMode.value === 'phone' && dialogText.value === phoneConfirmCode.value) {
+  if (dialogMode.value === 'phone' && dialogText.value.toString() === phoneConfirmCode.value.toString()) {
     await configStore.markPhoneConfirmation(configStore.phoneConfirmation.phone);
     dialog.value = false;
     useSnack({

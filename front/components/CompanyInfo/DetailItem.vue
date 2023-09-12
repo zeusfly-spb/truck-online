@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="content"
+    style="margin-bottom: .3em;margin-top: .3em;"
   >
     <span
       v-if="['string', 'number'].includes(type)"

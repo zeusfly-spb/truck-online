@@ -25,9 +25,7 @@
           </v-btn>
         </template>
       </v-app-bar>
-      <v-main
-        class="bg"
-      >
+      <v-main class="mt-2">
         <RegisterDialog/>
         <LoginDialog/>
         <ConfirmDialog/>

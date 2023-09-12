@@ -37,11 +37,13 @@ export default {
 @media (max-width: 1400px) {
   .delivery {
     display: flex;
-    
+    flex-direction: column;
   }
 }
-.delivery {
-  display: flex;
-  justify-content: space-between;
+@media (min-width: 1400px) {
+  .delivery {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>

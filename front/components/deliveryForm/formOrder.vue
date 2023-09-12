@@ -32,10 +32,17 @@
         </div>
       </div>
       <div class="buttons">
-        <v-btn type="submit"> Рассчитать </v-btn>
+        <v-btn type="submit" style="width: 308px; height: 50px">
+          Рассчитать
+        </v-btn>
         <v-btn
           variant="tonal"
-          style="background-color: #2e67b1; color: rgba(255, 255, 255, 0.5)"
+          style="
+            background-color: #2e67b1;
+            color: rgba(255, 255, 255, 0.5);
+            width: 308px;
+            height: 50px;
+          "
         >
           Сбросить
         </v-btn>
@@ -147,10 +154,67 @@ export default {
 };
 </script>
 <style scoped>
-.formDelivery {
-  width: 100%;
+@media (min-width: 1400px) {
+  .formDelivery {
+    width: 50%;
+    height: 80%;
+    border: 2px solid rgb(203, 15, 15);
+    height: 735px;
+  }
+  .from-to {
+    display: flex;
+    align-content: center;
+    justify-content: space-around;
+    margin-top: 25px;
+  }
+
+  .containerInput {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+  }
+  .additionally {
+    margin-top: 25px;
+  }
+  .additional-options {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+  }
+  .additional-par {
+    background-color: #285795;
+    color: white;
+    width: 150px;
+    height: 32px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+  .buttons {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    margin-top: 25px;
+  }
+  form {
+    width: 95%;
+    padding: 0px 40px 0px;
+  }
+  .calculation {
+    margin-top: 40px;
+  }
+  .calc {
+    margin-top: 25px;
+  }
 }
-form {
-  width: 95%;
+
+@media (max-width: 1400px) {
+  .formDelivery {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 </style>

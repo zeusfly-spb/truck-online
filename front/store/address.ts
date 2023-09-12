@@ -18,6 +18,7 @@ export const useAddressesStore = defineStore("addressesStore", {
           const decodedName = JSON.parse(item.name).ru;
           return { ...item, name: decodedName };
         });
+        console.log("АДРЕСА:", this.addresses);
       } catch (error) {
         console.error(error);
       }

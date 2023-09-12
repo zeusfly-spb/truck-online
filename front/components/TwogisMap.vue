@@ -134,7 +134,16 @@ export default {
 };
 </script>
 <style scoped>
-#map {
-  width: 100%;
+@media (min-width: 1400px) {
+  #map {
+    width: 50%;
+    /* height: 90%; */
+  }
+}
+@media (max-width: 1400px) {
+  #map {
+    width: 100%;
+    
+  }
 }
 </style>

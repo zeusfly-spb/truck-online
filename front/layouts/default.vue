@@ -26,7 +26,7 @@
         </template>
       </v-app-bar>
       <v-main
-        class="bg"
+        class="mt-2"
       >
         <RegisterDialog/>
         <LoginDialog/>

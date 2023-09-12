@@ -1,6 +1,7 @@
 <template>
   <div
     v-if="content"
+    class="margins"
   >
     <span
       v-if="['string', 'number'].includes(type)"
@@ -33,10 +34,10 @@
 <script setup>
 import {useTranslatorStore} from "~/store/translator";
 import {useConfigStore} from "~/store/config";
+import {storeToRefs} from "pinia";
 
 const panel = ref([]);
-const configStore = useConfigStore();
-const panelsChanged = computed(() => configStore.panelsChanged);
+const {activePanel} = storeToRefs(useConfigStore());
 const translatorStore = useTranslatorStore();
 const props = defineProps({
   title: {
@@ -48,6 +49,9 @@ const props = defineProps({
     required: true
   }
 });
+const panelName = computed(() => title.value);
+watch(panel, val => val === 0 ? activePanel.value = panelName.value : null);
+watch(activePanel, val => val !== panelName.value ? panel.value = undefined : null);
 const translate = word => {
   return translatorStore.translate(word, 'details');
 }
@@ -56,6 +60,9 @@ const type = computed(() => content.value && typeof content.value);
 
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="css" scoped>
+.margins {
+  margin-top: .3em;
+  margin-bottom: .3em;
+}
 </style>

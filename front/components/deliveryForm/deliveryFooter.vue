@@ -53,5 +53,6 @@ li {
 }
 .deliveryFooter {
   background-color: white;
+  height: 20%;
 }
 </style>

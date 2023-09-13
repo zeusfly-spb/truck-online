@@ -1,7 +1,7 @@
 <template>
   <div class="delivery">
     <form-order @updateSelectedCoordinates="updateMapCoordinates" />
-    <TwogisMap :selectedCoordinates="selectedCoordinates" />
+    <!-- <TwogisMap :selectedCoordinates="selectedCoordinates" /> -->
   </div>
   <delivery-footer />
 </template>

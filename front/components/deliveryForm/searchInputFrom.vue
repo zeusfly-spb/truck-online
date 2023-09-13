@@ -4,20 +4,15 @@
       <v-text-field
         v-if="!addingNewAddress"
         v-model="inputTextFrom"
-        label="ОТКУДА"
+        label="Откуда везем контейнер"
         @focus="showDropdownAndClearInput('from')"
         @blur="hideDropdownFrom"
-        placeholder="Введите адрес"
+        placeholder="ВВЕДИТЕ АДРЕС"
         variant="solo"
         type="text"
         name="from_address_id"
         autocomplete="off"
-        style="
-          color: rgb(0, 0, 0);
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 400;
-        "
+        ref="textFieldFrom"
       ></v-text-field>
       <v-text-field
         v-else
@@ -25,45 +20,52 @@
         label="ОТКУДА"
         @focus="showDropdownAndClearInput('new')"
         @blur="hideDropdownNew"
-        placeholder="Добавить новый адрес"
+        placeholder="ДОБАВИТЬ НОВЫЙ АДРЕС"
         @input="searchAddress"
         variant="solo"
         type="text"
         name="fromAddress"
         autocomplete="off"
-        style="
-          color: rgb(0, 0, 0);
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 400;
-        "
+        ref="textFieldFrom"
       ></v-text-field>
       <v-list
         v-if="showDropdownFrom || showDropdownNew"
         class="dropdown-list"
-        min-width="320px"
+        :style="{
+          minWidth: textFieldFrom
+            ? textFieldFrom.$el.offsetWidth + 'px'
+            : 'auto',
+        }"
       >
-        <v-list-item @click="addNewAddress" v-if="showDropdownFrom">
-          Точка неизвестна
-        </v-list-item>
         <v-list-item @click="addListAddress" v-if="showDropdownNew">
           Точка известна
-        </v-list-item>
-        <v-list-item
-          v-for="address in addressesFrom"
-          :key="address.id"
-          @click="selectAddressFrom(address)"
-          v-if="showDropdownFrom"
-        >
-          {{ address.name }}
         </v-list-item>
         <v-list-item
           v-for="address in listNewAddresses"
           :key="address.id"
           @click="selectNewAddress(address)"
-          v-if="showDropdownNew"
         >
           {{ address.full_name }}
+        </v-list-item>
+      </v-list>
+      <v-list
+        v-if="showDropdownFrom"
+        class="dropdown-list"
+        :style="{
+          minWidth: textFieldFrom
+            ? textFieldFrom.$el.offsetWidth + 'px'
+            : 'auto',
+        }"
+      >
+        <v-list-item @click="addNewAddress" v-if="showDropdownFrom">
+          Точка неизвестна
+        </v-list-item>
+        <v-list-item
+          v-for="address in addressesFrom"
+          :key="address.id"
+          @click="selectAddressFrom(address)"
+        >
+          {{ address.name }}
         </v-list-item>
       </v-list>
     </v-col>
@@ -82,7 +84,11 @@ export default {
     const newAddress = ref("");
     const listNewAddresses = ref([]);
     const showDropdownNew = ref(false);
+    const textFieldFrom = ref(null);
 
+    onMounted(() => {
+      textFieldFrom.value.focus();
+    });
     onBeforeMount(async () => {
       watch(selectedAddress, (coordinates) => {
         if (coordinates) {
@@ -196,6 +202,7 @@ export default {
       selectNewAddress,
       selectAddressId,
       showDropdownAndClearInput,
+      textFieldFrom,
     };
   },
 };
@@ -207,8 +214,6 @@ export default {
   max-height: 150px;
   cursor: pointer;
   background-color: white;
-  margin-top: 4px;
-  width: 320px;
   color: black;
   z-index: 1000;
 }

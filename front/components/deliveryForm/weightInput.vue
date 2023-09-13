@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    label="Весы"
+    label="ВЕС"
     variant="solo"
     name="weight"
     type="number"

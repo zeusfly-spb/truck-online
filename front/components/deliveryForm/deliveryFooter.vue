@@ -1,34 +1,17 @@
 <template>
   <div class="deliveryFooter">
     <ul class="namesFooter">
-      <li
-        style="
-          color: black;
-          font-weight: 600;
-          font-size: 25px;
-          margin-bottom: 20px;
-        "
-      >
-        Результат подсчетов:
-      </li>
+      <li class="mainLi">Результат подсчетов:</li>
       <li>
-        Наименование услуги
+        Расстояние:
         <p>0р</p>
       </li>
       <li>
-        Колличество
+        Цена:
         <p>0р</p>
       </li>
       <li>
-        Цена
-        <p>0р</p>
-      </li>
-      <li>
-        НДС
-        <p>0р</p>
-      </li>
-      <li>
-        Сумма к оплате
+        Сумма к оплате:
         <p>0р</p>
       </li>
     </ul>
@@ -54,5 +37,30 @@ li {
 .deliveryFooter {
   background-color: white;
   height: 20%;
+}
+.mainLi {
+  color: black;
+  font-weight: 600;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+@media (max-width: 900px) {
+  li {
+    font-size: 14px;
+  }
+  .mainLi {
+    font-size: 18px;
+  }
+}
+@media (max-width: 610px) {
+  .namesFooter {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  li {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>

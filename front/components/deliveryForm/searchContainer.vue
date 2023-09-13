@@ -1,17 +1,18 @@
 <template>
   <div>
-    <select
-      style="background-color: white"
-      v-model="selectedContainers"
-      @change="$emit('updateContainer', selectedContainers)"
-    >
-      <option
-        v-for="container in containersStore.containers"
-        :key="container.id"
-      >
-        {{ container.name }}
-      </option>
-    </select>
+    <v-select
+      chips
+      label="ТИП КОНТЕЙНЕРА"
+      :items="[
+        'Контейнер 1',
+        'Контейнер 2',
+        'Контейнер 3',
+        'Контейнер 4',
+        'Контейнер 5',
+        'Контейнер 6',
+      ]"
+      variant="solo"
+    ></v-select>
   </div>
 </template>
 <script>

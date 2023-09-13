@@ -7,12 +7,13 @@
         label="КУДА"
         @focus="showDropdownAndClearInput('to')"
         @blur="hideDropdownTo"
-        placeholder="Введите адрес"
+        placeholder="ВВЕДИТЕ АДРЕС"
         variant="solo"
         type="text"
         name="delivery_address_id"
         autocomplete="off"
         style="font-size: 20px; font-style: normal; font-weight: 400"
+        ref="textFieldTo"
       ></v-text-field>
       <v-text-field
         v-else
@@ -20,22 +21,21 @@
         label="КУДА"
         @blur="hideDropdownNew"
         @focus="showDropdownAndClearInput('new')"
-        placeholder="Добавить новый адрес"
+        placeholder="ДОБАВИТЬ НОВЫЙ АДРЕС"
         @input="searchAddress"
         variant="solo"
         type="text"
         name="inputTo"
         autocomplete="off"
-        style="
-          font-size: 20px;
-          font-style: normal;
-          font-weight: 400;
-        "
+        style="font-size: 20px; font-style: normal; font-weight: 400"
+        ref="textFieldTo"
       ></v-text-field>
       <v-list
         v-if="showDropdownTo || showDropdownNew"
         class="dropdown-list"
-        min-width="320px"
+        :style="{
+          minWidth: textFieldTo ? textFieldTo.$el.offsetWidth + 'px' : 'auto',
+        }"
       >
         <v-list-item @click="addListAddress" v-if="showDropdownNew">
           Точка известна
@@ -49,7 +49,13 @@
         </v-list-item>
       </v-list>
 
-      <v-list v-if="showDropdownTo" class="dropdown-list" min-width="320px">
+      <v-list
+        v-if="showDropdownTo"
+        class="dropdown-list"
+        :style="{
+          minWidth: textFieldTo ? textFieldTo.$el.offsetWidth + 'px' : 'auto',
+        }"
+      >
         <v-list-item @click="addNewAddress"> Точка неизвестна </v-list-item>
 
         <v-list-item
@@ -75,6 +81,11 @@ export default {
     const newAddress = ref("");
     const listNewAddresses = ref([]);
     const showDropdownNew = ref(false);
+    const textFieldTo = ref(null);
+
+    onMounted(() => {
+      textFieldTo.value.focus();
+    });
 
     onBeforeMount(async () => {
       await addressesStore.getAddresses();
@@ -177,15 +188,12 @@ export default {
       addListAddress,
       selectNewAddress,
       showDropdownAndClearInput,
+      textFieldTo,
     };
   },
 };
 </script>
 <style scoped>
-.v-row {
-  margin: -12px -14px -10px -10px;
-}
-
 .dropdown-list {
   position: absolute;
   overflow-y: auto;
@@ -194,7 +202,6 @@ export default {
   background-color: white;
   border: 1px solid white;
   z-index: 1000;
-  margin-top: 4px;
   color: black;
 }
 </style>

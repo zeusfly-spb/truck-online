@@ -7,12 +7,12 @@
         label="Сдача контейнера"
         @focus="showDropdownAndClearInput('return')"
         @blur="hideDropdownReturn"
-        placeholder="Сдача контейнера"
+        placeholder="ВВЕДИТЕ АДРЕС"
         variant="solo"
         type="text"
         name="return_address_id"
         autocomplete="off"
-        style="color: white; font-size: 16px; font-weight: 400"
+        ref="textFieldReturn"
       ></v-text-field>
       <v-text-field
         v-if="addingNewAddress"
@@ -20,15 +20,24 @@
         label="Сдача контейнера"
         @focus="showDropdownAndClearInput('new')"
         @blur="hideDropdownNew"
-        placeholder="Добавить новый адрес"
+        placeholder="ДОБАВИТЬ НОВЫЙ АДРЕС"
         @input="searchAddress"
         variant="solo"
         type="text"
         name="inputReturn"
         autocomplete="off"
+        ref="textFieldReturn"
       ></v-text-field>
 
-      <v-list v-if="showDropdownNew" class="dropdown-list" min-width="320px">
+      <v-list
+        v-if="showDropdownNew"
+        class="dropdown-list"
+        :style="{
+          minWidth: textFieldReturn
+            ? textFieldReturn.$el.offsetWidth + 'px'
+            : 'auto',
+        }"
+      >
         <v-list-item @click="addListAddress"> Точка известна </v-list-item>
 
         <v-list-item
@@ -40,13 +49,22 @@
         </v-list-item>
       </v-list>
 
-      <v-list v-if="showDropdownReturn" class="dropdown-list" min-width="320px">
+      <v-list
+        v-if="showDropdownReturn"
+        class="dropdown-list"
+        :style="{
+          minWidth: textFieldReturn
+            ? textFieldReturn.$el.offsetWidth + 'px'
+            : 'auto',
+        }"
+      >
         <v-list-item @click="addNewAddress"> Точка неизвестна </v-list-item>
 
         <v-list-item
           v-for="address in addressesReturn"
           :key="address.id"
           @click="selectAddressReturn(address)"
+          class="dropdown-list"
         >
           {{ address.name }}
         </v-list-item>
@@ -66,6 +84,11 @@ export default {
     const addingNewAddress = ref(false);
     const newAddress = ref("");
     const showDropdownNew = ref(false);
+    const textFieldReturn = ref(null);
+
+    onMounted(() => {
+      textFieldReturn.value.focus();
+    });
 
     onBeforeMount(async () => {
       await addressesStore.getAddresses();
@@ -169,6 +192,7 @@ export default {
       selectNewAddress,
       addingNewAddress,
       showDropdownAndClearInput,
+      textFieldReturn,
     };
   },
 };
@@ -180,7 +204,6 @@ export default {
   max-height: 150px;
   cursor: pointer;
   background-color: white;
-  width: 652px;
   margin-top: 4px;
   color: black;
   z-index: 1000;

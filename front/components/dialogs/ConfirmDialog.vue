@@ -1,9 +1,6 @@
 <template>
   <div>
-    <v-dialog
-      v-model="dialog"
-      width="20%"
-    >
+    <v-dialog v-model="dialog" width="20%">
       <v-card>
         <v-card-title
           class="text-caption"
@@ -20,12 +17,8 @@
           />
         </v-card-text>
         <v-card-actions>
-          <v-spacer/>
-          <v-btn
-            @click="setValues"
-          >
-            Ok
-          </v-btn>
+          <v-spacer />
+          <v-btn @click="setValues"> Ok </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -33,41 +26,51 @@
 </template>
 
 <script setup>
-import {useAuthStore} from "~/store/auth";
-import {useConfigStore} from "~/store/config";
-import {storeToRefs} from "pinia";
+import { useAuthStore } from "~/store/auth";
+import { useConfigStore } from "~/store/config";
+import { storeToRefs } from "pinia";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
-const {dialog, dialogText} = storeToRefs(authStore);
+const { dialog, dialogText } = storeToRefs(authStore);
 
 const dialogTitle = computed(() => authStore.dialogTitle);
 const dialogMode = computed(() => authStore.dialogMode);
 const phoneConfirmCode = computed(() => configStore.phoneConfirmCode);
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 
-watch(dialog, val => !val ? dialogText.value = '' : null);
+watch(dialog, (val) => (!val ? (dialogText.value = "") : null));
 
 const setValues = async () => {
-  if (dialogMode.value === 'phone' && dialogText.value.toString() === phoneConfirmCode.value.toString()) {
-    await configStore.markPhoneConfirmation(configStore.phoneConfirmation.phone);
+  if (
+    dialogMode.value === "phone" &&
+    dialogText.value.toString() === phoneConfirmCode.value.toString()
+  ) {
+    await configStore.markPhoneConfirmation(
+      configStore.phoneConfirmation.phone,
+    );
     dialog.value = false;
     useSnack({
       show: true,
-      type: 'success',
-      title: 'Подтвержден',
-      message: 'Номер телефона успешно подтвержден',
+      type: "success",
+      title: "Подтвержден",
+      message: "Номер телефона успешно подтвержден",
     });
   }
-  if (dialogMode.value === 'email' && dialogText.value.toString() === emailConfirmCode.value.toString()) {
-    await configStore.markEmailConfirmation(configStore.emailConfirmation.email);
+  if (
+    dialogMode.value === "email" &&
+    dialogText.value.toString() === emailConfirmCode.value.toString()
+  ) {
+    await configStore.markEmailConfirmation(
+      configStore.emailConfirmation.email,
+    );
     dialog.value = false;
     useSnack({
       show: true,
-      type: 'success',
-      title: 'Подтвержден',
-      message: 'Адрес электронной почты успешно подтвержден',
+      type: "success",
+      title: "Подтвержден",
+      message: "Адрес электронной почты успешно подтвержден",
     });
   }
-}
+};
 </script>

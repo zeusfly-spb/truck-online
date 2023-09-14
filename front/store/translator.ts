@@ -1,18 +1,18 @@
-import {defineStore} from 'pinia';
+import { defineStore } from "pinia";
 import details from "~/details.json";
 
-export const useTranslatorStore = defineStore('translator', {
+export const useTranslatorStore = defineStore("translator", {
   state: () => ({
-    details: details
+    details: details,
   }),
   actions: {
     translate(word, mod) {
       const module = this[mod];
-      const record = module.find(item => item.original === word);
+      const record = module.find((item) => item.original === word);
       if (record) {
         return record.translation;
       }
       return word;
-    }
-  }
+    },
+  },
 });

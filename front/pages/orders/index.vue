@@ -47,31 +47,38 @@
       </tbody>
     </table>
     <div class="pagination">
-      <button @click="loadPage(ordersMeta.prev)" :disabled=!ordersMeta.prev>Previous</button>
-      <button @click="loadPage(ordersMeta.next)" :disabled=!ordersMeta.next>Next</button>
+      <button @click="loadPage(ordersMeta.prev)" :disabled="!ordersMeta.prev">
+        Previous
+      </button>
+      <button @click="loadPage(ordersMeta.next)" :disabled="!ordersMeta.next">
+        Next
+      </button>
     </div>
   </v-container>
 </template>
 <style>
-.bg-white{
+.bg-white {
   background-color: #fff;
   padding: 50px;
 }
-.pagination button{
+.pagination button {
   background-color: #fff;
   padding: 10px;
   border: 1px solid#ddd;
   width: 120px;
 }
-a { text-decoration: none; }
-  table {
+a {
+  text-decoration: none;
+}
+table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
   width: 100%;
   margin-top: 20px;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -80,30 +87,30 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
-.mt-20{
-  margin-top:20px
+.mt-20 {
+  margin-top: 20px;
 }
 </style>
 
 <script setup>
-  const { data: addresses } = useFetch(URI+'addresses');
-  const orders = ref([]);
-  const ordersMeta = {
-      prev: null,
-      next: null,
-      current_page: 1
-    };
-  const priceFilter = ref(null);
-  const weightFilter = ref(null);
+const { data: addresses } = useFetch(URI + "addresses");
+const orders = ref([]);
+const ordersMeta = {
+  prev: null,
+  next: null,
+  current_page: 1,
+};
+const priceFilter = ref(null);
+const weightFilter = ref(null);
 
-  const loadPage = async (url) => {
+const loadPage = async (url) => {
   try {
-      const headers = new Headers();
-      const token_cookie = useCookie('online_port_token');
+    const headers = new Headers();
+    const token_cookie = useCookie("online_port_token");
     if (token_cookie.value) {
-      headers.set("Authorization", `Bearer ${ token_cookie.value }`);
+      headers.set("Authorization", `Bearer ${token_cookie.value}`);
     }
-    let query = '';
+    let query = "";
     if (priceFilter.value) {
       query += `&price=${priceFilter.value}`;
     }
@@ -111,22 +118,22 @@ tr:nth-child(even) {
       query += `&weight=${weightFilter.value}`;
     }
 
-    const response = await $fetch(url+query, { headers });
+    const response = await $fetch(url + query, { headers });
     orders.value = response.data;
     ordersMeta.prev = response.links.prev;
     ordersMeta.next = response.links.next;
     ordersMeta.current_page = response.meta.current_page;
     console.log(orders.value);
   } catch (error) {
-    console.error('Error loading data:', error);
+    console.error("Error loading data:", error);
   }
 };
 // Apply the filters
 const applyFilters = () => {
-  loadPage(URI+`orders?page=${ordersMeta.current_page}`);
+  loadPage(URI + `orders?page=${ordersMeta.current_page}`);
 };
 
 onMounted(() => {
-  loadPage(URI+'orders?page=1');
+  loadPage(URI + "orders?page=1");
 });
 </script>

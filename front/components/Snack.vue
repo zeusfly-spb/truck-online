@@ -38,16 +38,16 @@ const type = useSnackType();
 // get icon from type
 const icon = computed(() => {
   switch (type.value) {
-    case 'success':
-      return 'fluent:checkmark-starburst-24-filled';
-    case 'info':
-      return 'fluent:info-24-filled';
-    case 'warning':
-      return 'fluent:warning-24-filled';
-    case 'error':
-      return 'fluent:dismiss-circle-24-filled';
+    case "success":
+      return "fluent:checkmark-starburst-24-filled";
+    case "info":
+      return "fluent:info-24-filled";
+    case "warning":
+      return "fluent:warning-24-filled";
+    case "error":
+      return "fluent:dismiss-circle-24-filled";
     default:
-      return 'fluent:checkmark-starburst-24-filled';
+      return "fluent:checkmark-starburst-24-filled";
   }
 });
 </script>

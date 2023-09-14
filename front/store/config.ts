@@ -1,11 +1,11 @@
-import {defineStore} from 'pinia';
-import {opFetch} from "~/composables/opFetch";
+import { defineStore } from "pinia";
+import { opFetch } from "~/composables/opFetch";
 
-export const useConfigStore = defineStore('config', {
+export const useConfigStore = defineStore("config", {
   state: () => ({
     config: [],
-    phoneConfirmCode: '',
-    emailConfirmCode: '',
+    phoneConfirmCode: "",
+    emailConfirmCode: "",
     newPhoneConfirm: false,
     newEmailConfirm: false,
     confirmedEmailConfirm: false,
@@ -16,35 +16,43 @@ export const useConfigStore = defineStore('config', {
     phoneConfirmed: false,
     emailConfirmed: false,
     activePanel: null,
-    loginType: 'email',
+    loginType: "email",
   }),
   actions: {
     isEmail(val) {
       return String(val)
         .toLowerCase()
         .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         );
     },
-    async setValue({key, value}) {
+    async setValue({ key, value }) {
       this[key] = value;
     },
     async getConfig() {
-      const {data: {_rawValue}} = await opFetch('/config', {method: 'get'});
+      const {
+        data: { _rawValue },
+      } = await opFetch("/config", { method: "get" });
       this.config = _rawValue;
     },
     async getPhoneConfirm(param) {
-      const res =
-        await opFetch('/confirmation/get_phone_confirm', {method: 'post', body: {phone: param}});
+      const res = await opFetch("/confirmation/get_phone_confirm", {
+        method: "post",
+        body: { phone: param },
+      });
       if (!res) {
         return;
       }
-      const {data: {_rawValue: {confirmation, fresh, error}}} = res;
+      const {
+        data: {
+          _rawValue: { confirmation, fresh, error },
+        },
+      } = res;
       if (error) {
         useSnack({
           show: true,
-          type: 'error',
-          title: 'Ошибка подтверждения',
+          type: "error",
+          title: "Ошибка подтверждения",
           message: error,
         });
         return;
@@ -59,17 +67,23 @@ export const useConfigStore = defineStore('config', {
       }
     },
     async getEmailConfirm(param) {
-      const res =
-        await opFetch('/confirmation/get_email_confirm', {method: 'post', body: {email: param}});
+      const res = await opFetch("/confirmation/get_email_confirm", {
+        method: "post",
+        body: { email: param },
+      });
       if (!res) {
         return;
       }
-      const {data: {_rawValue: {confirmation, fresh, error}}} = res;
+      const {
+        data: {
+          _rawValue: { confirmation, fresh, error },
+        },
+      } = res;
       if (error) {
         useSnack({
           show: true,
-          type: 'error',
-          title: 'Ошибка подтверждения',
+          type: "error",
+          title: "Ошибка подтверждения",
           message: error,
         });
         return;
@@ -82,22 +96,25 @@ export const useConfigStore = defineStore('config', {
         this.emailConfirmCode = confirmation.code;
         this.newEmailConfirm = fresh;
       }
-
     },
     async markEmailConfirmation(param) {
       console.log(param);
-      const result =
-        await opFetch('/confirmation/mark_email_confirm', {method: 'post', body: {email: param}});
+      const result = await opFetch("/confirmation/mark_email_confirm", {
+        method: "post",
+        body: { email: param },
+      });
       if (result) {
         this.emailConfirmed = true;
       }
     },
     async markPhoneConfirmation(param) {
-      const result =
-        await opFetch('/confirmation/mark_phone_confirm', {method: 'post', body: {phone: param}});
+      const result = await opFetch("/confirmation/mark_phone_confirm", {
+        method: "post",
+        body: { phone: param },
+      });
       if (result) {
         this.phoneConfirmed = true;
       }
-    }
-  }
+    },
+  },
 });

@@ -13,10 +13,10 @@ export const useAddressesStore = defineStore("addressesStore", {
         const response = await opFetch(getAddressesUrl, {
           method: "get",
         });
-        const d = response.data.value.data;
-        this.addresses = d.map((item) => {
-          const decodedName = JSON.parse(item.name).ru;
-          return { ...item, name: decodedName };
+        const converting = response.data._rawValue.data;
+        this.addresses = converting.map((address) => {
+          const decodedName = JSON.parse(address.name).ru;
+          return { ...address, name: decodedName };
         });
         console.log("АДРЕСА:", this.addresses);
       } catch (error) {

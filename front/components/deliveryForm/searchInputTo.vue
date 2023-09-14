@@ -92,7 +92,7 @@ export default {
     });
     watch(selectedAddress, (coordinates) => {
       if (coordinates) {
-        emit("updateSelectedAddressTo", coordinates.coordinates);
+        emit("updateSelectedAddressTo", selectedAddress.value);
       }
     });
 
@@ -134,7 +134,7 @@ export default {
       selectedAddress.value = toRaw({
         id: address.id,
         name: address.name,
-        coordinates: address.coordinates.coordinates,
+        coordinates: toRaw(address.coordinates.coordinates),
       });
     };
 
@@ -203,5 +203,9 @@ export default {
   border: 1px solid white;
   z-index: 1000;
   color: black;
+  width: 90%;
+}
+.v-col {
+  position: relative;
 }
 </style>

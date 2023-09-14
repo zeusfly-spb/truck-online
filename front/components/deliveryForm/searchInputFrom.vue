@@ -92,7 +92,7 @@ export default {
     onBeforeMount(async () => {
       watch(selectedAddress, (coordinates) => {
         if (coordinates) {
-          emit("updateSelectAddressFrom", coordinates.coordinates);
+          emit("updateSelectAddressFrom", selectedAddress.value);
         }
       });
       await addressesStore.getAddresses();
@@ -148,6 +148,7 @@ export default {
         name: address.name,
         coordinates: toRaw(address.coordinates.coordinates),
       });
+      console.log(selectedAddress.value);
     };
 
     const selectNewAddress = (address) => {
@@ -216,5 +217,9 @@ export default {
   background-color: white;
   color: black;
   z-index: 1000;
+  width: 100%;
+}
+.v-col {
+  position: relative;
 }
 </style>

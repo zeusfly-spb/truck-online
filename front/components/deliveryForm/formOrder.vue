@@ -74,24 +74,28 @@ export default {
     const showAdditionalOptions = ref(false);
     const selectedContainer = ref(null);
     const intermediateFormData = useIntermediateFormData();
-
+    const selectedIds = ref([]);
     const toggleAdditionalOptions = () => {
       showAdditionalOptions.value = !showAdditionalOptions.value;
     };
 
-    const updateSelectAdressFrom = (coordinates) => {
-      selectedCoordinates.value[0] = coordinates;
+    const updateSelectAdressFrom = (address) => {
+      selectedCoordinates.value[0] = address.coordinates;
+      selectedIds.value[0] = address.id;
       emit("updateSelectedCoordinates", selectedCoordinates.value);
     };
 
-    const updateSelectAdressTo = (coordinates) => {
-      selectedCoordinates.value[1] = coordinates;
+    const updateSelectAdressTo = (address) => {
+      selectedCoordinates.value[1] = address.coordinates;
+      selectedIds.value[1] = address.id;
       emit("updateSelectedCoordinates", selectedCoordinates.value);
     };
-    const updateSelectAdressReturn = (coordinates) => {
-      selectedCoordinates.value[2] = coordinates;
+    const updateSelectAdressReturn = (address) => {
+      selectedCoordinates.value[2] = address.coordinates;
+      selectedIds.value[2] = address.id;
       emit("updateSelectedCoordinates", selectedCoordinates.value);
       console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
+      console.log("АЙДИШНИКИ:", selectedIds.value);
     };
 
     const updateWeight = (value) => {
@@ -105,40 +109,6 @@ export default {
     async function submitForm(event) {
       const formData = new FormData(event.target);
       const formProps = Object.fromEntries(formData);
-      const response = await opFetch("/order/store", {
-        method: "POST",
-        body: {
-          data: {
-            ...formProps,
-            imo: 0,
-            is_international: 1,
-            temp_reg: 1,
-            tax_id: 1,
-            calc: true,
-          },
-        },
-        async onResponse({ request, response, options }) {
-          console.log(response);
-          if (response.status == "200") {
-            useSnack({
-              show: true,
-              type: "success",
-              title: "Заказ успешно создан!",
-              message: "Заказ успешно создан!",
-            });
-            await navigateTo("/orders");
-          }
-          if (response.status == "500") {
-            useSnack({
-              show: true,
-              type: "error",
-              title: "Что-то не так с созданием заказа!",
-              message: "Проверьте правильность введенных данных",
-            });
-          }
-        },
-      });
-      intermediateFormData.setFormData(formProps);
     }
 
     return {
@@ -152,6 +122,7 @@ export default {
       updateContainer,
       selectedContainer,
       intermediateFormData,
+      selectedIds,
     };
   },
 };

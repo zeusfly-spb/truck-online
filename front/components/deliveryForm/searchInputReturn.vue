@@ -12,10 +12,9 @@
         type="text"
         name="return_address_id"
         autocomplete="off"
-        ref="textFieldReturn"
       ></v-text-field>
       <v-text-field
-        v-if="addingNewAddress"
+        v-else
         v-model="newAddress"
         label="Сдача контейнера"
         @focus="showDropdownAndClearInput('new')"
@@ -26,19 +25,14 @@
         type="text"
         name="inputReturn"
         autocomplete="off"
-        ref="textFieldReturn"
       ></v-text-field>
-
       <v-list
-        v-if="showDropdownNew"
+        v-if="showDropdownReturn || showDropdownNew"
         class="dropdown-list"
-        :style="{
-          minWidth: textFieldReturn
-            ? textFieldReturn.$el.offsetWidth + 'px'
-            : 'auto',
-        }"
       >
-        <v-list-item @click="addListAddress"> Точка известна </v-list-item>
+        <v-list-item @click="addListAddress" v-if="showDropdownNew">
+          Точка известна
+        </v-list-item>
 
         <v-list-item
           v-for="address in listNewAddresses"
@@ -49,22 +43,15 @@
         </v-list-item>
       </v-list>
 
-      <v-list
-        v-if="showDropdownReturn"
-        class="dropdown-list"
-        :style="{
-          minWidth: textFieldReturn
-            ? textFieldReturn.$el.offsetWidth + 'px'
-            : 'auto',
-        }"
-      >
-        <v-list-item @click="addNewAddress"> Точка неизвестна </v-list-item>
+      <v-list v-if="showDropdownReturn" class="dropdown-list">
+        <v-list-item @click="addNewAddress" v-if="showDropdownNew">
+          Точка неизвестна
+        </v-list-item>
 
         <v-list-item
           v-for="address in addressesReturn"
           :key="address.id"
           @click="selectAddressReturn(address)"
-          class="dropdown-list"
         >
           {{ address.name }}
         </v-list-item>
@@ -84,18 +71,19 @@ export default {
     const addingNewAddress = ref(false);
     const newAddress = ref("");
     const showDropdownNew = ref(false);
-    const textFieldReturn = ref(null);
-
-    onMounted(() => {
-      textFieldReturn.value.focus();
-    });
 
     onBeforeMount(async () => {
+      watch(selectedAddress, (coordinates) => {
+        if (coordinates) {
+          emit("updateSelectedAddressReturn", selectedAddress.value);
+        }
+      });
       await addressesStore.getAddresses();
     });
-    watch(selectedAddress, (coordinates) => {
-      if (coordinates) {
-        emit("updateSelectedAddressReturn", coordinates.coordinates);
+
+    watch(newAddress, (newValue) => {
+      if (!newValue.trim()) {
+        listNewAddresses.value = [];
       }
     });
 
@@ -140,6 +128,7 @@ export default {
         name: address.name,
         coordinates: toRaw(address.coordinates.coordinates),
       });
+      console.log("REEETUUURN:", selectedAddress.value);
     };
 
     const selectNewAddress = (address) => {
@@ -192,7 +181,6 @@ export default {
       selectNewAddress,
       addingNewAddress,
       showDropdownAndClearInput,
-      textFieldReturn,
     };
   },
 };
@@ -207,5 +195,9 @@ export default {
   margin-top: 4px;
   color: black;
   z-index: 1000;
+  width: 100%;
+}
+.v-col {
+  position: relative;
 }
 </style>

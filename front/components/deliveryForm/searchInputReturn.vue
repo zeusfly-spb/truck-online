@@ -195,7 +195,7 @@ export default {
   margin-top: 4px;
   color: black;
   z-index: 1000;
-  width: 100%;
+  width: 97%;
 }
 .v-col {
   position: relative;

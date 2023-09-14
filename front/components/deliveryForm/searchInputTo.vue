@@ -12,7 +12,6 @@
         type="text"
         name="delivery_address_id"
         autocomplete="off"
-        style="font-size: 20px; font-style: normal; font-weight: 400"
         ref="textFieldTo"
       ></v-text-field>
       <v-text-field
@@ -27,7 +26,6 @@
         type="text"
         name="inputTo"
         autocomplete="off"
-        style="font-size: 20px; font-style: normal; font-weight: 400"
         ref="textFieldTo"
       ></v-text-field>
       <v-list
@@ -83,9 +81,9 @@ export default {
     const showDropdownNew = ref(false);
     const textFieldTo = ref(null);
 
-    onMounted(() => {
-      textFieldTo.value.focus();
-    });
+    // onMounted(() => {
+    //   textFieldTo.value.focus();
+    // });
 
     onBeforeMount(async () => {
       await addressesStore.getAddresses();
@@ -136,6 +134,8 @@ export default {
         name: address.name,
         coordinates: toRaw(address.coordinates.coordinates),
       });
+      const token_cookie = useCookie("online_port_token");
+      console.log("TOKEN:", token_cookie.value);
     };
 
     const selectNewAddress = (address) => {

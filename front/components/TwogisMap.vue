@@ -73,10 +73,10 @@ export default {
           return;
         }
 
-        await distanceStore.calculateDistance(
-          props.selectedCoordinates[0],
-          props.selectedCoordinates[1],
-        );
+        // await distanceStore.calculateDistance(
+        //   props.selectedCoordinates[0],
+        //   props.selectedCoordinates[1],
+        // );
 
         newCoordinates.forEach((coord, index) => {
           if (markers.value[index]) {

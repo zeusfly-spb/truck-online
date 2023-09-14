@@ -4,7 +4,6 @@
       <v-row>
         <h3>Откуда везем</h3>
         <v-divider></v-divider>
-        <!-- From Data -->
         <v-col cols="12" md="4">
           <v-select
             label="Select"

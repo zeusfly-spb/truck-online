@@ -1,15 +1,11 @@
 <template>
-  <div class="flex-col">
-  </div>
+  <div class="flex-col"></div>
 </template>
 
 <script setup>
-useHead({title: 'Личный кабинет'});
-definePageMeta({middleware: 'auth'});
-const text = ref('');
-
+useHead({ title: "Личный кабинет" });
+definePageMeta({ middleware: "auth" });
+const text = ref("");
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

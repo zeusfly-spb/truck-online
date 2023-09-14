@@ -75,6 +75,8 @@ export default {
     const selectedContainer = ref(null);
     const intermediateFormData = useIntermediateFormData();
     const selectedIds = ref([]);
+    const weight = ref(null);
+
     const toggleAdditionalOptions = () => {
       showAdditionalOptions.value = !showAdditionalOptions.value;
     };
@@ -106,9 +108,41 @@ export default {
       selectedContainer.value = container;
     };
 
+
+
     async function submitForm(event) {
       const formData = new FormData(event.target);
-      const formProps = Object.fromEntries(formData);
+      const formProps = Object.fromEntries(formData); //Для передачи пропсов в большую форму
+      const token_cookie = useCookie("online_port_token");
+      const headers = new Headers();
+      if (token_cookie.value) {
+        headers.set("Authorization", `Bearer ${token_cookie.value}`);
+      }
+      const response = await fetch("order/store", {
+        method: "POST",
+        headers: headers,
+        body: {
+          container_id: 1,
+          from_address_id: selectedIds.value[0],
+          delivery_address_id: selectedIds.value[1],
+          return_address_id: selectedIds.value[3],
+          weight: weight.value,
+          imo: 0,
+          is_international: 1,
+          temp_reg: 1,
+          tax_id: 1,
+          calc: true,
+        },
+        async onResponse({ request, response, options }) {
+          console.log("ОТВЕТ:", response);
+          if (response.status == "200") {
+            alert("Заказ создан");
+          }
+          if (response.status == "500") {
+            alert("Что-то не так с созданием заказа!");
+          }
+        },
+      });
     }
 
     return {
@@ -123,6 +157,7 @@ export default {
       selectedContainer,
       intermediateFormData,
       selectedIds,
+      weight,
     };
   },
 };

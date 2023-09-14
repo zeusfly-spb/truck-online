@@ -86,9 +86,9 @@ export default {
     const showDropdownNew = ref(false);
     const textFieldFrom = ref(null);
 
-    onMounted(() => {
-      textFieldFrom.value.focus();
-    });
+    // onMounted(() => {
+    //   textFieldFrom.value.focus();
+    // });
     onBeforeMount(async () => {
       watch(selectedAddress, (coordinates) => {
         if (coordinates) {
@@ -217,7 +217,7 @@ export default {
   background-color: white;
   color: black;
   z-index: 1000;
-  width: 100%;
+  width: 90%;
 }
 .v-col {
   position: relative;

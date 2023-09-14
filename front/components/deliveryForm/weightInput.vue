@@ -4,14 +4,19 @@
     variant="solo"
     name="weight"
     type="number"
+    @input="updateWeight"
   ></v-text-field>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      weight: null,
+    };
+  },
   methods: {
-    onWeightChange() {
-      const weight = this.weight;
-      this.$emit("updateWeight", weight);
+    updateWeight() {
+      this.$emit("updateWeight", this.weight);
     },
   },
 };

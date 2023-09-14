@@ -21,10 +21,6 @@ export const useConfigStore = defineStore('config', {
     async setValue({key, value}) {
       this[key] = value;
     },
-    changePanels() {
-      setTimeout(() => this.panelsChanged = false, 100);
-      this.panelsChanged = true;
-    },
     async getConfig() {
       const {data: {_rawValue}} = await opFetch('/config', {method: 'get'});
       this.config = _rawValue;

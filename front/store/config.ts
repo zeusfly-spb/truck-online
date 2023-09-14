@@ -15,9 +15,17 @@ export const useConfigStore = defineStore('config', {
     companyConfirmed: false,
     phoneConfirmed: false,
     emailConfirmed: false,
-    activePanel: null
+    activePanel: null,
+    loginType: 'email',
   }),
   actions: {
+    isEmail(val) {
+      return String(val)
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    },
     async setValue({key, value}) {
       this[key] = value;
     },

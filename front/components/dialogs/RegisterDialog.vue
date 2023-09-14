@@ -1,18 +1,18 @@
 <template>
   <div>
     <v-dialog
-        v-model="registerDialog"
-        :persistent="true"
-        width="40%"
+      v-model="registerDialog"
+      :persistent="true"
+      width="40%"
     >
       <v-card>
         <v-card-title>
           <v-row
-              class="flex-row-reverse"
+            class="flex-row-reverse"
           >
             <v-icon
-                class="ma-3 close"
-                @click="registerDialog = false"
+              class="ma-3 close"
+              @click="registerDialog = false"
             >
               mdi-close
             </v-icon>
@@ -21,20 +21,20 @@
         <v-card-text>
           <v-layout class="rounded rounded-md">
             <div
-                class="d-flex align-center justify-center flex-column"
+              class="d-flex align-center justify-center flex-column"
             >
               <v-card
-                  class="pa-md-4 mx-lg-auto register-class register-card unselect"
+                class="pa-md-4 mx-lg-auto register-class register-card unselect"
               >
                 <v-card-text
-                    class="register-class"
+                  class="register-class"
                 >
                   <v-row>
                     <v-col>
                       <img alt="register_logo" class="logo" src="/register_logo2.png">
                       <v-radio-group
-                          v-model="accountType"
-                          label="Зарегистрируйте меня как"
+                        v-model="accountType"
+                        label="Зарегистрируйте меня как"
                       >
                         <v-radio label="Заказчик" value="customer"/>
                         <v-radio label="Перевозчик" value="transporter"/>
@@ -42,74 +42,74 @@
                     </v-col>
                     <v-col>
                       <v-text-field
-                          v-model="inn"
-                          :readonly="companyConfirmed"
-                          class="inputInn"
-                          hide-details
-                          label="ИНН организации"
-                          maxLength="12"
-                          placeholder="0000 0000 0000"
-                          type="number"
+                        v-model="inn"
+                        :readonly="companyConfirmed"
+                        class="inputInn"
+                        hide-details
+                        label="ИНН организации"
+                        maxLength="12"
+                        placeholder="0000 0000 0000"
+                        type="number"
                       />
                       <div
-                          v-if="company && companyConfirmed"
+                        v-if="company && companyConfirmed"
                       >
                         <v-icon
-                            color="green"
-                            icon="mdi-check-bold"
+                          color="green"
+                          icon="mdi-check-bold"
                         />
                         {{ company.short_name }}
                       </div>
                       <v-btn
-                          v-if="company && !companyConfirmed"
-                          color="#BBDEFB"
-                          @click="confirmCompany"
+                        v-if="company && !companyConfirmed"
+                        color="#BBDEFB"
+                        @click="confirmCompany"
                       >
                         {{ company.short_name }}
                       </v-btn>
                       <v-radio-group
-                          v-model="ndsPayer"
-                          class="mt-4"
-                          inline
-                          label="Являетесь ли вы плательщиком НДС?"
+                        v-model="ndsPayer"
+                        class="mt-4"
+                        inline
+                        label="Являетесь ли вы плательщиком НДС?"
                       >
                         <v-radio label="Да" value="yes"/>
                         <v-radio label="Нет" value="no"/>
                       </v-radio-group>
                       <v-text-field
-                          v-model="contactPerson"
-                          :rules="[]"
-                          density="compact"
-                          label="Контактное лицо"
-                          placeholder="Иванов Иван Иванович"
-                          required
+                        v-model="contactPerson"
+                        :rules="[]"
+                        density="compact"
+                        label="Контактное лицо"
+                        placeholder="Иванов Иван Иванович"
+                        required
                       />
                       <v-text-field
-                          :model-value="mask.masked(phone)"
-                          :readonly="phoneConfirmed"
-                          :rules="[rules.required, rules.phoneLength, rules.digits]"
-                          density="compact"
-                          label="Мобильный телефон"
-                          maxlength="18"
-                          placeholder="+7 900 000-00-00"
-                          required
-                          @update:model-value="value => phone = mask.unmasked(value)"
+                        :model-value="mask.masked(phone)"
+                        :readonly="phoneConfirmed"
+                        :rules="[rules.required, rules.phoneLength, rules.digits]"
+                        density="compact"
+                        label="Мобильный телефон"
+                        maxlength="18"
+                        placeholder="+7 900 000-00-00"
+                        required
+                        @update:model-value="value => phone = mask.unmasked(value)"
                       >
                         <template
-                            v-if="phone.length === 10"
-                            v-slot:append-inner
+                          v-if="phone.length === 10"
+                          v-slot:append-inner
                         >
                           <v-icon
-                              v-if="phoneConfirmed"
-                              color="green"
-                              icon="mdi-check-bold"
-                              style="cursor: pointer"
-                              title="'Номер телефона подтвержден"
+                            v-if="phoneConfirmed"
+                            color="green"
+                            icon="mdi-check-bold"
+                            style="cursor: pointer"
+                            title="'Номер телефона подтвержден"
                           />
                           <small
-                              v-else
-                              style="cursor: pointer"
-                              @click.prevent="phoneAppendClick"
+                            v-else
+                            style="cursor: pointer"
+                            @click.prevent="phoneAppendClick"
                           >
                             Подтвердить
                           </small>
@@ -117,77 +117,77 @@
                       </v-text-field>
 
                       <v-text-field
-                          v-model="email"
-                          :readonly="emailConfirmed"
-                          :rules="[rules.required, rules.email]"
-                          density="compact"
-                          label="E-mail"
-                          placeholder="example@mail.ru"
-                          required
+                        v-model="email"
+                        :readonly="emailConfirmed"
+                        :rules="[rules.required, rules.email]"
+                        density="compact"
+                        label="E-mail"
+                        placeholder="example@mail.ru"
+                        required
                       >
                         <template
-                            v-if="email.length && isEmail(email)"
-                            v-slot:append-inner
+                          v-if="email.length && isEmail(email)"
+                          v-slot:append-inner
                         >
                           <v-icon
-                              v-if="emailConfirmed"
-                              color="green"
-                              icon="mdi-check-bold"
-                              style="cursor: pointer"
-                              title="Адрес email подтвержден"
+                            v-if="emailConfirmed"
+                            color="green"
+                            icon="mdi-check-bold"
+                            style="cursor: pointer"
+                            title="Адрес email подтвержден"
                           />
                           <small
-                              v-else
-                              style="cursor: pointer"
-                              @click.prevent="emailAppendClick"
+                            v-else
+                            style="cursor: pointer"
+                            @click.prevent="emailAppendClick"
                           >
                             Подтвердить
                           </small>
                         </template>
                       </v-text-field>
                       <v-text-field
-                          v-model="password"
-                          :rules="[]"
-                          density="compact"
-                          label="Пароль"
-                          required
-                          type="password"
+                        v-model="password"
+                        :rules="[]"
+                        density="compact"
+                        label="Пароль"
+                        required
+                        type="password"
                       />
                       <v-text-field
-                          v-model="passwordConfirm"
-                          :rules="[]"
-                          density="compact"
-                          label="Повтор пароля"
-                          required
-                          type="password"
+                        v-model="passwordConfirm"
+                        :rules="[]"
+                        density="compact"
+                        label="Повтор пароля"
+                        required
+                        type="password"
                       >
                         <template v-slot:append-inner>
                           <v-icon
-                              v-if="passwordConfirmValid"
-                              color="green"
-                              icon="mdi-check-bold"
-                              title="Правильный повтор пароля"
+                            v-if="passwordConfirmValid"
+                            color="green"
+                            icon="mdi-check-bold"
+                            title="Правильный повтор пароля"
                           />
                         </template>
                       </v-text-field>
                       <v-checkbox
-                          v-model="processPersonal"
-                          label="Даю согласие на обработку персональных данных"
+                        v-model="processPersonal"
+                        label="Даю согласие на обработку персональных данных"
                       />
                       <v-checkbox
-                          v-model="termsNConditions"
-                          label="Принимаю пользовательское соглашение и политику конфиденциальности"
+                        v-model="termsNConditions"
+                        label="Принимаю пользовательское соглашение и политику конфиденциальности"
                       />
                     </v-col>
                   </v-row>
                 </v-card-text>
                 <v-card-actions
-                    class="flex-row justify-center"
+                  class="flex-row justify-center"
                 >
                   <v-btn
-                      :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed || !passwordConfirmValid"
-                      class="mb-2"
-                      @click="smartRegister"
+                    :disabled="!termsNConditions || !processPersonal || !credentialsConfirmed || !passwordConfirmValid"
+                    class="mb-2"
+                    @click="smartRegister"
                   >
                     Зарегистрироваться
                   </v-btn>
@@ -205,6 +205,7 @@ import {storeToRefs} from "pinia";
 import {useAuthStore} from "~/store/auth";
 import {useConfigStore} from "~/store/config";
 import {Mask} from "maska";
+
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
@@ -248,7 +249,7 @@ const goLogin = () => {
 }
 const smartRegister = async () => {
   const success = await
-      registerUser({username, password, passwordConfirm, company_id});
+    registerUser({username, password, passwordConfirm, company_id});
   success ? await registered() : null;
 }
 const phoneAppendClick = async () => {
@@ -300,10 +301,10 @@ watch(inn, async val => {
 });
 const isEmail = (val) => {
   return String(val)
-      .toLowerCase()
-      .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
 };
 const rules = {
   required: value => !!value || 'Поле обязательно для заполнения',

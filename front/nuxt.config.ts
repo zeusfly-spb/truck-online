@@ -1,44 +1,41 @@
-import vuetify from "vite-plugin-vuetify";
+import vuetify from 'vite-plugin-vuetify'
 
 // @ts-ignore
 export default defineNuxtConfig({
-  app: { baseURL: "/dev" },
-  devtools: { enabled: true, componentInspector: false },
+  ssr: false,
+  app: {baseURL: '/dev'},
+  devtools: {enabled: true, componentInspector: false},
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || "http://localhost/api",
-    },
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost/api'
+    }
   },
-  css: [
-    "vuetify/styles",
-    "@/assets/main.scss",
-    "vuetify/lib/styles/main.sass",
-    "@mdi/font/css/materialdesignicons.min.css",
+  css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass",
+    "@mdi/font/css/materialdesignicons.min.css"],
+  buildModules: [
+    ['@nuxtjs/vuetify', {iconfont: 'mdi'}],
+    '@nuxtjs/dotenv'
   ],
-  buildModules: [["@nuxtjs/vuetify", { iconfont: "mdi" }], "@nuxtjs/dotenv"],
-  build: { transpile: ["vuetify"] },
-  vite: { ssr: { noExternal: ["vuetify"] } },
+  build: {transpile: ['vuetify']},
+  vite: {ssr: {noExternal: ['vuetify']}},
   modules: [
-    "@pinia/nuxt",
-    "nuxt-delay-hydration",
-    "nuxt-icon",
+    '@pinia/nuxt',
+    'nuxt-icon',
     async (options, nuxt) => {
-      nuxt.hooks.hook(
-        "vite:extendConfig",
-        (config) =>
-          // @ts-ignore
-          config.plugins?.push(
-            vuetify({
-              styles: { configFile: "assets/variables.scss" },
-            }),
-          ),
+      nuxt.hooks.hook('vite:extendConfig', (config) =>
+        // @ts-ignore
+        config.plugins?.push(
+          vuetify({
+            styles: {configFile: 'assets/variables.scss'},
+          })
+        )
       );
     },
   ],
   delayHydration: {
-    mode: "init",
+    mode: 'init',
     // enables nuxt-delay-hydration in dev mode for testing
-    debug: process.env.NODE_ENV === "development",
+    debug: process.env.NODE_ENV === 'development'
   },
   sourcemap: {
     server: false,
@@ -54,6 +51,6 @@ export default defineNuxtConfig({
       styles: true,
       autoImport: true,
       useVuetifyLabs: true,
-    },
+    }
   },
-});
+})

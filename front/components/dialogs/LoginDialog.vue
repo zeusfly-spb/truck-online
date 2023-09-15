@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="authDialog" :persistent="true" width="40%" height="50%">
+    <v-dialog v-model="authDialog" :persistent="true" width="30%" height="50%">
       <v-card>
         <v-card-title>
           <v-row class="flex-row-reverse">
@@ -9,8 +9,14 @@
             </v-icon>
           </v-row>
         </v-card-title>
-        <v-card-text>
-          <LoginTypeSwitcher />
+        <v-card-text class="unselectable">
+          <label
+            class="font-weight-medium mt-2 d-block mb-1 text-body-2"
+            for="username"
+          >
+            <span v-if="loginType==='email'">Email</span>
+            <span v-else>Номер телефона</span>
+          </label>
           <VTextField
             hide-details
             placeholder="email@email.ru"
@@ -19,7 +25,11 @@
             v-model="username"
             type="email"
             density="compact"
-          />
+          >
+            <template v-slot:prepend-inner>
+              <LoginTypeSwitcher/>
+            </template>
+          </VTextField>
           <VTextField
             hide-details
             placeholder="+7(900) 500-55-55"
@@ -29,7 +39,11 @@
             @update:model-value="(value) => (username = mask.unmasked(value))"
             v-if="loginType === 'phone'"
             id="username"
-          />
+          >
+            <template v-slot:prepend-inner>
+              <LoginTypeSwitcher/>
+            </template>
+          </VTextField>
           <label
             class="font-weight-medium mt-2 d-block mb-1 text-body-2"
             for="password"
@@ -65,9 +79,9 @@
             <VBtn
               :disabled="!valid"
               :loading="loading"
-              block
+              :block="true"
               class="gradient primary font-weight-bold text-body-2"
-              flat
+              :flat="true"
               min-height="45"
               @click="submit"
             >
@@ -81,42 +95,39 @@
 </template>
 
 <script setup>
-import { storeToRefs } from "pinia";
-import { useAuthStore } from "~/store/auth";
-import { navigateTo } from "#app";
-import { useConfigStore } from "~/store/config";
-import { Mask } from "maska";
-const mask = new Mask({ mask: "+7 (###) ###-##-##" });
+import {storeToRefs} from "pinia";
+import {useAuthStore} from "~/store/auth";
+import {navigateTo} from "#app";
+import {useConfigStore} from "~/store/config";
+import {Mask} from "maska";
+
+const mask = new Mask({mask: "+7 (###) ###-##-##"});
 const show = ref(false);
-const { loginType } = storeToRefs(useConfigStore());
+const {loginType} = storeToRefs(useConfigStore());
 watch(loginType, () => {
   username.value = "";
 });
-const { authDialog, registerDialog } = storeToRefs(useAuthStore());
+const {authDialog, registerDialog} = storeToRefs(useAuthStore());
 const authStore = useAuthStore();
 const username = ref("");
 const password = ref("");
 const loading = computed(() => authStore.loading);
 const authenticated = computed(() => authStore.authenticated);
-const valid = computed(
-  () => (isUsernameEmail.value || isUsernamePhone.value) && !!password.value,
-);
+const valid = computed(() => (isUsernameEmail.value || isUsernamePhone.value) && !!password.value);
 const isUsernameEmail = computed(() => {
   const pattern =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return pattern.test(username.value);
 });
-const close = () => (authDialog.value = false);
-const isUsernamePhone = computed(
-  () => /^\d+$/.test(username.value) && username.value.toString().length > 9,
-);
+const close = () => authDialog.value = false;
+const isUsernamePhone = computed(() => /^\d+$/.test(username.value) && username.value.toString().length > 9);
 const goRegister = () => {
-  registerDialog.value = true;
   authDialog.value = false;
+  registerDialog.value = true;
 };
 const submit = async () => {
   try {
-    await authStore.authenticateUser({ username, password });
+    await authStore.authenticateUser({username, password});
     await redirect();
     authDialog.value = false;
   } catch (e) {

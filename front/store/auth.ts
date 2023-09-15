@@ -92,11 +92,21 @@ export const useAuthStore = defineStore("auth", {
       await navigateTo("/");
     },
     async getCompanyByInn(inn) {
-      const res = await opFetch(getCompanyByInnUrl, {
-        method: "post",
-        body: { inn },
-      });
-      this.company = res.data._rawValue.company;
+      try {
+        const res = await opFetch(getCompanyByInnUrl, {
+          method: "post",
+          body: { inn },
+        });
+        this.company = res.data._rawValue.company;
+      } catch (e) {
+        console.error(e);
+        useSnack({
+          show: true,
+          type: "error",
+          title: "Ошибка!",
+          message: 'С указанным ИНН компаний не найдено. Проверьте правильность данных',
+        });
+      }
     },
     async getCompanyInfo() {
       const inn = this.user.company.inn || null;

@@ -4,7 +4,7 @@
       v-for="(type, index) in types"
       :key="index"
       :icon="`mdi-${type}`"
-      @click="switchLoginType(type)"
+      @click.stop.prevent="switchLoginType(type)"
       :title="loginType !== type ? `Переключить на режим входа по ${type === 'phone'
         ? 'номеру телефона' : 'адресу email'}` : `Текущий режим входа по ${type === 'phone'
         ? 'номеру телефона' : 'адресу email'}`
@@ -20,7 +20,9 @@
 <script setup>
 import { useConfigStore } from "~/store/config";
 import { storeToRefs } from "pinia";
-const types = ['email', 'phone'];
+const emailTypes = ['phone', 'email'];
+const phoneTypes = ['email', 'phone'];
+const types = computed(() => loginType.value === 'email' ? emailTypes : phoneTypes);
 const { loginType } = storeToRefs(useConfigStore());
 const switchLoginType = type => loginType.value = type;
 </script>
@@ -30,6 +32,6 @@ const switchLoginType = type => loginType.value = type;
   color: #ffffff;
 }
 .inactive {
-  color: #2e67b1;
+  color: #a6bad3;
 }
 </style>

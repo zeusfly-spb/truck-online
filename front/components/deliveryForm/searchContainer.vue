@@ -1,40 +1,40 @@
 <template>
   <div>
-    <v-select
-      chips
-      label="ТИП КОНТЕЙНЕРА"
-      :items="[
-        'Контейнер 1',
-        'Контейнер 2',
-        'Контейнер 3',
-        'Контейнер 4',
-        'Контейнер 5',
-        'Контейнер 6',
-      ]"
-      variant="solo"
-    ></v-select>
+    <select v-model="selectedContainerId" @change="updateContainer">
+      <option disabled value="">Выберите контейнер</option>
+      <option
+        v-for="container in containersStore.containers"
+        :key="container.id"
+        :value="container.id"
+      >
+        {{ container.name }}
+      </option>
+    </select>
   </div>
 </template>
+
 <script>
 import { useContainersStore } from "~/store/containers";
+
 export default {
-  setup() {
+  setup(_, { emit }) {
     const containersStore = useContainersStore();
-    const selectedContainers = ref(null);
-    console.log("ВЫБРАННЫЙ КОНТЕЙНРЕ:", selectedContainers);
+    const selectedContainerId = ref("");
 
-    const fetchData = async () => {
+    onBeforeMount(async () => {
       await containersStore.getContainers();
-      console.log("Контейнеры:", containersStore.containers);
-    };
+    });
 
-    onMounted(fetchData);
+    const updateContainer = () => {
+      emit("updateContainer", selectedContainerId.value);
+      console.log("CONTAINER ID:", selectedContainerId.value);
+    };
 
     return {
       containersStore,
-      selectedContainers,
+      selectedContainerId,
+      updateContainer,
     };
   },
 };
 </script>
-<style scoped></style>

@@ -15,7 +15,8 @@ export default {
     };
   },
   methods: {
-    updateWeight() {
+    updateWeight(event) {
+      this.weight = event.target.value;
       this.$emit("updateWeight", this.weight);
     },
   },

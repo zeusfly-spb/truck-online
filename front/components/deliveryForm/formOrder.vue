@@ -61,6 +61,7 @@ import searchContainer from "./searchContainer.vue";
 import WeightInput from "./weightInput.vue";
 import { useIntermediateFormData } from "~/store/intermediateFromData";
 import { opFetch } from "~/composables/opFetch";
+import { useCalculate } from "~/store/calculateForm";
 export default {
   components: {
     SearchInputFrom,
@@ -72,8 +73,9 @@ export default {
   setup(_, { emit }) {
     const selectedCoordinates = ref([]);
     const showAdditionalOptions = ref(false);
-    const selectedContainer = ref(null);
+    const containerId = ref(null);
     const intermediateFormData = useIntermediateFormData();
+    const calculation = useCalculate();
     const selectedIds = ref([]);
     const weight = ref(null);
 
@@ -97,42 +99,42 @@ export default {
       selectedIds.value[2] = address.id;
       emit("updateSelectedCoordinates", selectedCoordinates.value);
       console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
-      console.log("АЙДИШНИКИ:", selectedIds.value);
+      console.log(
+        "АЙДИШНИКИ:",
+        selectedIds.value[0],
+        selectedIds.value[1],
+        selectedIds.value[2],
+      );
     };
 
     const updateWeight = (value) => {
       weight.value = value;
     };
 
-    const updateContainer = (container) => {
-      selectedContainer.value = container;
+    const updateContainer = (id) => {
+      containerId.value = id; // измените здесь
+      emit("updateContainer", containerId.value);
     };
 
-
-
     async function submitForm(event) {
+      const body = {
+        container_id: containerId.value,
+        from_address_id: selectedIds.value[0],
+        delivery_address_id: selectedIds.value[1],
+        return_address_id: selectedIds.value[2],
+        weight: weight.value,
+        imo: 0,
+        is_international: 1,
+        temp_reg: 1,
+        tax_id: 1,
+        calc: true,
+      };
       const formData = new FormData(event.target);
       const formProps = Object.fromEntries(formData); //Для передачи пропсов в большую форму
-      const token_cookie = useCookie("online_port_token");
-      const headers = new Headers();
-      if (token_cookie.value) {
-        headers.set("Authorization", `Bearer ${token_cookie.value}`);
-      }
-      const response = await fetch("order/store", {
+      const response = await opFetch("orders/store", {
         method: "POST",
-        headers: headers,
-        body: {
-          container_id: 1,
-          from_address_id: selectedIds.value[0],
-          delivery_address_id: selectedIds.value[1],
-          return_address_id: selectedIds.value[3],
-          weight: weight.value,
-          imo: 0,
-          is_international: 1,
-          temp_reg: 1,
-          tax_id: 1,
-          calc: true,
-        },
+        // headers: headers,
+        body: { data: body },
         async onResponse({ request, response, options }) {
           console.log("ОТВЕТ:", response);
           if (response.status == "200") {
@@ -145,6 +147,7 @@ export default {
       });
     }
 
+    // await calculation.calculate(body);
     return {
       updateSelectAdressFrom,
       updateSelectAdressTo,
@@ -154,10 +157,11 @@ export default {
       showAdditionalOptions,
       updateWeight,
       updateContainer,
-      selectedContainer,
+      containerId,
       intermediateFormData,
       selectedIds,
       weight,
+      calculation,
     };
   },
 };

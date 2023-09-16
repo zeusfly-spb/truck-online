@@ -12,13 +12,23 @@
       </li>
       <li>
         Сумма к оплате:
-        <p>0р</p>
+        <p v-if="calculate.price">{{ calculate.price }}р</p>
+        <p v-else>0р</p>
       </li>
     </ul>
   </div>
 </template>
 <script>
-export default {};
+import { useCalculate } from "~/store/calculateForm";
+export default {
+  setup() {
+    const calculate = useCalculate();
+
+    return {
+      calculate,
+    };
+  },
+};
 </script>
 <style scoped>
 li {

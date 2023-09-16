@@ -203,7 +203,7 @@ import { Mask } from "maska";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
-const { authDialog, registerDialog, dialogMode, dialogTitle, dialog } =
+const { authDialog, registerDialog, dialogMode, dialogTitle, dialog, company } =
   storeToRefs(authStore);
 const { phoneConfirmed, emailConfirmed, companyConfirmed } =
   storeToRefs(configStore);
@@ -222,7 +222,6 @@ const processPersonal = ref(false);
 const termsNConditions = ref(false);
 const emailConfirmationStatus = ref("");
 const phoneConfirmationStatus = ref("");
-const company = computed(() => authStore.company);
 const credentialsConfirmed = computed(
   () => phoneConfirmed.value && emailConfirmed.value && companyConfirmed.value,
 );
@@ -317,6 +316,13 @@ const rules = {
       value,
     ) || "Неверный формат email",
 };
+watch(registerDialog, val => {
+  if (!val) {
+    companyConfirmed.value = false;
+    company.value = null;
+    inn.value = '';
+  }
+});
 </script>
 <style lang="css" scoped>
 .inputInn >>> input[type="number"] {

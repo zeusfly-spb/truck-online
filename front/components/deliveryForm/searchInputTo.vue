@@ -134,8 +134,6 @@ export default {
         name: address.name,
         coordinates: toRaw(address.coordinates.coordinates),
       });
-      const token_cookie = useCookie("online_port_token");
-      console.log("TOKEN:", token_cookie.value);
     };
 
     const selectNewAddress = (address) => {

@@ -51,10 +51,6 @@ const appTitle = computed(() => {
 const register = async () => {
   registerDialog.value = true;
 };
-const logOut = async () => {
-  logUserOut();
-  await navigateTo("/");
-};
 </script>
 <style>
 a {

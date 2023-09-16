@@ -7,7 +7,7 @@
 </template>
 <script>
 import { load } from "@2gis/mapgl";
-import { useDistanceStore } from "../store/distance";
+import { useDistanceStore } from "~/store/distance";
 const markerLabels = [
   "Точка отправления",
   "Точка доставки",
@@ -143,7 +143,7 @@ export default {
 @media (max-width: 1400px) {
   #map {
     width: 100%;
-    
+
   }
 }
 </style>

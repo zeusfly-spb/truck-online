@@ -14,7 +14,7 @@ export const useCalculate = defineStore("calculateStore", {
           console.log("Запрос отправлен:", request);
         },
         onResponse({ response, options }) {
-          console.log("ОТВЕТ:", response);
+          console.log("ОТВЕТ SUKA:", response);
           if (response._status === 200) {
             this.price = response._data.data.price;
             console.log("New price:", this.price);

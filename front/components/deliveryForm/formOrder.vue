@@ -129,25 +129,25 @@ export default {
         tax_id: 1,
         calc: true,
       };
-      // const formData = new FormData(event.target);
-      // const formProps = Object.fromEntries(formData); //Для передачи пропсов в большую форму
-      // const response = await opFetch("orders/store", {
-      //   method: "POST",
-      //   // headers: headers,
-      //   body: { data: body },
-      //   async onResponse({ request, response, options }) {
-      //     console.log("ОТВЕТ:", response);
-      //     if (response.status == "200") {
-      //       alert("Заказ создан");
-      //     }
-      //     if (response.status == "500") {
-      //       alert("Что-то не так с созданием заказа!");
-      //     }
-      //   },
-      // });
-      await calculation.calculate(body);
+      const formData = new FormData(event.target);
+      const formProps = Object.fromEntries(formData); //Для передачи пропсов в большую форму
+      const response = await opFetch("orders/store", {
+        method: "POST",
+        // headers: headers,
+        body: { data: body },
+        async onResponse({ request, response, options }) {
+          console.log("ОТВЕТ:", response);
+          if (response.status == "200") {
+            alert("Заказ создан");
+          }
+          if (response.status == "500") {
+            alert("Что-то не так с созданием заказа!");
+          }
+        },
+      });
     }
-
+    
+    // await calculation.calculate(body);
     return {
       updateSelectAdressFrom,
       updateSelectAdressTo,

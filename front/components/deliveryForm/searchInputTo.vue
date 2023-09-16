@@ -69,6 +69,7 @@
 </template>
 <script>
 import { useAddressesStore } from "~/store/address";
+
 export default {
   setup(props, { emit }) {
     const addressesStore = useAddressesStore();
@@ -85,9 +86,6 @@ export default {
     //   textFieldTo.value.focus();
     // });
 
-    onBeforeMount(async () => {
-      await addressesStore.getAddresses();
-    });
     watch(selectedAddress, (coordinates) => {
       if (coordinates) {
         emit("updateSelectedAddressTo", selectedAddress.value);

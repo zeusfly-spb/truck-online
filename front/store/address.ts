@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { opFetch } from "~/composables/opFetch";
+import {defineStore} from "pinia";
+import {opFetch} from "~/composables/opFetch";
 
 const getAddressesUrl = "/addresses";
 
@@ -15,13 +15,6 @@ export const useAddressesStore = defineStore("addressesStore", {
         });
         const res = response.data._rawValue.data;
         this.addresses = res;
-
-        // const converting = response.data._rawValue.data;
-        // this.addresses = converting.map((address) => {
-        //   const decodedName = JSON.parse(address.name).ru;
-        //   return { ...address, name: decodedName };
-        // });
-        // console.log("АДРЕСА:", this.addresses);
       } catch (error) {
         console.error(error);
       }

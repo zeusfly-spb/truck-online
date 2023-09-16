@@ -1,5 +1,5 @@
 <template>
-  <div v-if="content" class="margins">
+  <div v-if="content" style="margin-bottom: 0.3em; margin-top: 0.3em">
     <span v-if="['string', 'number'].includes(type)">
       {{ translate(title) }}: <strong>{{ translate(content) }}</strong>
     </span>
@@ -48,6 +48,15 @@ const translate = (word) => {
 };
 const { title, content } = toRefs(props);
 const type = computed(() => content.value && typeof content.value);
+const panelName = computed(
+  () => (type.value === "object" && title.value) || null,
+);
+watch(activePanel, (val) =>
+  val !== panelName.value ? (panel.value = undefined) : null,
+);
+watch(panel, (val) =>
+  val === 0 ? (activePanel.value = panelName.value) : null,
+);
 </script>
 
 <style lang="css" scoped>

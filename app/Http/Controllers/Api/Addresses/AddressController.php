@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Addresses;
 
-use App\Http\Resources\Api\Addresses\AddressResource;
-use MatanYadaev\EloquentSpatial\Objects\Point;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\Api\Addresses\AddressResource;
 use App\Models\Address;
 use Auth;
+use Illuminate\Http\Request;
+use MatanYadaev\EloquentSpatial\Objects\Point;
 
 class AddressController extends Controller
 {
@@ -36,8 +36,8 @@ class AddressController extends Controller
     public function index()
     {
         try{
-            $addresses = Address::orderBy('created_at', 'desc')->get();
-            return AddressResource::collection($addresses);
+            $addresses = Address::get();
+            return response()->json($addresses->toArray());
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

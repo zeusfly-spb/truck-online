@@ -36,7 +36,9 @@ const props = defineProps({
     required: true,
   },
 });
-const panelName = computed(() => title.value);
+const panelName = computed(
+  () => (type.value === "object" && title.value) || null,
+);
 watch(panel, (val) =>
   val === 0 ? (activePanel.value = panelName.value) : null,
 );
@@ -48,9 +50,6 @@ const translate = (word) => {
 };
 const { title, content } = toRefs(props);
 const type = computed(() => content.value && typeof content.value);
-const panelName = computed(
-  () => (type.value === "object" && title.value) || null,
-);
 watch(activePanel, (val) =>
   val !== panelName.value ? (panel.value = undefined) : null,
 );

@@ -1,37 +1,48 @@
 <template>
   <div class="delivery">
-    <form-order @updateSelectedCoordinates="updateMapCoordinates" />
-    <TwogisMap :selectedCoordinates="selectedCoordinates" />
+    <formOrder
+      @updateSelectedCoordinates="updateMapCoordinates"
+    />
+     <TwogisMap :selectedCoordinates="selectedCoordinates" />
   </div>
   <delivery-footer />
 </template>
 
-<script setup>
+<script>
 import { ref } from "vue";
-import { useAddressesStore } from "~/store/address";
 import TwogisMap from "../components/TwogisMap.vue";
-import DeliveryFooter from "../components/deliveryForm/deliveryFooter.vue";
-import formOrder from "../components/deliveryForm/formOrder.vue";
 
-const addressesStore = useAddressesStore();
-const addresses = computed(() => addressesStore.addresses);
+import DeliveryFooter from "~/components/deliveryForm/deliveryFooter.vue";
+import FormOrder from "~/components/deliveryForm/formOrder.vue";
 
-const selectedCoordinates = ref([]);
-const updateMapCoordinates = (coordinates) =>
-  (selectedCoordinates.value = coordinates);
-onBeforeMount(async () => {
-  await addressesStore.getAddresses();
-});
+export default {
+  components: {FormOrder, DeliveryFooter},
+  setup() {
+    const selectedCoordinates = ref([]);
+
+    const updateMapCoordinates = (coordinates) => {
+      selectedCoordinates.value = coordinates;
+    };
+
+    return {
+      selectedCoordinates,
+      updateMapCoordinates,
+    };
+  },
+};
 </script>
 
 <style scoped>
 @media (max-width: 1400px) {
   .delivery {
     display: flex;
+    flex-direction: column;
   }
 }
-.delivery {
-  display: flex;
-  justify-content: space-between;
+@media (min-width: 1400px) {
+  .delivery {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 </style>

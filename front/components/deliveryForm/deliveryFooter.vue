@@ -12,7 +12,7 @@
       </li>
       <li>
         Сумма к оплате:
-        <p v-if="calculate.price">{{ calculate.price }}р</p>
+        <p v-if="price">{{ price }}р</p>
         <p v-else>0р</p>
       </li>
     </ul>
@@ -20,12 +20,13 @@
 </template>
 <script>
 import { useCalculate } from "~/store/calculateForm";
+import { computed } from "vue";
 export default {
   setup() {
     const calculate = useCalculate();
-
+    const price = computed(() => calculate.price);
     return {
-      calculate,
+      price,
     };
   },
 };

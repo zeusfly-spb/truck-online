@@ -13,28 +13,20 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { useContainersStore } from "~/store/containers";
+import { defineEmits } from "vue";
 
-export default {
-  setup(_, { emit }) {
-    const containersStore = useContainersStore();
-    const selectedContainerId = ref("");
+const emit = defineEmits(["updateContainer"]);
+const containersStore = useContainersStore();
+const selectedContainerId = ref("");
 
-    onBeforeMount(async () => {
-      await containersStore.getContainers();
-    });
+onBeforeMount(async () => {
+  await containersStore.getContainers();
+});
 
-    const updateContainer = () => {
-      emit("updateContainer", selectedContainerId.value);
-      console.log("CONTAINER ID:", selectedContainerId.value);
-    };
-
-    return {
-      containersStore,
-      selectedContainerId,
-      updateContainer,
-    };
-  },
+const updateContainer = () => {
+  emit("updateContainer", selectedContainerId.value);
+  console.log("CONTAINER ID:", selectedContainerId.value);
 };
 </script>

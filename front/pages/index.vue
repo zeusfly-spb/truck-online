@@ -1,34 +1,31 @@
 <template>
   <div class="delivery">
-    <formOrder
+    <FormOrder
       @updateSelectedCoordinates="updateMapCoordinates"
+      @clearMarkers="clearMarkers"
     />
-     <TwogisMap :selectedCoordinates="selectedCoordinates" />
+    <TwogisMap :selectedCoordinates="selectedCoordinates" ref="twoGisMapRef" />
   </div>
   <delivery-footer />
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup>
 import TwogisMap from "../components/TwogisMap.vue";
-
 import DeliveryFooter from "~/components/deliveryForm/deliveryFooter.vue";
 import FormOrder from "~/components/deliveryForm/formOrder.vue";
 
-export default {
-  components: {FormOrder, DeliveryFooter},
-  setup() {
-    const selectedCoordinates = ref([]);
+const selectedCoordinates = ref([]);
+const twoGisMapRef = ref(null);
 
-    const updateMapCoordinates = (coordinates) => {
-      selectedCoordinates.value = coordinates;
-    };
+const updateMapCoordinates = (coordinates) => {
+  selectedCoordinates.value = coordinates;
+  twoGisMapRef.value = twoGisMapRef.value;
+};
 
-    return {
-      selectedCoordinates,
-      updateMapCoordinates,
-    };
-  },
+const clearMarkers = () => {
+  if (twoGisMapRef.value) {
+    twoGisMapRef.value.removeMarkers();
+  }
 };
 </script>
 

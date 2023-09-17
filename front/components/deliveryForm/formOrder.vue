@@ -7,20 +7,29 @@
         <div class="inputFrom">
           <search-input-from
             @updateSelectAddressFrom="updateSelectAdressFrom"
+            ref="childFrom"
           />
         </div>
         <div class="inputTo">
-          <search-input-to @updateSelectedAddressTo="updateSelectAdressTo" />
+          <search-input-to
+            @updateSelectedAddressTo="updateSelectAdressTo"
+            ref="childTo"
+          />
         </div>
       </div>
       <div class="return">
         <search-input-return
           @updateSelectedAddressReturn="updateSelectAdressReturn"
+          ref="childReturn"
         />
       </div>
       <div class="containerInput">
         <div class="inputWeight">
-          <weight-input @updateWeight="updateWeight" style="flex: 1" />
+          <weight-input
+            @updateWeight="updateWeight"
+            style="flex: 1"
+            ref="childWeight"
+          />
         </div>
         <div class="containerSelect">
           <search-container @updateContainer="updateContainer" />
@@ -46,6 +55,7 @@
         <v-btn
           variant="tonal"
           style="background-color: #2e67b1; color: rgba(255, 255, 255, 0.5)"
+          @click.prevent="clearData"
         >
           Сбросить
         </v-btn>
@@ -53,117 +63,98 @@
     </form>
   </div>
 </template>
-<script>
+<script setup>
 import SearchInputFrom from "./searchInputFrom.vue";
 import SearchInputTo from "./searchInputTo.vue";
 import SearchInputReturn from "./searchInputReturn.vue";
 import searchContainer from "./searchContainer.vue";
 import WeightInput from "./weightInput.vue";
 import { useIntermediateFormData } from "~/store/intermediateFromData";
-import { opFetch } from "~/composables/opFetch";
 import { useCalculate } from "~/store/calculateForm";
-export default {
-  components: {
-    SearchInputFrom,
-    SearchInputTo,
-    SearchInputReturn,
-    WeightInput,
-    searchContainer,
-  },
-  setup(_, { emit }) {
-    const selectedCoordinates = ref([]);
-    const showAdditionalOptions = ref(false);
-    const containerId = ref(null);
-    const intermediateFormData = useIntermediateFormData();
-    const calculation = useCalculate();
-    const selectedIds = ref([]);
-    const weight = ref(null);
+import { defineEmits } from "vue";
 
-    const toggleAdditionalOptions = () => {
-      showAdditionalOptions.value = !showAdditionalOptions.value;
-    };
+const selectedCoordinates = ref([]);
+const showAdditionalOptions = ref(false);
+const containerId = ref(null);
+const intermediateFormData = useIntermediateFormData();
+const calculation = useCalculate();
+const selectedIds = ref([]);
+const weight = ref(null);
+const childFrom = ref(null);
+const childTo = ref(null);
+const childReturn = ref(null);
+const childWeight = ref(null);
+const emit = defineEmits([
+  "updateSelectedCoordinates",
+  "updateContainer",
+  "updateWeight",
+  "clearMarkers",
+]);
 
-    const updateSelectAdressFrom = (address) => {
-      selectedCoordinates.value[0] = address.coordinates;
-      selectedIds.value[0] = address.id;
-      emit("updateSelectedCoordinates", selectedCoordinates.value);
-    };
+const toggleAdditionalOptions = () => {
+  showAdditionalOptions.value = !showAdditionalOptions.value;
+};
 
-    const updateSelectAdressTo = (address) => {
-      selectedCoordinates.value[1] = address.coordinates;
-      selectedIds.value[1] = address.id;
-      emit("updateSelectedCoordinates", selectedCoordinates.value);
-    };
-    const updateSelectAdressReturn = (address) => {
-      selectedCoordinates.value[2] = address.coordinates;
-      selectedIds.value[2] = address.id;
-      emit("updateSelectedCoordinates", selectedCoordinates.value);
-      console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
-      console.log(
-        "АЙДИШНИКИ:",
-        selectedIds.value[0],
-        selectedIds.value[1],
-        selectedIds.value[2],
-      );
-    };
+const updateSelectAdressFrom = (address) => {
+  selectedCoordinates.value[0] = address.coordinates;
+  selectedIds.value[0] = address.id;
+  emit("updateSelectedCoordinates", selectedCoordinates.value);
+};
 
-    const updateWeight = (value) => {
-      weight.value = value;
-    };
+const updateSelectAdressTo = (address) => {
+  selectedCoordinates.value[1] = address.coordinates;
+  selectedIds.value[1] = address.id;
+  emit("updateSelectedCoordinates", selectedCoordinates.value);
+};
+const updateSelectAdressReturn = (address) => {
+  selectedCoordinates.value[2] = address.coordinates;
+  selectedIds.value[2] = address.id;
+  emit("updateSelectedCoordinates", selectedCoordinates.value);
+  console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
+  console.log(
+    "АЙДИШНИКИ:",
+    selectedIds.value[0],
+    selectedIds.value[1],
+    selectedIds.value[2],
+  );
+};
 
-    const updateContainer = (id) => {
-      containerId.value = id; // измените здесь
-      emit("updateContainer", containerId.value);
-    };
+const updateWeight = (value) => {
+  weight.value = value;
+  emit("updateWeight", weight.value);
+  console.log(weight.value);
+};
 
-    async function submitForm(event) {
-      const body = {
-        container_id: containerId.value,
-        from_address_id: selectedIds.value[0],
-        delivery_address_id: selectedIds.value[1],
-        return_address_id: selectedIds.value[2],
-        weight: weight.value,
-        imo: 0,
-        is_international: 1,
-        temp_reg: 1,
-        tax_id: 1,
-        calc: true,
-      };
-      // const formData = new FormData(event.target);
-      // const formProps = Object.fromEntries(formData); //Для передачи пропсов в большую форму
-      // const response = await opFetch("orders/store", {
-      //   method: "POST",
-      //   // headers: headers,
-      //   body: { data: body },
-      //   async onResponse({ request, response, options }) {
-      //     console.log("ОТВЕТ:", response);
-      //     if (response.status == "200") {
-      //       alert("Заказ создан");
-      //     }
-      //     if (response.status == "500") {
-      //       alert("Что-то не так с созданием заказа!");
-      //     }
-      //   },
-      // });
-      await calculation.calculate(body);
-    }
+const updateContainer = (id) => {
+  containerId.value = id;
+  emit("updateContainer", containerId.value);
+};
 
-    return {
-      updateSelectAdressFrom,
-      updateSelectAdressTo,
-      updateSelectAdressReturn,
-      submitForm,
-      toggleAdditionalOptions,
-      showAdditionalOptions,
-      updateWeight,
-      updateContainer,
-      containerId,
-      intermediateFormData,
-      selectedIds,
-      weight,
-      calculation,
-    };
-  },
+async function submitForm(event) {
+  const body = {
+    container_id: containerId.value,
+    from_address_id: selectedIds.value[0],
+    delivery_address_id: selectedIds.value[1],
+    return_address_id: selectedIds.value[2],
+    weight: weight.value,
+    imo: 0,
+    is_international: 1,
+    temp_reg: 1,
+    tax_id: 1,
+    calc: true,
+  };
+  await calculation.calculate(body);
+  clearData();
+}
+
+const clearData = () => {
+  childFrom.value.clearInput();
+  childTo.value.clearInput();
+  childReturn.value.clearInput();
+  childWeight.value.focusInput();
+  selectedCoordinates.value = [];
+  selectedIds.value = [];
+  emit("clearMarkers");
 };
 </script>
 <style scoped>

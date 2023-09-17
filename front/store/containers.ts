@@ -12,7 +12,6 @@ export const useContainersStore = defineStore("containersStore", {
         });
         const data = await response.json();
         this.containers = toRaw(data.data);
-        console.log("FFFFFFFFF:", toRaw(this.containers));
       } catch (error) {
         console.error(error);
       }

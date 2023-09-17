@@ -59,130 +59,117 @@
     </v-col>
   </v-row>
 </template>
-<script>
+<script setup>
 import { useAddressesStore } from "~/store/address";
-export default {
-  setup(props, { emit }) {
-    const addressesStore = useAddressesStore();
-    const inputTextReturn = ref("");
-    const showDropdownReturn = ref(false);
-    const listNewAddresses = ref([]);
-    const selectedAddress = ref([]);
-    const addingNewAddress = ref(false);
-    const newAddress = ref("");
-    const showDropdownNew = ref(false);
+import { defineEmits, defineExpose } from "vue";
 
-    onBeforeMount(async () => {
-      watch(selectedAddress, (coordinates) => {
-        if (coordinates) {
-          emit("updateSelectedAddressReturn", selectedAddress.value);
-        }
-      });
-      await addressesStore.getAddresses();
-    });
+const emit = defineEmits(["updateSelectedAddressReturn"]);
+const addressesStore = useAddressesStore();
+const inputTextReturn = ref("");
+const showDropdownReturn = ref(false);
+const listNewAddresses = ref([]);
+const selectedAddress = ref([]);
+const addingNewAddress = ref(false);
+const newAddress = ref("");
+const showDropdownNew = ref(false);
 
-    watch(newAddress, (newValue) => {
-      if (!newValue.trim()) {
-        listNewAddresses.value = [];
-      }
-    });
+onBeforeMount(async () => {
+  watch(selectedAddress, (coordinates) => {
+    if (coordinates) {
+      emit("updateSelectedAddressReturn", selectedAddress.value);
+    }
+  });
+  await addressesStore.getAddresses();
+});
 
-    const addressesReturn = computed(() => {
-      const allAddressesReturn = addressesStore.addresses.filter(
-        (el) => el.return == true,
-      );
-      return allAddressesReturn.filter((address) =>
-        address.name
-          .trim()
-          .toLowerCase()
-          .includes(inputTextReturn.value.trim().toLowerCase()),
-      );
-    });
+watch(newAddress, (newValue) => {
+  if (!newValue.trim()) {
+    listNewAddresses.value = [];
+  }
+});
 
-    const showDropdownAndClearInput = (type) => {
-      if (type === "return") {
-        inputTextReturn.value = "";
-        showDropdownReturn.value = true;
-      } else if (type === "new") {
-        newAddress.value = "";
-        showDropdownNew.value = true;
-      }
-    };
+const addressesReturn = computed(() => {
+  const allAddressesReturn = addressesStore.addresses.filter(
+    (el) => el.return == true,
+  );
+  return allAddressesReturn.filter((address) =>
+    address.name
+      .trim()
+      .toLowerCase()
+      .includes(inputTextReturn.value.trim().toLowerCase()),
+  );
+});
 
-    const hideDropdownNew = () => {
-      setTimeout(() => {
-        showDropdownNew.value = false;
-      }, 200);
-    };
+const showDropdownAndClearInput = (type) => {
+  if (type === "return") {
+    inputTextReturn.value = "";
+    showDropdownReturn.value = true;
+  } else if (type === "new") {
+    newAddress.value = "";
+    showDropdownNew.value = true;
+  }
+};
 
-    const hideDropdownReturn = () => {
-      setTimeout(() => {
-        showDropdownReturn.value = false;
-      }, 200);
-    };
-    const selectAddressReturn = (address) => {
-      inputTextReturn.value = address.name;
-      showDropdownReturn.value = false;
-      selectedAddress.value = toRaw({
-        id: address.id,
-        name: address.name,
-        coordinates: toRaw(address.coordinates.coordinates),
-      });
-      console.log("REEETUUURN:", selectedAddress.value);
-    };
+const hideDropdownNew = () => {
+  setTimeout(() => {
+    showDropdownNew.value = false;
+  }, 200);
+};
 
-    const selectNewAddress = (address) => {
-      newAddress.value = address.full_name;
-      showDropdownNew.value = false;
-      selectedAddress.value = toRaw(address.point.reverse());
-    };
+const hideDropdownReturn = () => {
+  setTimeout(() => {
+    showDropdownReturn.value = false;
+  }, 200);
+};
+const selectAddressReturn = (address) => {
+  inputTextReturn.value = address.name;
+  showDropdownReturn.value = false;
+  selectedAddress.value = toRaw({
+    id: address.id,
+    name: address.name,
+    coordinates: toRaw(address.coordinates.coordinates),
+  });
+};
 
-    const addNewAddress = () => {
-      showDropdownReturn.value = false;
-      addingNewAddress.value = true;
-    };
+const selectNewAddress = (address) => {
+  newAddress.value = address.full_name;
+  showDropdownNew.value = false;
+  selectedAddress.value = toRaw(address.point.reverse());
+};
 
-    const addListAddress = () => {
-      showDropdownNew.value = false;
-      addingNewAddress.value = false;
-    };
+const addNewAddress = () => {
+  showDropdownReturn.value = false;
+  addingNewAddress.value = true;
+};
 
-    const searchAddress = async () => {
-      try {
-        const response = await fetch(
-          `https://catalog.api.2gis.com/3.0/suggests?q=${newAddress.value}&key=cb315652-4a77-4656-b55c-2485e210e675&suggest_type=address&fields=items.point`,
-        );
-        const data = await response.json();
-        const r = data.result.items.map((el) => ({
-          id: el.id,
-          full_name: el.full_name,
-          point: [el.point.lat, el.point.lon],
-        }));
-        listNewAddresses.value = toRaw(r);
-        console.log(listNewAddresses.value);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    return {
-      inputTextReturn,
-      showDropdownReturn,
-      hideDropdownReturn,
-      selectAddressReturn,
-      addressesReturn,
-      selectedAddress,
-      newAddress,
-      addNewAddress,
-      searchAddress,
-      listNewAddresses,
-      hideDropdownNew,
-      showDropdownNew,
-      addListAddress,
-      selectNewAddress,
-      addingNewAddress,
-      showDropdownAndClearInput,
-    };
-  },
+const addListAddress = () => {
+  showDropdownNew.value = false;
+  addingNewAddress.value = false;
+};
+
+const clearInput = () => {
+  inputTextReturn.value = "";
+};
+defineExpose({
+  clearInput,
+});
+
+const searchAddress = async () => {
+  try {
+    const response = await fetch(
+      `https://catalog.api.2gis.com/3.0/suggests?q=${newAddress.value}&key=cb315652-4a77-4656-b55c-2485e210e675&suggest_type=address&fields=items.point`,
+    );
+    const data = await response.json();
+    const r = data.result.items.map((el) => ({
+      id: el.id,
+      full_name: el.full_name,
+      point: [el.point.lat, el.point.lon],
+    }));
+    listNewAddresses.value = toRaw(r);
+    console.log(listNewAddresses.value);
+  } catch (error) {
+    console.error(error);
+  }
 };
 </script>
 <style scoped>

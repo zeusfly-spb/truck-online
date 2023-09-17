@@ -40,7 +40,7 @@ export default {
     };
 
     const updateMapCenter = (coord) => {
-      if (map.value) {
+      if (map.value && coord) {
         map.value.setCenter(coord);
       }
     };
@@ -95,7 +95,7 @@ export default {
           markers.value.splice(newCoordinates.length);
         }
 
-        if (newCoordinates.length === 0) {
+        if (newCoordinates.length > 0) {
           map.value.setCenter(newCoordinates[0]);
         }
       },
@@ -111,6 +111,7 @@ export default {
       map.value = new mapglAPI.Map("map", {
         center: defaultCenter,
         zoom: 11,
+        zoomControl: false,
         key: "cb315652-4a77-4656-b55c-2485e210e675",
       });
 
@@ -124,11 +125,18 @@ export default {
     };
 
     onMounted(createMap);
+    const removeMarkers = () => {
+      markers.value.forEach((marker) => {
+        marker.destroy();
+      });
+      markers.value = [];
+    };
 
     return {
       map,
       markers,
       distanceStore,
+      removeMarkers,
     };
   },
 };
@@ -137,13 +145,11 @@ export default {
 @media (min-width: 1400px) {
   #map {
     width: 50%;
-    /* height: 90%; */
   }
 }
 @media (max-width: 1400px) {
   #map {
     width: 100%;
-
   }
 }
 </style>

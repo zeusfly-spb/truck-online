@@ -19,7 +19,6 @@ const twoGisMapRef = ref(null);
 
 const updateMapCoordinates = (coordinates) => {
   selectedCoordinates.value = coordinates;
-  twoGisMapRef.value = twoGisMapRef.value;
 };
 
 const clearMarkers = () => {

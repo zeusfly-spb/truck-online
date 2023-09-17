@@ -36,8 +36,7 @@ class AddressController extends Controller
     public function index()
     {
         try{
-            $addresses = Address::get();
-            return response()->json($addresses->toArray());
+            return response()->json(Address::all());
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

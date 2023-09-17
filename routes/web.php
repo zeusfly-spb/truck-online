@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SendMailController;
-
+use App\Http\Controllers\MangoInteractionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,5 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('send-code', [SendMailController::class, 'sendEmailCode']);
+Route::prefix('vpbx')->group(function () {
+  Route::prefix('events')->group(function () {
+    Route::post('sms', [MangoInteractionController::class, 'smsEventHandler']);
+  });
+});
+
 

@@ -3,7 +3,7 @@
     <select v-model="selectedContainerId" @change="updateContainer">
       <option disabled value="">Выберите контейнер</option>
       <option
-        v-for="container in containersStore.containers"
+        v-for="container in allContainer"
         :key="container.id"
         :value="container.id"
       >
@@ -29,4 +29,8 @@ const updateContainer = () => {
   emit("updateContainer", selectedContainerId.value);
   console.log("CONTAINER ID:", selectedContainerId.value);
 };
+const allContainer = computed(() => {
+  if (!containersStore.containers || containersStore.loading) return [];
+  return containersStore.containers;
+});
 </script>

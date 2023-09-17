@@ -143,6 +143,7 @@ async function submitForm(event) {
     tax_id: 1,
     calc: true,
   };
+
   await calculation.calculate(body);
   clearData();
 }

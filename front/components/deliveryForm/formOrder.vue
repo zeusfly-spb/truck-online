@@ -51,7 +51,8 @@
         </div>
       </div>
       <div class="buttonsForm">
-        <v-btn type="submit"> Рассчитать </v-btn>
+        <v-btn v-if="showCalculateBtn" type="submit"> Рассчитать </v-btn>
+        <v-btn v-else type="button" @click="goToBigForm"> Создать заказ </v-btn>
         <v-btn
           variant="tonal"
           style="background-color: #2e67b1; color: rgba(255, 255, 255, 0.5)"
@@ -84,6 +85,8 @@ const childFrom = ref(null);
 const childTo = ref(null);
 const childReturn = ref(null);
 const childWeight = ref(null);
+const showCalculateBtn = ref(true);
+
 const emit = defineEmits([
   "updateSelectedCoordinates",
   "updateContainer",
@@ -130,7 +133,10 @@ const updateContainer = (id) => {
   emit("updateContainer", containerId.value);
 };
 
-async function submitForm(event) {
+const goToBigForm = async () => {
+  await navigateTo("/orders");
+};
+async function submitForm() {
   const body = {
     container_id: containerId.value,
     from_address_id: selectedIds.value[0],
@@ -143,9 +149,9 @@ async function submitForm(event) {
     tax_id: 1,
     calc: true,
   };
-
   await calculation.calculate(body);
   clearData();
+  showCalculateBtn.value = false;
 }
 
 const clearData = () => {
@@ -156,6 +162,7 @@ const clearData = () => {
   selectedCoordinates.value = [];
   selectedIds.value = [];
   emit("clearMarkers");
+  showCalculateBtn.value = true;
 };
 </script>
 <style scoped>

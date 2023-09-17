@@ -23,6 +23,7 @@
     "typescript": "*"
   },
   "dependencies": {
+    "@2gis/mapgl": "^1.39.0",
     "@fontsource/saira": "^5.0.11",
     "@mdi/font": "^7.2.96",
     "@nuxtjs/dotenv": "^1.4.1",

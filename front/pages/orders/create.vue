@@ -4,7 +4,6 @@
       <v-row>
         <h3>Откуда везем</h3>
         <v-divider></v-divider>
-        <!-- From Data -->
         <v-col cols="12" md="4">
           <v-select
             label="Select"
@@ -314,8 +313,17 @@ const { data: containers } = await useFetch(URI + "containers");
 const { data: addresses } = await useFetch(URI + "addresses");
 const { data: orderSetting } = await useFetch(URI + "order/settings");
 
-import { useAuthStore } from "~/store/auth";
 const authStore = useAuthStore();
+
+import { useAddressesStore } from "~/store/address";
+
+const addressesFrom = computed(() => {
+  const allAdressesFrom = addressesStore.addresses.filter(
+    (el) => el.from == true,
+  );
+  return allAdressesFrom;
+});
+// console.log("FROOOOOOM:", addressesFrom);
 
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",

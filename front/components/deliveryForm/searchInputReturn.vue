@@ -89,6 +89,8 @@ watch(newAddress, (newValue) => {
 });
 
 const addressesReturn = computed(() => {
+  if (!addressesStore.addresses || addressesStore.loading) return [];
+
   const allAddressesReturn = addressesStore.addresses.filter(
     (el) => el.return == true,
   );

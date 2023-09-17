@@ -102,6 +102,9 @@ watch(newAddress, (newValue) => {
 });
 
 const addressesFrom = computed(() => {
+  if (!addressesStore.addresses || addressesStore.loading)
+    return [];
+
   const allAdressesFrom = addressesStore.addresses.filter(
     (el) => el.from == true,
   );
@@ -112,6 +115,7 @@ const addressesFrom = computed(() => {
       .includes(inputTextFrom.value.trim().toLowerCase()),
   );
 });
+
 
 const showDropdownAndClearInput = (type) => {
   if (type === "from") {

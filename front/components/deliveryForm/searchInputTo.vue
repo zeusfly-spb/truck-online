@@ -89,6 +89,8 @@ watch(selectedAddress, (coordinates) => {
 });
 
 const addressesTo = computed(() => {
+  if (!addressesStore.addresses || addressesStore.loading) return [];
+
   const allAddressesTo = addressesStore.addresses.filter((el) => el.to == true);
   return allAddressesTo.filter((address) =>
     address.name
@@ -97,6 +99,7 @@ const addressesTo = computed(() => {
       .includes(inputTextTo.value.trim().toLowerCase()),
   );
 });
+
 
 const showDropdownAndClearInput = (type) => {
   if (type === "to") {

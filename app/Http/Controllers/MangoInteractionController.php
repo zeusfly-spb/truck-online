@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\SMSEventLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MangoInteractionController extends Controller
 {
     public static function smsEventHandler(Request $request)
     {
-      $json = $request->input('json', '[]');
-      $eventParams = json_decode($json);
-      return SMSEventLog::create($eventParams);
+      Log::info(json_encode($request->all()));
+//      $json = $request->input('json', '[]');
+//      $eventParams = json_decode($json);
+//      return SMSEventLog::create($eventParams);
     }
 }

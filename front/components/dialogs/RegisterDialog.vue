@@ -157,7 +157,7 @@
                           <v-icon
                             v-if="passwordConfirmValid"
                             color="green"
-                            icon="mdi-check-bold"
+                            icon="mdi-truck-cargo-container"
                             title="Правильный повтор пароля"
                           />
                         </template>

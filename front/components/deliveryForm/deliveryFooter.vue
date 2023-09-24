@@ -1,5 +1,7 @@
 <template>
-  <div class="deliveryFooter">
+  <v-bottom-navigation
+    elevation="5"
+  >
     <ul class="namesFooter">
       <li class="mainLi">Результат подсчетов:</li>
       <li>
@@ -16,11 +18,12 @@
         <p v-else>0р</p>
       </li>
     </ul>
-  </div>
+  </v-bottom-navigation>
 </template>
 <script>
-import { useCalculate } from "~/store/calculateForm";
-import { computed } from "vue";
+import {useCalculate} from "~/store/calculateForm";
+import {computed} from "vue";
+
 export default {
   setup() {
     const calculate = useCalculate();
@@ -28,7 +31,7 @@ export default {
     return {
       price,
     };
-  },
+  }
 };
 </script>
 <style scoped>
@@ -37,38 +40,42 @@ li {
   font-size: 20px;
   list-style-type: none;
 }
+
 .namesFooter {
+  width: 100%;
   display: flex;
   align-content: center;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   color: black;
-}
-.deliveryFooter {
   background-color: white;
-  height: 20%;
 }
+
 .mainLi {
   color: black;
   font-weight: 600;
   font-size: 25px;
   margin-bottom: 20px;
 }
+
 @media (max-width: 900px) {
   li {
     font-size: 14px;
   }
+
   .mainLi {
     font-size: 18px;
   }
 }
+
 @media (max-width: 610px) {
   .namesFooter {
     display: flex;
     flex-direction: column;
     align-items: stretch;
   }
+
   li {
     display: flex;
     justify-content: space-between;

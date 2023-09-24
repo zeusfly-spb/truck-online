@@ -13,7 +13,7 @@ class SmsController extends Controller
     $params = [
       "text" => $text,
       "to_number" => $number,
-      "command_id" => Str::random(8),
+      "command_id" => Str::uuid(),
       "from_extension" => "9977",
     ];
     $json = json_encode($params);
@@ -27,6 +27,6 @@ class SmsController extends Controller
       'allow_redirects' => false,
     ];
     $httpClient = new Client();
-    return $httpClient->post(env('VPBX_API_URL') . '/commands/sms', $options);
+    return json_decode($httpClient->post(env('VPBX_API_URL') . '/commands/sms', $options)->getBody());
   }
 }

@@ -1,15 +1,10 @@
 <template>
   <div>
-    <select v-model="selectedContainerId" @change="updateContainer">
-      <option disabled value="">Выберите контейнер</option>
-      <option
-        v-for="container in allContainer"
-        :key="container.id"
-        :value="container.id"
-      >
-        {{ container.name }}
-      </option>
-    </select>
+    <v-select
+      v-model="selectedContainerId"
+      @change="updateContainer"
+      :items="allContainers"
+    />
   </div>
 </template>
 
@@ -21,16 +16,14 @@ const emit = defineEmits(["updateContainer"]);
 const containersStore = useContainersStore();
 const selectedContainerId = ref("");
 
-onBeforeMount(async () => {
-  await containersStore.getContainers();
-});
+onMounted(async () => await containersStore.getContainers());
 
 const updateContainer = () => {
   emit("updateContainer", selectedContainerId.value);
-  console.log("CONTAINER ID:", selectedContainerId.value);
 };
-const allContainer = computed(() => {
-  if (!containersStore.containers || containersStore.loading) return [];
-  return containersStore.containers;
+const allContainers = computed(() => {
+  const base = containersStore.containers
+    .map(item => ({...item, title: item.name, value: item.id, props: {subtitle: `${item.weight} кг.`}})) || [];
+  return [{value: '', title: 'Тип контейнера'}, ...base];
 });
 </script>

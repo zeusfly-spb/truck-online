@@ -1,5 +1,6 @@
 <template>
   <v-text-field
+    class="inputInn"
     label="ВЕС"
     variant="solo"
     name="weight"
@@ -7,7 +8,7 @@
     @input="updateWeight"
     @focus="focusInput"
     v-model.number="weight"
-  ></v-text-field>
+  />
 </template>
 <script setup>
 import { defineEmits, defineExpose } from "vue";
@@ -28,4 +29,14 @@ defineExpose({
   focusInput,
 });
 </script>
-<style scoped></style>
+<style scoped>
+.inputInn >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+.inputInn >>> input::-webkit-outer-spin-button,
+.inputInn >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+</style>

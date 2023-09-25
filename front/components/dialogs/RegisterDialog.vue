@@ -248,7 +248,9 @@ const goLogin = () => {
 };
 const smartRegister = async () => {
   const success = await registerUser({
-    username,
+    contactPerson,
+    email,
+    phone,
     password,
     passwordConfirm,
     company_id,

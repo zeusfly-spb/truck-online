@@ -20,22 +20,32 @@ class UserController extends BaseController
    */
   public function register(Request $request): JsonResponse
   {
-    $username = $this->username();
-    $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
     $validator = Validator::make($request->all(), [
-      'username' => $usernameRule,
-      'password' => 'required|confirmed|min:6'
+      'email' => 'required|email',
+      'password' => 'required|confirmed|min:6',
+      'phone' => 'required|digits:10',
+      'contact_person' => 'required'
     ]);
     if ($validator->fails()) {
       return $this->sendError('Validation Error.', $validator->errors());
     }
+    $lastUserId = User::all()->last()->id ?? 1;
+    $extension = strval($lastUserId + env('EXTENSION_START_NUMBER') + 1);
+    $params = [
+      'name' => $request->contact_person,
+      'extension' => $extension,
+      'access_role_id' => 0,
+      'mobile' => $request->phone
+    ];
+    MangoInteractionController::addUser($params);
     $user = User::create([
-      $username => $request->input('username'),
-      'password' => bcrypt($request->input('password')),
+      'extension' => $extension,
+      'email' => $request->email,
+      'password' => bcrypt($request->password),
+      'phone' => $request->phone,
       'company_id' => $request->company_id
     ]);
     $success['token'] = $user->createToken('MyApp')->accessToken;
-    $success[$username] = $user->{$username};
     return $this->sendResponse($success, 'User register successfully.');
   }
 

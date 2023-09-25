@@ -12,9 +12,11 @@ interface UserPayloadInterface {
 }
 
 interface UserRegisterPayloadInterface {
-  username: string;
+  email: string;
+  phone: string;
   password: string;
   passwordConfirm: string;
+  contactPerson: string;
   company_id: bigint;
 }
 
@@ -44,16 +46,20 @@ export const useAuthStore = defineStore("auth", {
       this.user = res.data._rawValue;
     },
     async registerUser({
-      username,
+      email,
+      phone,
       password,
       passwordConfirm,
+      contactPerson,
       company_id,
     }: UserRegisterPayloadInterface) {
       const { data, pending }: any = await opFetch(registerUrl, {
         method: "post",
         body: {
-          username,
+          email,
+          phone,
           password,
+          contact_person: contactPerson,
           password_confirmation: passwordConfirm,
           company_id,
         },

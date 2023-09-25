@@ -25,7 +25,7 @@ class PassController extends Controller
     {
         try{
             $companies = Pass::orderBy('created_at', 'desc')->get();
-            return PassResource::collection($companies);
+            return response()->json(PassResource::collection($companies)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -87,7 +87,7 @@ class PassController extends Controller
           $pass->number = $request->number;
           $pass->date = $request->date;
           $pass->setTranslation('name', 'ru', $request->name)->save();
-          return PassResource::make($pass);
+          return response()->json(PassResource::make($pass));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -163,7 +163,7 @@ class PassController extends Controller
         try{
           $pass = Pass::find($id);
           $pass->update($request->all());
-          return PassResource::make($pass);
+          return response()->json(PassResource::make($pass));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

@@ -65,9 +65,6 @@ class MangoInteractionController extends Controller
     $json = "{}";
     $sign = hash('sha256', env('VPBX_API_KEY') . $json . env('VPBX_API_SALT'));
     $options = [
-//      'headers' => [
-//        'Content-Type' => 'application/json; charset=utf-8'
-//      ],
       'form_params' => [
         'vpbx_api_key' => env('VPBX_API_KEY'),
         'sign' => $sign,
@@ -87,9 +84,4 @@ class MangoInteractionController extends Controller
 //      $eventParams = json_decode($json);
 //      return SMSEventLog::create($eventParams);
     }
-
-  public function jamba()
-  {
-    $this->__callStatic('users');
-  }
 }

@@ -33,7 +33,7 @@ class ContainerController extends Controller
     {
         try{
             $containers = Container::orderBy('created_at', 'desc')->get();
-            return ContainerResource::collection($containers);
+            return response()->json(ContainerResource::collection($containers)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -94,7 +94,7 @@ class ContainerController extends Controller
             $container->weight = $request->weight;
             $container->kit = $request->kit;
             $container->setTranslation('name', 'ru', $request->name)->save();
-            return ContainerResource::make($container);
+            return response()->json(ContainerResource::make($container)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -132,7 +132,7 @@ class ContainerController extends Controller
     public function show(Container $container)
     {
         try{
-            return ContainerResource::make($container);
+            return response()->json(ContainerResource::make($container));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -200,7 +200,7 @@ class ContainerController extends Controller
         try{
             $container = Container::find($id);
             $container->update($request->all());
-            return ContainerResource::make($container);
+            return response()->json(ContainerResource::make($container));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

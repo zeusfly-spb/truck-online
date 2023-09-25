@@ -24,7 +24,7 @@ class CarTypeController extends Controller
     {
         try{
             $companies = CarType::orderBy('created_at', 'desc')->get();
-            return CarTypeResource::collection($companies);
+            return response()->json(CarTypeResource::collection($companies)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -74,7 +74,7 @@ class CarTypeController extends Controller
         try{
             $data = $request->all();
             $carType = CarType::create($data);
-            return CarTypeResource::make($carType);
+            return response()->json(CarTypeResource::make($carType));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -112,7 +112,7 @@ class CarTypeController extends Controller
     public function show(CarType $carType)
     {
       try{
-          return CarTypeResource::make($carType);
+          return response()->json(CarTypeResource::make($carType));
       }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }
@@ -179,7 +179,7 @@ class CarTypeController extends Controller
         try{
             $carType = CarType::find($id);
             $carType->update($request->all());
-            return CarTypeResource::make($carType);
+            return response()->json(CarTypeResource::make($carType));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

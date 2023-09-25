@@ -13,7 +13,7 @@ export const useContainersStore = defineStore("containersStore", {
       this.setLoading(true);
       try {
         const {data: {_rawValue}} = await opFetch('/containers');
-        this.containers = _rawValue.data;
+        this.containers = _rawValue;
       } catch (error) {
         console.error(error);
       }

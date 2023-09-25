@@ -127,7 +127,6 @@
           </v-col>
         </v-row>
       </v-window-item>
-
       <v-window-item value="rec">
         <v-row no-gutters>
           <v-col md :cols="12" class="mr-3 mb-3">
@@ -532,8 +531,7 @@ const data = reactive({
     phone: "",
   },
 });
-
-const addDriver = async () => {
+async function addDriver() {
   const body = {
     first_name: data.drivers.first_name.value,
     middle_name: data.drivers.middle_name.value,
@@ -544,24 +542,32 @@ const addDriver = async () => {
   };
   console.log("body:", body);
   await driverStore.addDriver(body);
-};
+
+  const documentsBody = {
+    id: driverStore.driverId,
+    passport: data.drivers.paperFile,
+    prava: data.drivers.driveLicense.file,
+    doc_number: data.drivers.driveLicense.number,
+    doc_date: data.drivers.driveLicense.date,
+  };
+
+  await driverStore.addDocumentsDriver(documentsBody);
+}
 </script>
+
 <style lang="scss" scoped>
 .basic-data {
   :deep(.v-file-input) {
     position: relative;
   }
-
   :deep(.v-file-input .v-input__prepend) {
     position: absolute;
     left: 12px;
     top: 16px;
   }
-
   :deep(.v-file-input .v-field-label) {
     margin-left: 40px;
   }
-
   :deep(.v-file-input .v-field__input) {
     margin-left: 40px;
   }

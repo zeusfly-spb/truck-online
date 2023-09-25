@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\Addresses;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseController;
 use App\Http\Resources\Api\Addresses\AddressResource;
 use App\Models\Address;
 use Auth;
 use Illuminate\Http\Request;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 
-class AddressController extends Controller
+class AddressController extends BaseController
 {
     /**
      * @OA\Get(
@@ -71,7 +71,7 @@ class AddressController extends Controller
         if($request->has('address'))
           $addresses = $addresses->filterByAddress($request->address);
 
-          return AddressResource::collection($addresses->get());
+          return response()->json(AddressResource::collection($addresses->get())->collection);
       }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }
@@ -167,8 +167,8 @@ class AddressController extends Controller
               $address->user_id = Auth::user()->id;
             }
             $address->save();
+            return $this->sendResponse($address,'Success');
 
-            return AddressResource::make($address);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -205,7 +205,7 @@ class AddressController extends Controller
       $address = Address::find($id);
       $address->accept_status = true;
       $address->save();
-      return response()->json(['message' => 'Success'], 200);
+      return $this->sendResponse($address,'Success');
     }
 
     /**
@@ -240,11 +240,10 @@ class AddressController extends Controller
     public function show(Address $address)
     {
         try{
-            return AddressResource::make($address);
+            return response()->json(AddressResource::make($address));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
-
     }
 
     /**
@@ -325,7 +324,7 @@ class AddressController extends Controller
           }else $request->to = false;
 
           $address->update($request->all());
-          return AddressResource::make($address);
+          return $this->sendResponse(AddressResource::make($address),'Success');
 
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

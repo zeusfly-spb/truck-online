@@ -26,7 +26,7 @@ class CompanyController extends Controller
     {
         try{
             $companies = Company::orderBy('created_at', 'desc')->get();
-            return CompanyResource::collection($companies);
+            return response()->json(CompanyResource::collection($companies)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -173,7 +173,7 @@ class CompanyController extends Controller
         try{
             $data = $request->all();
             $company = Company::create($data);
-            return CompanyResource::make($company);
+            return response()->json(CompanyResource::make($company));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -203,7 +203,7 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         try{
-            return CompanyResource::make($company);
+            return response()->json(CompanyResource::make($company));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -365,9 +365,9 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, $id)
     {
         try{
-            Company::find($id);
+            $company = Company::find($id);
             $company->update($request->all());
-            return CompanyResource::make($company);
+            return response()->json(CompanyResource::make($company));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

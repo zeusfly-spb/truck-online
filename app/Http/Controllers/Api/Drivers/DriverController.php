@@ -45,7 +45,7 @@ class DriverController extends BaseController
     public function index(){
 
       $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
-      return UserResource::collection($users);
+      return response()->json(UserResource::collection($users)->collection);
     }
     /**
     * @OA\Post(
@@ -183,10 +183,7 @@ class DriverController extends BaseController
           $document->table_owner_id = $id;
           $document->save();
       }
-      return response([
-        'message' => 'Success'
-      ]);
-
+      return response()->json(['message' => "success"]);
     }
     /**
     * @OA\Post(
@@ -228,9 +225,7 @@ class DriverController extends BaseController
         $file->save();
       }
 
-      return response([
-        'message' => 'Success'
-      ]);
+      return response()->json(['message' => "success"]);
     }
     /**
     * @OA\Delete(
@@ -275,8 +270,6 @@ class DriverController extends BaseController
       }
       $user->delete();
 
-      return response([
-        'message' => 'Success'
-      ]);
+      return response()->json(['message' => "success"]);
     }
 }

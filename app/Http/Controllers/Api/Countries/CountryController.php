@@ -33,7 +33,7 @@ class CountryController extends Controller
     {
         try{
             $taxes = Country::orderBy('created_at', 'desc')->get();
-            return CountryResource::collection($taxes);
+            return response()->json(CountryResource::collection($taxes)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -83,7 +83,7 @@ class CountryController extends Controller
         try{
             $country = new Country;
             $country->setTranslation('name', 'ru', $request->name)->save();
-            return CountryResource::make($country);
+            return response()->json(CountryResource::make($country));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -149,7 +149,7 @@ class CountryController extends Controller
         try{
           $country = Country::find($id);
           $country->update($request->all());
-          return CountryResource::make($country);
+          return response()->json(CountryResource::make($country));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

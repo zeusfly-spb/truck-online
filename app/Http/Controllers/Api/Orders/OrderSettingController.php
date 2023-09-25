@@ -10,6 +10,6 @@ class OrderSettingController extends Controller
 {
     public function index(){
       $order_settings = OrderSetting::first();
-      return $order_settings;
+      return response()->json($order_settings);
     }
 }

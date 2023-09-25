@@ -34,7 +34,10 @@
           />
         </div>
         <div class="containerSelect">
-          <search-container @updateContainer="updateContainer" />
+          <search-container
+            @updateContainer="updateContainer"
+            ref="childSelectContainer"
+          />
         </div>
       </div>
       <div class="additionally">
@@ -87,8 +90,8 @@ const childFrom = ref(null);
 const childTo = ref(null);
 const childReturn = ref(null);
 const childWeight = ref(null);
+const childSelectContainer = ref(null);
 const showCalculateBtn = ref(true);
-
 const emit = defineEmits([
   "updateSelectedCoordinates",
   "updateContainer",
@@ -171,6 +174,7 @@ const clearData = () => {
   childTo.value.clearInput();
   childReturn.value.clearInput();
   childWeight.value.clearInput();
+  childSelectContainer.value.clearSelect();
   selectedCoordinates.value = [];
   selectedIds.value = [];
   emit("clearMarkers");

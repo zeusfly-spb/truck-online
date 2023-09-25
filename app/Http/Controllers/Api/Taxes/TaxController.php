@@ -33,7 +33,7 @@ class TaxController extends Controller
     {
         try{
             $taxes = Tax::orderBy('created_at', 'desc')->get();
-            return TaxResource::collection($taxes);
+            return response()->json(TaxResource::collection($taxes));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -83,7 +83,7 @@ class TaxController extends Controller
         try{
             $tax = new Tax;
             $tax->setTranslation('name', 'ru', $request->name)->save();
-            return TaxResource::make($tax);
+            return response()->json(TaxResource::make($tax));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -121,7 +121,7 @@ class TaxController extends Controller
     public function show(Tax $tax)
     {
         try{
-            return TaxResource::make($tax);
+            return response()->json(TaxResource::make($tax));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -178,9 +178,9 @@ class TaxController extends Controller
     public function update(Request $request, Tax $tax)
     {
         try{
-            $tax = Tax::find($id);
+            //$tax = Tax::find($id);
             $tax->update($request->all());
-            return TaxResource::make($tax);
+            return response()->json(TaxResource::make($tax));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

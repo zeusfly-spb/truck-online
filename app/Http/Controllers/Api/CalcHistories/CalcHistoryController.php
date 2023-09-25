@@ -34,7 +34,7 @@ class CalcHistoryController extends Controller
     public function index()
     {
         $calcHistories = CalcHistory::where('user_id', Auth::user()->id)->where('hidden', false)->orderBy('updated_at', 'desc')->get();
-        return CalcHistoryResource::collection($calcHistories);
+        return response()->json(CalcHistoryResource::collection($calcHistories)->collection);
     }
 
     /**

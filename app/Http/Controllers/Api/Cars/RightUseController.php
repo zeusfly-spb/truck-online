@@ -24,7 +24,7 @@ class RightUseController extends Controller
     {
         try{
             $rightUses = RightUse::orderBy('created_at', 'desc')->get();
-            return RightUseResource::collection($rightUses);
+            return response()->json(RightUseResource::collection($rightUses)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -74,7 +74,7 @@ class RightUseController extends Controller
         try{
           $rightUse = new RightUse;
           $rightUse->setTranslation('name', 'ru', $request->name)->save();
-          return RightUseResource::make($rightUse);
+          return response()->json(RightUseResource::make($rightUse));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -140,7 +140,7 @@ class RightUseController extends Controller
         try{
           $rightUse = RightUse::find($id);
           $rightUse->update($request->all());
-          return RightUseResource::make($rightUse);
+          return response()->json(RightUseResource::make($rightUse));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }

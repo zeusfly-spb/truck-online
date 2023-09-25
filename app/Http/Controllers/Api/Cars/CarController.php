@@ -46,7 +46,7 @@ class CarController extends Controller
     {
         try{
             $cars = Car::orderBy('created_at', 'desc')->where('company_id', Auth::user()->company_id)->get();
-            return CarResource::collection($cars);
+            return response()->json(CarResource::collection($cars)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
@@ -170,7 +170,7 @@ class CarController extends Controller
               ]);
           }
         }
-        return CarResource::make($car);
+        return response()->json(CarResource::make($car));
       }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }
@@ -309,7 +309,7 @@ class CarController extends Controller
               ]);
           }
         }
-        return CarResource::make($car);
+        return response()->json(CarResource::make($car));
       }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }

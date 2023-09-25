@@ -38,7 +38,7 @@ class WayPointController extends Controller
     public function index()
     {
         $wayPoints = WayPoint::get();
-        return WayPointResource::collection($wayPoints);
+        return response()->json(WayPointResource::collection($wayPoints)->collection);
     }
 
     /**

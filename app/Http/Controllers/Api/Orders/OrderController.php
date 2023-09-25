@@ -92,8 +92,9 @@ class OrderController extends Controller
       if($request->has('deliveryDate'))
         $orders = $orders->filterByDeliverydate($request->deliveryDate);
 
-      $orders = $orders->paginate(12);
-      return OrderResource::collection($orders);
+      //$orders = $orders->paginate(12);
+      return response()->json(OrderResource::collection($orders->get())->collection);
+      //return OrderResource::collection($orders)->collection;
     }
     /**
      * @OA\Post(

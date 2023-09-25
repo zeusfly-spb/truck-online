@@ -1,72 +1,222 @@
 <template>
-  <v-container class="mb-2 bg-white">
-    <v-row class="filter-container">
-      <v-col cols="12" md="2">
-        <label for="priceFilter">Price Filter:</label>
-        <v-text-field
-          type="number"
-          id="priceFilter"
-          v-model="priceFilter"
-          @input="applyFilters"
-        >
-        </v-text-field>
-      </v-col>
-      <v-col cols="12" md="2">
-        <label for="priceFilter">Weight Filter:</label>
-        <v-text-field
-          type="number"
-          id="weightFilter"
-          v-model="weightFilter"
-          @input="applyFilters"
-        >
-        </v-text-field>
-      </v-col>
-    </v-row>
+  <v-container>
+    <v-btn class="text-none" color="grey-lighten-3" size="x-large">
+      <NuxtLink to="/orders/create" class=""> Создать заказ </NuxtLink>
+    </v-btn>
+    <v-btn @click="clickShowFilter" size="x-large" style="float: right">
+      Фильтры
+    </v-btn>
+    <div class="filters" v-if="showFilters">
+      <div class="filter">
+        <div class="label">Цена:</div>
+        <div>
+          <v-text-field
+            label="Цена от"
+            variant="solo"
+            style="width: 220px"
+            v-model="priceFromFilter"
+          ></v-text-field>
+        </div>
+        <div>
+          <v-text-field
+            label="Цена до"
+            variant="solo"
+            style="width: 220px"
+            v-model="priceToFilter"
+          ></v-text-field>
+        </div>
+      </div>
+      <div class="filter">
+        <v-select
+          label="Тип контейнера"
+          :items="['20 f', '40 f', '20 f + 20 f']"
+          variant="solo"
+          multiple
+          style="width: 115px"
+          v-model="selectedContainerTypes"
+        ></v-select>
+      </div>
+      <div class="filter">
+        <v-select
+          label="Status"
+          :items="['false', 'true']"
+          multiple
+          variant="solo"
+          style="width: 115px"
+          v-model="statusChosen"
+        ></v-select>
+      </div>
+      <div class="filter">
+        <div class="label">Вес:</div>
+        <div>
+          <v-text-field
+            label="Вес от"
+            variant="solo"
+            style="width: 220px"
+            v-model="weightFromFilter"
+          ></v-text-field>
+        </div>
+        <div>
+          <v-text-field
+            label="Вес до"
+            variant="solo"
+            style="width: 220px"
+            v-model="weightToFilter"
+          ></v-text-field>
+        </div>
+      </div>
+    </div>
     <table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>From Address</th>
-          <th>Delivery Address</th>
-          <th>Container</th>
-          <th>Weight</th>
-          <th>Price</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="order in orders" :key="order.id">
-          <td>{{ order.id }}</td>
-          <td>{{ order.from_address.name }}</td>
-          <td>{{ order.delivery_address.name }}</td>
-          <td>{{ order.container.name }}</td>
-          <td>{{ order.weight }}</td>
-          <td>{{ order.price }}</td>
-          <td>{{ order.status.name }}</td>
-        </tr>
-      </tbody>
+      <tr>
+        <th>
+          <div class="header-wrapper">
+            <span>ID</span> <span @click="sortOrders('id')">⇅</span>
+          </div>
+        </th>
+        <th>From Address</th>
+        <th>To Address</th>
+        <th>Conatiner</th>
+        <th>
+          <div class="header-wrapper">
+            <span>Weight</span>
+            <span @click="sortOrders('weight')">⇅</span>
+          </div>
+        </th>
+        <th>
+          <div class="header-wrapper">
+            <span>Price</span>
+            <span @click="sortOrders('price')">⇅</span>
+          </div>
+        </th>
+        <th>Status</th>
+      </tr>
+      <tr v-for="order in paginatedOrders" :key="order.id">
+        <td>{{ order.id }}</td>
+        <td>{{ order.fromAddress }}</td>
+        <td>{{ order.deliveryAddress }}</td>
+        <td>{{ order.container }}</td>
+        <td>{{ order.weight }}</td>
+        <td>{{ order.price }}</td>
+        <td>{{ order.status }}</td>
+      </tr>
     </table>
-    <div class="pagination">
-      <button @click="loadPage(ordersMeta.prev)" :disabled="!ordersMeta.prev">
-        Previous
-      </button>
-      <button @click="loadPage(ordersMeta.next)" :disabled="!ordersMeta.next">
-        Next
-      </button>
+    <div class="my-3">
+      <v-btn @click="currentPage > 1 ? currentPage-- : null" color="primary"
+        >Предыдущая</v-btn
+      >
+      Страница {{ currentPage }}
+      <v-btn
+        @click="currentPage < totalPages ? currentPage++ : null"
+        color="primary"
+        >Следующая</v-btn
+      >
     </div>
   </v-container>
 </template>
-<style>
-.bg-white {
-  background-color: #fff;
-  padding: 50px;
+<script setup>
+import { data } from "~/store/dataAddress";
+const showFilters = ref(false);
+const priceFromFilter = ref("");
+const priceToFilter = ref("");
+const weightFromFilter = ref("");
+const weightToFilter = ref("");
+const statusChosen = ref([]);
+const selectedContainerTypes = ref([]);
+
+const sortField = ref(null);
+const sortOrder = ref(1);
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+
+const paginatedOrders = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const end = start + itemsPerPage.value;
+  return sortedOrders.value.slice(start, end);
+});
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredOrders.value.length / itemsPerPage.value);
+});
+
+const filteredOrders = computed(() => {
+  const priceFrom =
+    priceFromFilter.value === "" ? -Infinity : Number(priceFromFilter.value);
+  const priceTo =
+    priceToFilter.value === "" ? Infinity : Number(priceToFilter.value);
+  const weightFrom =
+    weightFromFilter.value === "" ? -Infinity : Number(weightFromFilter.value);
+  const weightTo =
+    weightToFilter.value === "" ? Infinity : Number(weightToFilter.value);
+
+  return data.filter((order) => {
+    const priceInRange = order.price >= priceFrom && order.price <= priceTo;
+    const weightInRange =
+      order.weight >= weightFrom && order.weight <= weightTo;
+    const containerTypeAllowed =
+      selectedContainerTypes.value.length === 0 ||
+      selectedContainerTypes.value.includes(order.container);
+    const statusMatches =
+      statusChosen.value.length === 0 ||
+      statusChosen.value.includes(String(order.status));
+
+    return (
+      priceInRange && weightInRange && containerTypeAllowed && statusMatches
+    );
+  });
+});
+
+const sortOrders = (field) => {
+  if (sortField.value === field) {
+    sortOrder.value = -sortOrder.value;
+  } else {
+    sortField.value = field;
+    sortOrder.value = 1;
+  }
+};
+
+const sortedOrders = computed(() => {
+  if (!sortField.value) {
+    return filteredOrders.value;
+  }
+
+  return filteredOrders.value.slice().sort((a, b) => {
+    if (a[sortField.value] > b[sortField.value]) {
+      return sortOrder.value;
+    }
+    if (a[sortField.value] < b[sortField.value]) {
+      return -sortOrder.value;
+    }
+    return 0;
+  });
+});
+
+const clickShowFilter = () => {
+  showFilters.value = !showFilters.value;
+};
+</script>
+
+<style scoped>
+.filters {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
 }
-.pagination button {
-  background-color: #fff;
-  padding: 10px;
-  border: 1px solid#ddd;
-  width: 120px;
+
+.label {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
 }
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 a {
   text-decoration: none;
 }
@@ -82,58 +232,42 @@ th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  font-size: 1.5vh;
 }
 
 tr:nth-child(even) {
-  background-color: #dddddd;
+  background-color: #8d8a8a;
+  color: black;
 }
 .mt-20 {
   margin-top: 20px;
 }
-</style>
+.my-3 {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-<script setup>
-const { data: addresses } = useFetch(URI + "addresses");
-const orders = ref([]);
-const ordersMeta = {
-  prev: null,
-  next: null,
-  current_page: 1,
-};
-const priceFilter = ref(null);
-const weightFilter = ref(null);
+.header-wrapper span {
+  cursor: pointer;
+  padding-right: 4px;
+}
 
-const loadPage = async (url) => {
-  try {
-    const headers = new Headers();
-    const token_cookie = useCookie("online_port_token");
-    if (token_cookie.value) {
-      headers.set("Authorization", `Bearer ${token_cookie.value}`);
-    }
-    let query = "";
-    if (priceFilter.value) {
-      query += `&price=${priceFilter.value}`;
-    }
-    if (weightFilter.value) {
-      query += `&weight=${weightFilter.value}`;
-    }
-
-    const response = await $fetch(url + query, { headers });
-    orders.value = response.data;
-    ordersMeta.prev = response.links.prev;
-    ordersMeta.next = response.links.next;
-    ordersMeta.current_page = response.meta.current_page;
-    console.log(orders.value);
-  } catch (error) {
-    console.error("Error loading data:", error);
+@media (max-width: 496px) {
+  td,
+  th {
+    font-size: 1vh;
   }
-};
-// Apply the filters
-const applyFilters = () => {
-  loadPage(URI + `orders?page=${ordersMeta.current_page}`);
-};
-
-onMounted(() => {
-  loadPage(URI + "orders?page=1");
-});
-</script>
+}
+@media (max-width: 386px) {
+  td,
+  th {
+    font-size: 0.8vh;
+  }
+}
+</style>

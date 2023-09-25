@@ -22,8 +22,13 @@ const updateContainer = () => {
   emit("updateContainer", selectedContainerId.value);
 };
 const allContainers = computed(() => {
-  const base = containersStore.containers
-    .map(item => ({...item, title: item.name, value: item.id, props: {subtitle: `${item.weight} кг.`}})) || [];
-  return [{value: '', title: 'Тип контейнера'}, ...base];
+  const base =
+    containersStore.containers.map((item) => ({
+      ...item,
+      title: item.name,
+      value: item.id,
+      props: { subtitle: `${item.weight} кг.` },
+    })) || [];
+  return [{ value: "", title: "Тип контейнера" }, ...base];
 });
 </script>

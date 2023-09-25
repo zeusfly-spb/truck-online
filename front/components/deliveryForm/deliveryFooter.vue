@@ -1,7 +1,5 @@
 <template>
-  <v-bottom-navigation
-    elevation="5"
-  >
+  <v-bottom-navigation elevation="5">
     <ul class="namesFooter">
       <li class="mainLi">Результат подсчетов:</li>
       <li>
@@ -14,15 +12,15 @@
       </li>
       <li>
         Сумма к оплате:
-        <p v-if="price">{{ price }}р</p>
+        <p v-if="price !== null">{{ price }}р</p>
         <p v-else>0р</p>
       </li>
     </ul>
   </v-bottom-navigation>
 </template>
 <script>
-import {useCalculate} from "~/store/calculateForm";
-import {computed} from "vue";
+import { useCalculate } from "~/store/calculateForm";
+import { computed } from "vue";
 
 export default {
   setup() {
@@ -31,7 +29,7 @@ export default {
     return {
       price,
     };
-  }
+  },
 };
 </script>
 <style scoped>

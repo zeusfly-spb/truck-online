@@ -12,7 +12,9 @@ export const useContainersStore = defineStore("containersStore", {
     async getContainers() {
       this.setLoading(true);
       try {
-        const {data: {_rawValue}} = await opFetch('/containers');
+        const {
+          data: { _rawValue },
+        } = await opFetch("/33");
         this.containers = _rawValue;
       } catch (error) {
         console.error(error);

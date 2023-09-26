@@ -5,9 +5,14 @@ export const useDriversStore = defineStore("driversStore", {
   state: () => ({
     drivers: [],
     driverId: null,
+    loading: false,
   }),
   actions: {
+    setLoading(value) {
+      this.loading = value;
+    },
     async getDrivers() {
+      this.setLoading(true);
       try {
         const {
           data: { _rawValue },
@@ -16,6 +21,7 @@ export const useDriversStore = defineStore("driversStore", {
       } catch (error) {
         console.error(error);
       }
+      this.setLoading(false);
     },
     async addDriver(body) {
       try {
@@ -32,15 +38,24 @@ export const useDriversStore = defineStore("driversStore", {
         console.error(error);
       }
     },
-    async addDocumentsDriver(body) {
+    async addPasspotrDriver(body) {
       try {
-        const {
-          data: { _rawValue },
-        } = await opFetch(`/drivers/${this.driverId}`, {
+        const data = await opFetch(`/driver/files/${this.driverId}`, {
           method: "post",
           body: body,
         });
-        console.log(_rawValue);
+        console.log("files:", data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async addDriverLicense(body) {
+      try {
+        const data = await opFetch(`/driver/documents/${this.driverId}`, {
+          method: "post",
+          body: body,
+        });
+        console.log("documents:", data);
       } catch (error) {
         console.error(error);
       }

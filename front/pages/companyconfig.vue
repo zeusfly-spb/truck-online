@@ -302,13 +302,13 @@
                 hide-details="auto"
               ></v-text-field>
             </v-col>
-            <v-col md="auto" :cols="12" class="mb-3">
+            <!-- <v-col md="auto" :cols="12" class="mb-3">
               <v-btn
                 color="error"
                 class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
                 >Убрать</v-btn
               >
-            </v-col>
+            </v-col> -->
           </v-row>
           <v-row no-gutters>
             <v-col md :cols="12" class="mr-3 mb-3">
@@ -343,15 +343,26 @@
             </v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col md :cols="12" class="mb-3 mr-3">
+            <v-col md :cols="12" class="mr-3 mb-3">
               <v-file-input
-                v-model="data.drivers.paperFile"
+                v-model="data.drivers.passport.file"
                 label="Скан паспорта"
                 class="text-body-1"
                 variant="outlined"
                 hide-details="auto"
               ></v-file-input>
             </v-col>
+            <v-col md :cols="12">
+              <v-text-field
+                v-model="data.drivers.driveLicense.file"
+                label="Серия и номер паспорта"
+                class="text-body-1"
+                variant="outlined"
+                hide-details="auto"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
             <v-col md :cols="12" class="mb-3">
               <v-file-input
                 v-model="data.drivers.driveLicense.file"
@@ -359,14 +370,13 @@
                 class="text-body-1"
                 variant="outlined"
                 hide-details="auto"
+                style="margin-right: 10px;"
               ></v-file-input>
             </v-col>
-          </v-row>
-          <v-row no-gutters>
             <v-col md :cols="12" class="mr-3 mb-3">
               <v-text-field
-                v-model="data.drivers.driveLicense.number"
-                label="Номер документа"
+                v-model="data.drivers.passport.value"
+                label="Номер В/У"
                 class="text-body-1"
                 variant="outlined"
                 hide-details="auto"
@@ -375,7 +385,7 @@
             <v-col md :cols="12" class="mb-6">
               <v-text-field
                 v-model="data.drivers.driveLicense.date"
-                label="Дата документа"
+                label="Дата выдачи В/У"
                 class="text-body-1"
                 variant="outlined"
                 hide-details="auto"
@@ -515,11 +525,13 @@ const data = reactive({
     email: "",
     phone: "",
     password: "",
-    paperFile: "",
+    passport: {
+      file: [],
+    },
     driveLicense: {
       file: "",
-      number: "",
       date: "",
+      number: "",
     },
   },
   manager: {
@@ -544,14 +556,16 @@ async function addDriver() {
   await driverStore.addDriver(body);
 
   const documentsBody = {
-    id: driverStore.driverId,
-    passport: data.drivers.paperFile,
-    prava: data.drivers.driveLicense.file,
-    doc_number: data.drivers.driveLicense.number,
-    doc_date: data.drivers.driveLicense.date,
+    files: data.drivers.passport.file,
+    value: data.drivers.passport.value,
   };
+  await driverStore.addPasspotrDriver(documentsBody);
 
-  await driverStore.addDocumentsDriver(documentsBody);
+  const driverLicense = {
+    document: data.drivers.driveLicense.file,
+    document_date: data.drivers.driveLicense.date,
+  };
+  await driverStore.addDriverLicense(driverLicense);
 }
 </script>
 

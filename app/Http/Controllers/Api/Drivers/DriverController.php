@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Drivers;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\Api\Drivers\DriverResource;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use App\Models\Document;
@@ -45,7 +46,7 @@ class DriverController extends BaseController
     public function index(){
 
       $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
-      return response()->json(UserResource::collection($users)->collection);
+      return response()->json(DriverResource::collection($users)->collection);
     }
     /**
     * @OA\Post(

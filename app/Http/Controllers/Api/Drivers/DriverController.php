@@ -175,7 +175,7 @@ class DriverController extends BaseController
         else
           $document = new Document;
 
-          $document->value = $request->document_date;
+          $document->number = $request->document_number;
           $document->name = 'Водителькое удостоверение';
           $document->path = $path;
           $document->value = $request->document_date;

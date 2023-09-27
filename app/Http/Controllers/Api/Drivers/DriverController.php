@@ -117,7 +117,7 @@ class DriverController extends BaseController
 
     public function createUser($request){
 
-      return User::create([
+      $user = User::create([
         'first_name'=> $request->first_name,
         'middle_name'=> $request->middle_name,
         'last_name' => $request->last_name,
@@ -126,6 +126,8 @@ class DriverController extends BaseController
         'password'=> bcrypt($request->password),
         'company_id' => Auth::user()->company_id
       ]);
+      $user->addMangoAccount();
+      return $user;
     }
   /**
     * @OA\Post(

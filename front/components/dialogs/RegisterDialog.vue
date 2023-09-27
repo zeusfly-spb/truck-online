@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="registerDialog" :persistent="true" width="40%">
+    <v-dialog v-model="registerDialog" :persistent="true" :width="modalWidth">
       <v-card>
         <v-card-title>
           <v-row class="flex-row-reverse">
@@ -10,14 +10,13 @@
           </v-row>
         </v-card-title>
         <v-card-text>
-          <v-layout class="rounded rounded-md">
-            <div class="d-flex align-center justify-center flex-column">
+          <v-layout class="rounded rounded-md justify-center">
               <v-card
                 class="pa-md-4 mx-lg-auto register-class register-card unselect"
               >
                 <v-card-text class="register-class">
                   <v-row>
-                    <v-col>
+                    <v-col  v-if="wideScreen">
                       <img
                         alt="register_logo"
                         class="logo"
@@ -162,6 +161,14 @@
                           />
                         </template>
                       </v-text-field>
+                      <v-radio-group
+                        v-if="!wideScreen"
+                        v-model="accountType"
+                        label="Зарегистрируйте меня как"
+                      >
+                        <v-radio label="Заказчик" value="customer" />
+                        <v-radio label="Перевозчик" value="transporter" />
+                      </v-radio-group>
                       <v-checkbox
                         v-model="processPersonal"
                         label="Даю согласие на обработку персональных данных"
@@ -188,7 +195,6 @@
                   </v-btn>
                 </v-card-actions>
               </v-card>
-            </div>
           </v-layout>
         </v-card-text>
       </v-card>
@@ -200,6 +206,7 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "~/store/auth";
 import { useConfigStore } from "~/store/config";
 import { Mask } from "maska";
+import {useDisplay} from "vuetify";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
@@ -210,6 +217,7 @@ const { phoneConfirmed, emailConfirmed, companyConfirmed } =
 const mask = new Mask({ mask: "+7 (###) ###-##-##" });
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 const { getCompanyByInn, registerUser } = authStore;
+const { name } = useDisplay();
 const accountType = ref("");
 const inn = ref("");
 const ndsPayer = ref("no");
@@ -229,7 +237,9 @@ const username = computed(() => email.value || phone.value);
 const passwordConfirmValid = computed(
   () => passwordConfirm.value && passwordConfirm.value === password.value,
 );
-
+const displayMode = computed(() => name.value);
+const modalWidth = computed(() => wideScreen.value ? '40%' : '100%');
+const wideScreen = computed(() => ['xl', 'xxl'].includes(displayMode.value));
 watch(email, () => (emailConfirmationStatus.value = ""));
 watch(phone, () => (phoneConfirmationStatus.value = ""));
 const registered = async () => {

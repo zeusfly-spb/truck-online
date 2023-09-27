@@ -29,22 +29,13 @@ class UserController extends BaseController
     if ($validator->fails()) {
       return $this->sendError('Validation Error.', $validator->errors());
     }
-    $lastUserId = User::all()->last()->id ?? 1;
-    $extension = strval($lastUserId + env('EXTENSION_START_NUMBER') + 1);
-    $params = [
-      'name' => $request->contact_person,
-      'extension' => $extension,
-      'access_role_id' => 0,
-      'mobile' => $request->phone
-    ];
-    MangoInteractionController::addUser($params);
     $user = User::create([
-      'extension' => $extension,
       'email' => $request->email,
       'password' => bcrypt($request->password),
       'phone' => $request->phone,
       'company_id' => $request->company_id
     ]);
+    $user->addMangoAccount();
     $success['token'] = $user->createToken('MyApp')->accessToken;
     return $this->sendResponse($success, 'User register successfully.');
   }

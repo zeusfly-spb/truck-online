@@ -22,6 +22,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\DadataController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MangoInteractionController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -104,13 +105,18 @@ Route::middleware('auth:api')->group(function () {
   //calcHistories
   Route::apiResource('calc/histories', CalcHistoryController::class);
 
-  
-  
+
+
   //addressClient
   Route::get('address/client', [AddressController::class, 'addressCLient']);
-  
+
   //SuperAdmin user
   Route::post('address/accept/{id}', [AddressController::class, 'accept']);
+
+  Route::get('/mango-roles', function () {
+    $roles = MangoInteractionController::getRoles();
+    return response()->json($roles);
+  });
 });
 //address
 Route::apiResource('addresses', AddressController::class);

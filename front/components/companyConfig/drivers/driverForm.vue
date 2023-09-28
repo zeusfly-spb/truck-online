@@ -81,6 +81,13 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
+      <!-- <v-col md :cols="12" class="mr-3 mb-3">
+        <v-file-input
+          v-model="data.drivers.files"
+          multiple
+          label="File input"
+        ></v-file-input>
+      </v-col> -->
       <v-col md :cols="12" class="mr-3 mb-3">
         <v-file-input
           v-model="data.drivers.passport.main"
@@ -174,6 +181,7 @@ const data = reactive({
     email: "",
     phone: "",
     password: "",
+    files: [],
     passport: {
       main: null,
       second: null,
@@ -188,6 +196,25 @@ const data = reactive({
 });
 
 async function addDriver() {
+  //   var files = data.drivers.files;
+
+  //   let formData = new FormData();
+
+  //   for (let i = 0; i < files.length; i++) {
+  //     formData.append("files[]", files[i]);
+  //   }
+  //   const token_cookie = useCookie("online_port_token");
+  //   const headers = new Headers();
+  //   if (token_cookie.value) {
+  //     headers.set("Authorization", `Bearer ${token_cookie.value}`);
+  //   }
+  //   const response = await useFetch(`http://127.0.01:8000/api/driver/files/12`, {
+  //     method: "post",
+  //     headers,
+  //     body: formData,
+  //   });
+  //   console.log("filesADd:", response);
+
   const body = {
     first_name: data.drivers.first_name.value,
     middle_name: data.drivers.middle_name.value,
@@ -209,8 +236,9 @@ async function addDriver() {
   const filesdata = new FormData();
   const files = [data.drivers.passport.main, data.drivers.passport.second];
   console.log("files:", files);
-  filesdata.append("file1", files[0]);
-  filesdata.append("file2", files[1]);
+  for (let i = 0; i < files.length; i++) {
+    filesdata.append("files[]", files[i]);
+  }
 
   for (const [key, value] of filesdata.entries()) {
     console.log("aaaaaaмммммм:", key, value);

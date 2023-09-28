@@ -69,9 +69,15 @@ export const useCarsStore = defineStore("cardStore", {
       this.setLoading(false);
     },
     async addNewCar(formData) {
+      const token_cookie = useCookie("online_port_token");
+      const headers = new Headers();
+      if (token_cookie.value) {
+        headers.set("Authorization", `Bearer ${token_cookie.value}`);
+      }
       try {
-        const data = await opFetch("/cars", {
+        const data = await useFetch("/cars", {
           method: "post",
+          headers,
           body: formData,
         });
         console.log("response:", data);

@@ -39,14 +39,17 @@ export const useDriversStore = defineStore("driversStore", {
     },
     async addPassportDriver(formData) {
       try {
-        const response = await opFetchMultiply(
-          `/driver/files/${this.driverId}`,
-          {
-            method: "post",
-            body: formData,
-            // processData: false,
-          },
-        );
+        const token_cookie = useCookie("online_port_token");
+        const headers = new Headers();
+        if (token_cookie.value) {
+          headers.set("Authorization", `Bearer ${token_cookie.value}`);
+        }
+        const response = await useFetch(`/driver/files/${this.driverId}`, {
+          method: "post",
+          body: formData,
+          headers,
+          // processData: false,
+        });
         console.log("filesADd:", response);
       } catch (error) {
         console.error(error);

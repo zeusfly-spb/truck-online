@@ -171,7 +171,7 @@
       </v-window-item>
 
       <v-window-item value="cars">
-        <cars-from />
+        <cars-form />
       </v-window-item>
       <v-window-item value="drivers">
         <driver-form />
@@ -184,7 +184,7 @@
 </template>
 <script setup>
 import driverForm from "~/components/companyConfig/drivers/driverForm.vue";
-import carsFrom from "~/components/companyConfig/cars/carsFrom.vue";
+import carsForm from "~/components/companyConfig/cars/carsForm.vue";
 import managersForm from "~/components/companyConfig/managers/managersForm.vue";
 const tab = ref("main");
 const data = reactive({

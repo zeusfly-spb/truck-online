@@ -209,8 +209,8 @@ async function addDriver() {
   const filesdata = new FormData();
   const files = [data.drivers.passport.main, data.drivers.passport.second];
   console.log("files:", files);
-  filesdata.append("file1", JSON.stringify(files[0]));
-  filesdata.append("file2", JSON.stringify(files[1]));
+  filesdata.append("file1", files[0]);
+  filesdata.append("file2", files[1]);
 
   for (const [key, value] of filesdata.entries()) {
     console.log("aaaaaaмммммм:", key, value);

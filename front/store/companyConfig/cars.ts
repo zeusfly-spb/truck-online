@@ -1,6 +1,6 @@
 import _default from "nuxt-icon/dist/module";
 import { defineStore } from "pinia";
-import { opFetch } from "~/composables/opFetch";
+import { opFetch, opFetchMultiply } from "~/composables/opFetch";
 
 export const useCarsStore = defineStore("cardStore", {
   state: () => ({
@@ -31,7 +31,7 @@ export const useCarsStore = defineStore("cardStore", {
       try {
         const {
           data: { _rawValue },
-        } = opFetch("/countries", { method: "get" });
+        } = await opFetch("/countries", { method: "get" });
         this.countries = _rawValue;
         console.log("country:", this.countries);
       } catch (error) {
@@ -44,7 +44,7 @@ export const useCarsStore = defineStore("cardStore", {
       try {
         const {
           data: { _rawValue },
-        } = opFetch("/car/right-uses", {
+        } = await opFetch("/car/right-uses", {
           method: "get",
         });
         this.rightUse = _rawValue;
@@ -59,7 +59,7 @@ export const useCarsStore = defineStore("cardStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/api/cars", {
+        } = await opFetch("/cars", {
           method: "get",
         });
         this.cars = _rawValue;
@@ -70,12 +70,11 @@ export const useCarsStore = defineStore("cardStore", {
     },
     async addNewCar(formData) {
       try {
-        const {
-          data: { _rawValue },
-        } = await opFetch("/api/cars", {
+        const data = await opFetch("/cars", {
           method: "post",
           body: formData,
         });
+        console.log("response:", data);
       } catch (error) {
         console.error(error);
       }

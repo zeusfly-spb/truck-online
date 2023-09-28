@@ -209,25 +209,22 @@ class DriverController extends BaseController
     public function uploadFiles(Request $request, $id){
 
 
-      $files = File::where('table_owner_id', $id)->get();
-      if(count($files)>0){
+      $file1 = $request->file('file1');
+      $file = new File;
+      $file->path = $file1->move('uploads/files', time().'_'.$file1->getClientOriginalName());
+      $file->table_owner = 'User';
+      $file->table_owner_id = $id;
+      $file->save();
 
-        foreach($files as $file){
-          RMFile::delete($file->path);
-          $file->delete();
-        }
-      }
-
-      foreach ($request->file('files') as $data) {
-        $file = new File;
-        $file->path = $data->move('uploads/files', time().'_'.$data->getClientOriginalName());
-        $file->table_owner = 'User';
-        $file->table_owner_id = $id;
-        $file->save();
-      }
-
+      $file2 = $request->file('file2');
+      $file = new File;
+      $file->path = $file2->move('uploads/files', time().'_'.$file2->getClientOriginalName());
+      $file->table_owner = 'User';
+      $file->table_owner_id = $id;
+      $file->save();
       return response()->json(['message' => "success"]);
     }
+    
     /**
     * @OA\Delete(
     *      path="/api/drivers/{id}",

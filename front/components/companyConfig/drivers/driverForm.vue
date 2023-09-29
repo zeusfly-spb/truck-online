@@ -81,41 +81,14 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <!-- <v-col md :cols="12" class="mr-3 mb-3">
+      <v-col md :cols="12" class="mr-3 mb-3">
         <v-file-input
           v-model="data.drivers.files"
           multiple
-          label="File input"
-        ></v-file-input>
-      </v-col> -->
-      <v-col md :cols="12" class="mr-3 mb-3">
-        <v-file-input
-          v-model="data.drivers.passport.main"
-          label="Скан паспорта. Главная страница"
-          class="text-body-1"
+          label="Сканы паспорта"
           variant="outlined"
-          hide-details="auto"
-          name="files"
-        ></v-file-input>
-      </v-col>
-      <v-col md :cols="12" class="mr-3 mb-3">
-        <v-file-input
-          v-model="data.drivers.passport.second"
-          label="Скан паспорта. Вторая страница"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-          name="files"
-        ></v-file-input>
-      </v-col>
-      <v-col md :cols="12">
-        <v-text-field
-          v-model="data.drivers.driveLicense.number"
-          label="Серия и номер паспорта"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-        ></v-text-field>
+        >
+        </v-file-input>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -159,9 +132,13 @@
       </v-col>
     </v-row>
   </v-form>
+  <div style="margin-top: 5px">
+    <table-drivers />
+  </div>
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
+import tableDrivers from "./tableDrivers.vue";
 const driverStore = useDriversStore();
 
 const data = reactive({
@@ -196,25 +173,6 @@ const data = reactive({
 });
 
 async function addDriver() {
-  //   var files = data.drivers.files;
-
-  //   let formData = new FormData();
-
-  //   for (let i = 0; i < files.length; i++) {
-  //     formData.append("files[]", files[i]);
-  //   }
-  //   const token_cookie = useCookie("online_port_token");
-  //   const headers = new Headers();
-  //   if (token_cookie.value) {
-  //     headers.set("Authorization", `Bearer ${token_cookie.value}`);
-  //   }
-  //   const response = await useFetch(`http://127.0.01:8000/api/driver/files/12`, {
-  //     method: "post",
-  //     headers,
-  //     body: formData,
-  //   });
-  //   console.log("filesADd:", response);
-
   const body = {
     first_name: data.drivers.first_name.value,
     middle_name: data.drivers.middle_name.value,
@@ -234,7 +192,7 @@ async function addDriver() {
   await driverStore.addDriverLicense(driverLicense);
 
   const filesdata = new FormData();
-  const files = [data.drivers.passport.main, data.drivers.passport.second];
+  const files = data.drivers.files;
   console.log("files:", files);
   for (let i = 0; i < files.length; i++) {
     filesdata.append("files[]", files[i]);

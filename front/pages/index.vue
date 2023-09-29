@@ -12,6 +12,7 @@
     </div>
     <DeliveryFooter />
   </div>
+
 </template>
 
 <script setup>

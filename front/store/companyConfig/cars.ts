@@ -1,6 +1,6 @@
 import _default from "nuxt-icon/dist/module";
 import { defineStore } from "pinia";
-import { opFetch, opFetchMultiply } from "~/composables/opFetch";
+import { opFetch } from "~/composables/opFetch";
 
 export const useCarsStore = defineStore("cardStore", {
   state: () => ({
@@ -13,6 +13,21 @@ export const useCarsStore = defineStore("cardStore", {
   actions: {
     setLoading(value) {
       this.loading = value;
+    },
+    async getAllCars() {
+      this.setLoading(true);
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch("/cars", {
+          method: "get",
+        });
+        this.cars = _rawValue;
+        console.log("allcars:", this.cars);
+      } catch (error) {
+        console.error(error);
+      }
+      this.setLoading(false);
     },
     async getTypesCar() {
       this.setLoading(true);
@@ -33,7 +48,6 @@ export const useCarsStore = defineStore("cardStore", {
           data: { _rawValue },
         } = await opFetch("/countries", { method: "get" });
         this.countries = _rawValue;
-        console.log("country:", this.countries);
       } catch (error) {
         console.error(error);
       }
@@ -47,40 +61,42 @@ export const useCarsStore = defineStore("cardStore", {
         } = await opFetch("/car/right-uses", {
           method: "get",
         });
-        this.rightUse = _rawValue;
-        console.log("right:", this.rightUse);
+        this.rightUse = _rawValue;R
       } catch (error) {
         console.error(error);
       }
       this.setLoading(false);
     },
-    async getAllCars() {
-      this.setLoading(true);
+
+    async addNewCar(formData) {
+      try {
+        const token_cookie = useCookie("online_port_token");
+        const headers = new Headers();
+        if (token_cookie.value) {
+          headers.set("Authorization", `Bearer ${token_cookie.value}`);
+        }
+        headers.set("Accept", "application/json");
+        const {
+          data: { _rawValue },
+        } = await useFetch("/cars", {
+          method: "post",
+          body: formData,
+          headers,
+        });
+        console.log("addCar:", _rawValue);
+        this.cars.unshift(_rawValue);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteCar(id) {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/cars", {
-          method: "get",
+        } = opFetch(`/car/${id}`, {
+          method: "delete",
         });
-        this.cars = _rawValue;
-      } catch (error) {
-        console.error(error);
-      }
-      this.setLoading(false);
-    },
-    async addNewCar(formData) {
-      const token_cookie = useCookie("online_port_token");
-      const headers = new Headers();
-      if (token_cookie.value) {
-        headers.set("Authorization", `Bearer ${token_cookie.value}`);
-      }
-      try {
-        const data = await useFetch("/cars", {
-          method: "post",
-          headers,
-          body: formData,
-        });
-        console.log("response:", data);
+        this.cars = this.cars.filter((car) => car.id !== id);
       } catch (error) {
         console.error(error);
       }

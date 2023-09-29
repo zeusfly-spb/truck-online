@@ -1,5 +1,5 @@
 <template>
-  <v-form @submit.prevent="addNewCar">
+  <v-form @submit.prevent="addCar">
     <v-row no-gutters class="align-center">
       <v-col md :cols="12" class="mr-3 mb-3">
         <v-select
@@ -121,10 +121,14 @@
       </v-col>
     </v-row>
   </v-form>
+  <div style="margin-top: 15px">
+    <cars-table />
+  </div>
 </template>
 <script setup>
 import { computed } from "vue";
 import { useCarsStore } from "~/store/companyConfig/cars";
+import carsTable from "./carsTable.vue";
 const carStore = useCarsStore();
 const data = reactive({
   cars: {
@@ -146,9 +150,9 @@ const data = reactive({
     icon: null,
     weigth: null,
     sts: {
-      fileOne: "",
-      fileTwo: "",
-      number: "",
+      fileOne: [],
+      fileTwo: [],
+      number: [],
     },
   },
 });
@@ -157,6 +161,7 @@ onBeforeMount(async () => {
   await carStore.getTypesCar();
   await carStore.getCountries();
   await carStore.getRightUse();
+  await carStore.getAllCars();
 });
 watch(
   () => data.cars.types.value,
@@ -199,8 +204,6 @@ const countries = computed(() => {
   );
 });
 
-console.log("countries:", countries);
-
 const rightUse = computed(() => {
   if (!carStore.rightUse || carStore.loading) return [];
   return (
@@ -212,23 +215,19 @@ const rightUse = computed(() => {
   );
 });
 
-console.log("right:", carStore.rightUse);
-
-async function addNewCar() {
+async function addCar() {
   const formdata = new FormData();
-  formdata.append("icon", data.cars.icon);
   formdata.append("number", data.cars.number.value);
   formdata.append("car_type_id", data.cars.types.value);
   formdata.append("mark_model", data.cars.brand.value);
   formdata.append("country_id", data.cars.country.value);
   formdata.append("sts", data.cars.sts.number);
+  formdata.append("icon", data.cars.icon);
   formdata.append("sts_file_1", data.cars.sts.fileOne);
   formdata.append("sts_file_2", data.cars.sts.fileTwo);
   formdata.append("right_use_id", data.cars.rightOfUse.value);
   formdata.append("max_weigth", data.cars.weigth);
-  for (const [key, value] of formdata.entries()) {
-    console.log("aaaaaaмммммм:", key, value);
-  }
+
   await carStore.addNewCar(formdata);
 }
 </script>

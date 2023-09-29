@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { opFetch, opFetchMultiply } from "~/composables/opFetch";
+import { opFetch } from "~/composables/opFetch";
 
 export const useDriversStore = defineStore("driversStore", {
   state: () => ({
@@ -48,9 +48,11 @@ export const useDriversStore = defineStore("driversStore", {
           method: "post",
           body: formData,
           headers,
-          // processData: false,
         });
-        console.log("filesADd:", response);
+        if (response.status._rawValue === "success") {
+          await this.getDrivers();
+        }
+        console.log("filesADd:", response.status._rawValue);
       } catch (error) {
         console.error(error);
       }
@@ -64,6 +66,18 @@ export const useDriversStore = defineStore("driversStore", {
         console.log("documentsADD:", data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async deleteDriver(id) {
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/drivers/${id}`, {
+          method: "delete",
+        });
+        this.drivers = this.drivers.filter((driver) => driver.id !== id);
+      } catch (eror) {
+        console.error(eror);
       }
     },
   },

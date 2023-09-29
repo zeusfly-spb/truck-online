@@ -9,27 +9,35 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="driver in allDrivers" :key="driver.name">
+      <tr v-for="driver in allDrivers" :key="driver.id">
+        <td>{{ driver.id }}</td>
+
         <td>
-          {{ driver.first_name }} {{ driver.middle_name }}
+          {{ driver.middle_name }} {{ driver.first_name }}
           {{ driver.last_name }}
         </td>
         <td>{{ driver.email }}</td>
         <td>{{ driver.phone }}</td>
+        <td><v-btn @click="deleteDriver(driver.id)">Удалить</v-btn></td>
       </tr>
     </tbody>
   </v-table>
 </template>
 <script setup>
-import { onBeforeMount } from "vue";
-import { useDriversStore } from "~/store/drivers";
+import { useDriversStore } from "~/store/companyConfig/drivers";
 const driverStore = useDriversStore();
-onBeforeMount(() => {
-  await driverStore.getDrivers()
-})
+onBeforeMount(async () => {
+  await driverStore.getDrivers();
+});
 const allDrivers = computed(() => {
   if (!driverStore.drivers || driverStore.loading) return [];
   return driverStore.drivers;
 });
+
+const deleteDriver = async (id) => {
+  await driverStore.deleteDriver(id);
+};
+
+console.log("drova:", allDrivers);
 </script>
-<style lang=""></style>
+<style scoped></style>

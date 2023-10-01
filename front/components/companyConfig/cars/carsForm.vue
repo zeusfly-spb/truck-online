@@ -227,7 +227,6 @@ async function addCar() {
   formdata.append("sts_file_2", data.cars.sts.fileTwo);
   formdata.append("right_use_id", data.cars.rightOfUse.value);
   formdata.append("max_weigth", data.cars.weigth);
-
   await carStore.addNewCar(formdata);
 }
 </script>

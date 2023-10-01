@@ -14,7 +14,7 @@ export const useContainersStore = defineStore("containersStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("http://217.197.237.54/api/containers");
+        } = await opFetch("/containers");
         this.containers = _rawValue;
       } catch (error) {
         console.error(error);

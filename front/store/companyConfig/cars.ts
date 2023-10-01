@@ -61,7 +61,7 @@ export const useCarsStore = defineStore("cardStore", {
         } = await opFetch("/car/right-uses", {
           method: "get",
         });
-        this.rightUse = _rawValue;R
+        this.rightUse = _rawValue;
       } catch (error) {
         console.error(error);
       }

@@ -12,7 +12,6 @@
     </div>
     <DeliveryFooter />
   </div>
-
 </template>
 
 <script setup>
@@ -35,12 +34,13 @@ const clearMarkers = () => {
 .delivery {
   display: flex;
   flex-direction: column;
-  height: 93vh;
+  height: 80vh;
 }
 .delivery-main {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
+  height: 87vh;
 }
 @media (min-width: 1400px) {
   FormOrder,
@@ -60,5 +60,6 @@ const clearMarkers = () => {
 .deliveryFooter {
   width: 100%;
   flex: 0.1;
+  height: 3vh;
 }
 </style>

@@ -10,6 +10,13 @@
       'L5Swagger' => 'L5Swagger\\L5SwaggerFacade',
     ),
   ),
+  'grkamil/laravel-telegram-logging' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Logger\\TelegramLoggerServiceProvider',
+    ),
+  ),
   'intervention/image' => 
   array (
     'providers' => 

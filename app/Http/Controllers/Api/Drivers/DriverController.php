@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Drivers;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\Api\Drivers\DriverResource;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use App\Models\Document;
@@ -45,7 +46,7 @@ class DriverController extends BaseController
     public function index(){
 
       $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
-      return response()->json(UserResource::collection($users)->collection);
+      return response()->json(DriverResource::collection($users)->collection);
     }
     /**
     * @OA\Post(
@@ -177,7 +178,7 @@ class DriverController extends BaseController
         else
           $document = new Document;
 
-          $document->value = $request->document_date;
+          $document->number = $request->document_number;
           $document->name = 'Водителькое удостоверение';
           $document->path = $path;
           $document->value = $request->document_date;
@@ -218,7 +219,7 @@ class DriverController extends BaseController
           $file->delete();
         }
       }
-
+      //return $request;
       foreach ($request->file('files') as $data) {
         $file = new File;
         $file->path = $data->move('uploads/files', time().'_'.$data->getClientOriginalName());
@@ -227,8 +228,15 @@ class DriverController extends BaseController
         $file->save();
       }
 
+      $file2 = $request->file('file2');
+      $file = new File;
+      $file->path = $file2->move('uploads/files', time().'_'.$file2->getClientOriginalName());
+      $file->table_owner = 'User';
+      $file->table_owner_id = $id;
+      $file->save();
       return response()->json(['message' => "success"]);
     }
+    
     /**
     * @OA\Delete(
     *      path="/api/drivers/{id}",

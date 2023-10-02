@@ -15,6 +15,7 @@ class Document extends Model
       'name',
       'value',
       'path',
+      'number',
       'table_owner',
       'table_owner_id'
     ];

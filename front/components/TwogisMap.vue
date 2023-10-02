@@ -145,11 +145,13 @@ export default {
 @media (min-width: 1400px) {
   #map {
     width: 50%;
+    height: 90vh;
   }
 }
 @media (max-width: 1400px) {
   #map {
     width: 100%;
+    /* height: 90vh; */
   }
 }
 </style>

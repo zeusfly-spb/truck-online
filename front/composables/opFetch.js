@@ -1,7 +1,9 @@
 export const opFetch = (request, options) => {
   const config = useRuntimeConfig();
   const headers = new Headers();
-  headers.set("Content-Type", "application/json");
+  if (!(!!options.body && options.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
   headers.set("Accept", "application/json");
   const cookie_token = useCookie("online_port_token");
   if (cookie_token.value) {

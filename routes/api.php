@@ -57,6 +57,11 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('assign/role')->group(function () {
       Route::post('executer', [AssignRoleController::class, 'assign_role_executer']); });
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
+
+  //Admin Panel functions
+  Route::get('users', [UserController::class, 'index']);
+  Route::apiResource('addresses', AddressController::class);
+
   });
 
   //orders
@@ -138,3 +143,6 @@ Route::apiResource('countries', CountryController::class);
 Route::apiResource('companies', CompanyController::class);
 
 Route::get('order/settings', [OrderSettingController::class, 'index']);
+
+//addressClient
+Route::get('address/client', [AddressController::class, 'addressCLient']);

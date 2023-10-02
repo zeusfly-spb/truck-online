@@ -15,7 +15,9 @@ export const useAddressesStore = defineStore("addressesStore", {
     async getAddresses() {
       this.setLoading(true);
       try {
-        const {data: {_rawValue}} = await opFetch(getAddressesUrl, {method: "get"});
+        const {
+          data: { _rawValue },
+        } = await opFetch(getAddressesUrl, { method: "get" });
         this.addresses = _rawValue;
       } catch (error) {
         console.error(error);

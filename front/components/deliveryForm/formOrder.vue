@@ -1,8 +1,10 @@
 <template>
   <div class="formDelivery">
-    <form @submit.prevent="submitForm">
-      <h2 class="calculation">Предварительный расчет</h2>
-      <p class="calc">Калькулятор</p>
+    <v-form @submit.prevent="submitForm">
+      <h2 class="calculation" style="font-weight: 600; font-size: 35px">
+        Предварительный расчет
+      </h2>
+      <p class="calc" style="font-weight: 500; font-size: 20px">Калькулятор</p>
       <div class="from-to">
         <div class="inputFrom">
           <search-input-from
@@ -32,7 +34,10 @@
           />
         </div>
         <div class="containerSelect">
-          <search-container @updateContainer="updateContainer" />
+          <search-container
+            @updateContainer="updateContainer"
+            ref="childSelectContainer"
+          />
         </div>
       </div>
       <div class="additionally">
@@ -61,7 +66,7 @@
           Сбросить
         </v-btn>
       </div>
-    </form>
+    </v-form>
   </div>
 </template>
 <script setup>
@@ -85,8 +90,8 @@ const childFrom = ref(null);
 const childTo = ref(null);
 const childReturn = ref(null);
 const childWeight = ref(null);
+const childSelectContainer = ref(null);
 const showCalculateBtn = ref(true);
-
 const emit = defineEmits([
   "updateSelectedCoordinates",
   "updateContainer",
@@ -102,17 +107,20 @@ const updateSelectAdressFrom = (address) => {
   selectedCoordinates.value[0] = address.coordinates;
   selectedIds.value[0] = address.id;
   emit("updateSelectedCoordinates", selectedCoordinates.value);
+  showCalculateBtn.value = true;
 };
 
 const updateSelectAdressTo = (address) => {
   selectedCoordinates.value[1] = address.coordinates;
   selectedIds.value[1] = address.id;
   emit("updateSelectedCoordinates", selectedCoordinates.value);
+  showCalculateBtn.value = true;
 };
 const updateSelectAdressReturn = (address) => {
   selectedCoordinates.value[2] = address.coordinates;
   selectedIds.value[2] = address.id;
   emit("updateSelectedCoordinates", selectedCoordinates.value);
+  showCalculateBtn.value = true;
   console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
   console.log(
     "АЙДИШНИКИ:",
@@ -123,19 +131,27 @@ const updateSelectAdressReturn = (address) => {
 };
 
 const updateWeight = (value) => {
+  if (value === "") {
+    errorWeight.value = true;
+  }
   weight.value = value;
   emit("updateWeight", weight.value);
-  console.log(weight.value);
+  showCalculateBtn.value = true;
 };
 
 const updateContainer = (id) => {
   containerId.value = id;
   emit("updateContainer", containerId.value);
+  showCalculateBtn.value = true;
 };
 
 const goToBigForm = async () => {
-  await navigateTo("/orders");
+  const token_cookie = useCookie("online_port_token");
+  if (token_cookie.value) {
+    await navigateTo("/orders/create");
+  }
 };
+
 async function submitForm() {
   const body = {
     container_id: containerId.value,
@@ -150,7 +166,6 @@ async function submitForm() {
     calc: true,
   };
   await calculation.calculate(body);
-  clearData();
   showCalculateBtn.value = false;
 }
 
@@ -158,11 +173,13 @@ const clearData = () => {
   childFrom.value.clearInput();
   childTo.value.clearInput();
   childReturn.value.clearInput();
-  childWeight.value.focusInput();
+  childWeight.value.clearInput();
+  childSelectContainer.value.clearSelect();
   selectedCoordinates.value = [];
   selectedIds.value = [];
   emit("clearMarkers");
   showCalculateBtn.value = true;
+  calculation.resetPrice();
 };
 </script>
 <style scoped>
@@ -200,6 +217,7 @@ const clearData = () => {
   flex-wrap: wrap;
   margin: 20px auto;
 }
+
 @media (min-width: 1400px) {
   .formDelivery {
     width: 50%;
@@ -214,6 +232,8 @@ const clearData = () => {
   .inputFrom {
     flex: 1;
     margin-right: 10px;
+    position: relative;
+    margin-bottom: 10px;
   }
   .inputTo {
     flex: 1;
@@ -289,6 +309,10 @@ const clearData = () => {
   .additional-par {
     width: 120px;
     height: 30px;
+  }
+  .buttonsForm {
+    display: flex;
+    justify-content: space-evenly;
   }
   @media (max-width: 494px) {
     .buttonsForm .v-btn {

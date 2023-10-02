@@ -13,6 +13,7 @@
         name="delivery_address_id"
         autocomplete="off"
         ref="textFieldTo"
+        :rules="[rules.required]"
       ></v-text-field>
       <v-text-field
         v-else
@@ -70,7 +71,7 @@
 <script setup>
 import { useAddressesStore } from "~/store/address";
 import { defineEmits, defineExpose } from "vue";
-const emit = defineEmits(["updateSelectedAddressTo"]);
+const emit = defineEmits(["updateSelectedAddressTo", "inputErrorTo"]);
 
 const addressesStore = useAddressesStore();
 const inputTextTo = ref("");
@@ -88,6 +89,10 @@ watch(selectedAddress, (coordinates) => {
   }
 });
 
+const rules = {
+  required: (value) => !!value || "Поле обязательно для заполнения",
+};
+
 const addressesTo = computed(() => {
   if (!addressesStore.addresses || addressesStore.loading) return [];
 
@@ -99,7 +104,6 @@ const addressesTo = computed(() => {
       .includes(inputTextTo.value.trim().toLowerCase()),
   );
 });
-
 
 const showDropdownAndClearInput = (type) => {
   if (type === "to") {
@@ -127,7 +131,7 @@ const selectAddressTo = (address) => {
   selectedAddress.value = toRaw({
     id: address.id,
     name: address.name,
-    coordinates: toRaw(address.coordinates.coordinates),
+    coordinates: toRaw(address.location.coordinates),
   });
 };
 
@@ -150,8 +154,13 @@ const addListAddress = () => {
 const clearInput = () => {
   inputTextTo.value = "";
 };
+const focusInput = () => {
+  selectedAddress.value.focus();
+};
+
 defineExpose({
   clearInput,
+  focusInput,
 });
 
 const searchAddress = async () => {

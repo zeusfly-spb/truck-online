@@ -29,6 +29,7 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "@vee-validate/i18n": "^4.10.8",
     "@vee-validate/rules": "^4.10.8",
+    "axios": "^1.5.1",
     "import": "^0.0.6",
     "maska": "^2.1.10",
     "vee-validate": "^4.10.8",

@@ -228,8 +228,15 @@ class DriverController extends BaseController
         $file->save();
       }
 
+      $file2 = $request->file('file2');
+      $file = new File;
+      $file->path = $file2->move('uploads/files', time().'_'.$file2->getClientOriginalName());
+      $file->table_owner = 'User';
+      $file->table_owner_id = $id;
+      $file->save();
       return response()->json(['message' => "success"]);
     }
+    
     /**
     * @OA\Delete(
     *      path="/api/drivers/{id}",

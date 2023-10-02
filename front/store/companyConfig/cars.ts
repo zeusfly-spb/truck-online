@@ -14,6 +14,21 @@ export const useCarsStore = defineStore("cardStore", {
     setLoading(value) {
       this.loading = value;
     },
+    async getAllCars() {
+      this.setLoading(true);
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch("/cars", {
+          method: "get",
+        });
+        this.cars = _rawValue;
+        console.log("allcars:", this.cars);
+      } catch (error) {
+        console.error(error);
+      }
+      this.setLoading(false);
+    },
     async getTypesCar() {
       this.setLoading(true);
       try {
@@ -31,9 +46,8 @@ export const useCarsStore = defineStore("cardStore", {
       try {
         const {
           data: { _rawValue },
-        } = opFetch("/countries", { method: "get" });
+        } = await opFetch("/countries", { method: "get" });
         this.countries = _rawValue;
-        console.log("country:", this.countries);
       } catch (error) {
         console.error(error);
       }
@@ -44,38 +58,45 @@ export const useCarsStore = defineStore("cardStore", {
       try {
         const {
           data: { _rawValue },
-        } = opFetch("/car/right-uses", {
+        } = await opFetch("/car/right-uses", {
           method: "get",
         });
         this.rightUse = _rawValue;
-        console.log("right:", this.rightUse);
       } catch (error) {
         console.error(error);
       }
       this.setLoading(false);
     },
-    async getAllCars() {
-      this.setLoading(true);
-      try {
-        const {
-          data: { _rawValue },
-        } = await opFetch("/api/cars", {
-          method: "get",
-        });
-        this.cars = _rawValue;
-      } catch (error) {
-        console.error(error);
-      }
-      this.setLoading(false);
-    },
+
     async addNewCar(formData) {
       try {
+        const token_cookie = useCookie("online_port_token");
+        const headers = new Headers();
+        if (token_cookie.value) {
+          headers.set("Authorization", `Bearer ${token_cookie.value}`);
+        }
+        headers.set("Accept", "application/json");
         const {
           data: { _rawValue },
-        } = await opFetch("/api/cars", {
+        } = await useFetch("/cars", {
           method: "post",
           body: formData,
+          headers,
         });
+        console.log("addCar:", _rawValue);
+        this.cars.unshift(_rawValue);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async deleteCar(id) {
+      try {
+        const {
+          data: { _rawValue },
+        } = opFetch(`/car/${id}`, {
+          method: "delete",
+        });
+        this.cars = this.cars.filter((car) => car.id !== id);
       } catch (error) {
         console.error(error);
       }

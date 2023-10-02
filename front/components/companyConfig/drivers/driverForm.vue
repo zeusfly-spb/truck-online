@@ -85,37 +85,10 @@
         <v-file-input
           v-model="data.drivers.files"
           multiple
-          label="File input"
-        ></v-file-input>
-      </v-col>
-      <v-col md :cols="12" class="mr-3 mb-3">
-        <v-file-input
-          v-model="data.drivers.passport.main"
-          label="Скан паспорта. Главная страница"
-          class="text-body-1"
+          label="Сканы паспорта"
           variant="outlined"
-          hide-details="auto"
-          name="files"
-        ></v-file-input>
-      </v-col>
-      <v-col md :cols="12" class="mr-3 mb-3">
-        <v-file-input
-          v-model="data.drivers.passport.second"
-          label="Скан паспорта. Вторая страница"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-          name="files"
-        ></v-file-input>
-      </v-col>
-      <v-col md :cols="12">
-        <v-text-field
-          v-model="data.drivers.driveLicense.number"
-          label="Серия и номер паспорта"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-        ></v-text-field>
+        >
+        </v-file-input>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -159,9 +132,13 @@
       </v-col>
     </v-row>
   </v-form>
+  <div style="margin-top: 5px">
+    <table-drivers />
+  </div>
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
+import tableDrivers from "./tableDrivers.vue";
 const driverStore = useDriversStore();
 
 const data = reactive({
@@ -196,56 +173,36 @@ const data = reactive({
 });
 
 async function addDriver() {
+  const body = {
+    first_name: data.drivers.first_name.value,
+    middle_name: data.drivers.middle_name.value,
+    last_name: data.drivers.last_name.value,
+    email: data.drivers.email,
+    phone: data.drivers.phone,
+    password: data.drivers.password,
+  };
+  await driverStore.addDriver(body);
 
-  var files = data.drivers.files;
+  const driverLicense = {
+    path: data.drivers.driveLicense.file,
+    date: data.drivers.driveLicense.date,
+    number: data.drivers.driveLicense.number,
+  };
 
-  let formData = new FormData();
+  await driverStore.addDriverLicense(driverLicense);
 
+  const filesdata = new FormData();
+  const files = data.drivers.files;
+  console.log("files:", files);
   for (let i = 0; i < files.length; i++) {
-      formData.append("files[]", files[i]);
+    filesdata.append("files[]", files[i]);
   }
-  const token_cookie = useCookie("online_port_token");
-  const headers = new Headers();
-  if (token_cookie.value) {
-    headers.set("Authorization", `Bearer ${token_cookie.value}`);
+
+  for (const [key, value] of filesdata.entries()) {
+    console.log("aaaaaaмммммм:", key, value);
   }
-  const response = await useFetch(`http://127.0.01:8000/api/driver/files/12`, {
-    method: "post",
-    headers,
-    body: formData,
-    });
-  console.log("filesADd:", response);
-
-
-  // const body = {
-  //   first_name: data.drivers.first_name.value,
-  //   middle_name: data.drivers.middle_name.value,
-  //   last_name: data.drivers.last_name.value,
-  //   email: data.drivers.email,
-  //   phone: data.drivers.phone,
-  //   password: data.drivers.password,
-  // };
-  // await driverStore.addDriver(body);
-
-  // const driverLicense = {
-  //   path: data.drivers.driveLicense.file,
-  //   date: data.drivers.driveLicense.date,
-  //   number: data.drivers.driveLicense.number,
-  // };
-
-  // await driverStore.addDriverLicense(driverLicense);
-
-  // const filesdata = new FormData();
-  // const files = [data.drivers.passport.main, data.drivers.passport.second];
-  // console.log("files:", files);
-  // filesdata.append("file1", JSON.stringify(files[0]));
-  // filesdata.append("file2", JSON.stringify(files[1]));
-
-  // for (const [key, value] of filesdata.entries()) {
-  //   console.log("aaaaaaмммммм:", key, value);
-  // }
-  // console.log("type:", typeof filesdata);
-  // await driverStore.addPassportDriver(filesdata);
+  console.log("type:", typeof filesdata);
+  await driverStore.addPassportDriver(filesdata);
 }
 </script>
 <style scoped></style>

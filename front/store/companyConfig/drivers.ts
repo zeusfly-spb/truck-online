@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { opFetch, opFetchMultiply } from "~/composables/opFetch";
+import { opFetch } from "~/composables/opFetch";
 
 export const useDriversStore = defineStore("driversStore", {
   state: () => ({
@@ -39,12 +39,20 @@ export const useDriversStore = defineStore("driversStore", {
     },
     async addPassportDriver(formData) {
       try {
-        const response = await opFetch(`/driver/files/${this.driverId}`, {
+        const token_cookie = useCookie("online_port_token");
+        const headers = new Headers();
+        if (token_cookie.value) {
+          headers.set("Authorization", `Bearer ${token_cookie.value}`);
+        }
+        const response = await useFetch(`/driver/files/${this.driverId}`, {
           method: "post",
           body: formData,
-          // processData: false,
+          headers,
         });
-        console.log("filesADd:", response);
+        if (response.status._rawValue === "success") {
+          await this.getDrivers();
+        }
+        console.log("filesADd:", response.status._rawValue);
       } catch (error) {
         console.error(error);
       }
@@ -58,6 +66,18 @@ export const useDriversStore = defineStore("driversStore", {
         console.log("documentsADD:", data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async deleteDriver(id) {
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/drivers/${id}`, {
+          method: "delete",
+        });
+        this.drivers = this.drivers.filter((driver) => driver.id !== id);
+      } catch (eror) {
+        console.error(eror);
       }
     },
   },

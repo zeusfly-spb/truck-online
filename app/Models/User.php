@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Controllers\MangoInteractionController;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -27,7 +28,8 @@ class User extends Authenticatable
     'first_name',
     'middle_name',
     'last_name',
-    'company_id'
+    'company_id',
+    'extension'
   ];
 
   /**
@@ -58,7 +60,28 @@ class User extends Authenticatable
   {
     return $this->hasMany(Order::class);
   }
-    public function calcHistory(){
-      return $this->hasMany(CalcHistory::class);
+
+  public function calcHistory()
+  {
+    return $this->hasMany(CalcHistory::class);
+  }
+
+  /**
+   * @return void
+   */
+  public function addMangoAccount()
+  {
+    $extension = str_pad(env('EXTENSION_START_NUMBER') + $this->id, env('EXTENSION_LENGTH'),
+      '0', STR_PAD_LEFT);
+    $this->update(['extension' => $extension]);
+    $name = "Пользователь " . $this->id;
+    $params = [
+      'email' => $this->email,
+      'name' => $name,
+      'extension' => $extension,
+      'access_role_id' => 0,
+      'mobile' => '7' . $this->phone
+    ];
+    return MangoInteractionController::addUser($params);
   }
 }

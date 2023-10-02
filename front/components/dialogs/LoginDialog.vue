@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-dialog v-model="authDialog" :persistent="true" width="30%" height="50%">
+    <v-dialog v-model="authDialog" :persistent="true" :width="modalWidth" :height="modalHeight">
       <v-card>
         <v-card-title>
           <v-row class="flex-row-reverse">
@@ -100,10 +100,15 @@ import {useAuthStore} from "~/store/auth";
 import {navigateTo} from "#app";
 import {useConfigStore} from "~/store/config";
 import {Mask} from "maska";
+import {useDisplay} from "vuetify";
 
 const mask = new Mask({mask: "+7 (###) ###-##-##"});
 const show = ref(false);
 const {loginType} = storeToRefs(useConfigStore());
+const { name } = useDisplay();
+const displayMode = computed(() => name.value);
+const modalWidth = computed(() => wideScreen.value ? '30%' : '100%');
+const wideScreen = computed(() => ['xl', 'xxl'].includes(displayMode.value));
 watch(loginType, () => {
   username.value = "";
 });

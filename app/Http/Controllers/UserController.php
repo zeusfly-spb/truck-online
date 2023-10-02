@@ -20,22 +20,23 @@ class UserController extends BaseController
    */
   public function register(Request $request): JsonResponse
   {
-    $username = $this->username();
-    $usernameRule = $username === 'email' ? 'required|email' : 'required|digits:10';
     $validator = Validator::make($request->all(), [
-      'username' => $usernameRule,
-      'password' => 'required|confirmed|min:6'
+      'email' => 'required|email',
+      'password' => 'required|confirmed|min:6',
+      'phone' => 'required|digits:10',
+      'contact_person' => 'required'
     ]);
     if ($validator->fails()) {
       return $this->sendError('Validation Error.', $validator->errors());
     }
     $user = User::create([
-      $username => $request->input('username'),
-      'password' => bcrypt($request->input('password')),
+      'email' => $request->email,
+      'password' => bcrypt($request->password),
+      'phone' => $request->phone,
       'company_id' => $request->company_id
     ]);
+    $user->addMangoAccount();
     $success['token'] = $user->createToken('MyApp')->accessToken;
-    $success[$username] = $user->{$username};
     return $this->sendResponse($success, 'User register successfully.');
   }
 

@@ -6,7 +6,6 @@
     name="weight"
     type="number"
     @input="updateWeight"
-    @focus="focusInput"
     v-model.number="weight"
     :rules="[rules.required]"
   ></v-text-field>
@@ -26,17 +25,12 @@ const clearInput = () => {
   weight.value = "";
 };
 
-const focusInput = () => {
-  weight.value.focus();
-};
-
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
 };
 
 defineExpose({
   clearInput,
-  focusInput,
 });
 </script>
 <style scoped>

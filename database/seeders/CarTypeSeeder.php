@@ -4,23 +4,23 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Tax;
+use App\Models\CarType;
 
-class TaxSeeder extends Seeder
+class CarTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-      Tax::create([
-        'name' => 'ОСНО',
+      CarType::create([
+        'name' => 'Тягач',
       ]);
-      Tax::create([
-        'name' => 'УСН',
+      CarType::create([
+        'name' => 'Полуприцеп',
       ]);
-      Tax::create([
-        'name' => 'НДС 0',
+      CarType::create([
+        'name' => 'Прицеп',
       ]);
     }
 }

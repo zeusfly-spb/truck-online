@@ -17,7 +17,7 @@ export const useUsersStore = defineStore("userStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/api/users", {
+        } = await opFetch("/users", {
           method: "get",
         });
         this.users = _rawValue;

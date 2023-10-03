@@ -48,6 +48,11 @@ class DriverController extends BaseController
       $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
       return response()->json(DriverResource::collection($users)->collection);
     }
+    public function admin_index(){
+
+      $users = User::role('driver')->get();
+      return response()->json(DriverResource::collection($users)->collection);
+    }
     /**
     * @OA\Post(
     *     path="/api/drivers",
@@ -236,7 +241,7 @@ class DriverController extends BaseController
       $file->save();
       return response()->json(['message' => "success"]);
     }
-    
+
     /**
     * @OA\Delete(
     *      path="/api/drivers/{id}",

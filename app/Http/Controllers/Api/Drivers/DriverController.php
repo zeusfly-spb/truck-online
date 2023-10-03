@@ -219,7 +219,7 @@ class DriverController extends BaseController
           $file->delete();
         }
       }
-      //return $request;
+
       foreach ($request->file('files') as $data) {
         $file = new File;
         $file->path = $data->move('uploads/files', time().'_'.$data->getClientOriginalName());

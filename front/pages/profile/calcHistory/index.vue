@@ -3,11 +3,38 @@
   <v-container>
     <table>
       <tr>
-        <th>Name</th>
+        <th>Conatiner</th>
+        <th>Price</th>
+        <th>Weight</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Return</th>
+        <th>Tax</th>
+        <th>Options</th>
       </tr>
       <tbody>
-        <tr v-for="container in allContainers" :key="container.name">
-          <td>{{ container.name }}</td>
+        <tr v-for="history in allCalcHistories" :key="history.id">
+          <td>{{ history.container?.name }}</td>
+          <td>{{ history.price }}</td>
+          <td>{{ history.weight }}</td>
+          <td>{{ history.from_address.name }}</td>
+          <td>{{ history.delivery_address.name }}</td>
+          <td>{{ history.return_address.name }}</td>
+          <td>{{ history.tax_id.name }}</td>
+          <td>
+            <v-col>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                </template>
+                <v-list>
+                  <v-list-item :to="`calcHistory/${history.id}`">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+          </td>
         </tr>
     </tbody>
     </table>
@@ -16,14 +43,14 @@
 <script setup>
 import Sidebar from "~/components/admin/Sidebar.vue";
 import { onBeforeMount } from "vue";
-import { useContainersStore } from "~/store/admin/containers/containers";
-const containerStore = useContainersStore();
+import { useCalcHistoryStore } from "~/store/admin/calcHistory/calcHistory";
+const calcHistoryStore = useCalcHistoryStore();
 onBeforeMount(() => {
-  containerStore.getAllContainers()
+  calcHistoryStore.getAllCalcHistories()
 })
-const allContainers = computed(() => {
-  if (!containerStore.containers || containerStore.loading) return [];
-  return containerStore.containers;
+const allCalcHistories = computed(() => {
+  if (!calcHistoryStore.calcHistories || calcHistoryStore.loading) return [];
+  return calcHistoryStore.calcHistories;
 });
 </script>
 <style scoped>

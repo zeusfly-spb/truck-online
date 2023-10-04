@@ -58,9 +58,14 @@ Route::middleware('auth:api')->group(function () {
       Route::post('executer', [AssignRoleController::class, 'assign_role_executer']);
     });
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
-    Route::post('address/accept/{id}', [AddressController::class, 'accept']);});
+    Route::get('address/accept/{id}', [AddressController::class, 'accept']);
+
+  });
+    //on production add middleware super-admin
     Route::get('users', [UserController::class, 'index']);
-    Route::get('drivers', [DriverController::class, 'admin_index']);
+    Route::get('admin/drivers', [DriverController::class, 'admin_index']);
+    Route::post('address/accept/{id}', [AddressController::class, 'accept']);
+
   //Orders
   Route::prefix('orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
@@ -112,3 +117,5 @@ Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);
 Route::apiResource('companies', CompanyController::class);
 Route::get('order/settings', [OrderSettingController::class, 'index']);
+
+

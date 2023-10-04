@@ -8,7 +8,7 @@
           Name
         </th>
         <th class="text-left">
-          Calories
+          Value
         </th>
       </tr>
     </thead>

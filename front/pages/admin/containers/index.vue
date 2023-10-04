@@ -19,7 +19,6 @@
                 <template v-slot:activator="{ props }">
                   <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
                 </template>
-
                 <v-list>
                   <v-list-item :to="`containers/${container.id}`">
                     <v-list-item-title>Edit</v-list-item-title>

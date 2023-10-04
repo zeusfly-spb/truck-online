@@ -66,11 +66,7 @@
     data.status = _rawValue['accept_status'] ? true : false ;
   });
   const updateAddress = async () => {
-    const token_cookie = useCookie("online_port_token");
-    const headers = new Headers();
-    if (token_cookie.value) {
-      headers.set("Authorization", `Bearer ${token_cookie.value}`);
-    }
+    
     const url = `address/accept/${route.params.id}`;
     const {
       data: { _rawValue },

@@ -65,7 +65,7 @@ class UserController extends BaseController
   {
     $username = $this->username();
     if (Auth::attempt([$username => $request->input('username'), 'password' => $request->input('password')])) {
-      $user = User::with('company')->find(Auth::id());
+      $user = User::with('company', 'roles')->find(Auth::id());
       $success['token'] = $user->createToken('OnlinePort')->accessToken;
       $success['user'] = new UserResource($user);
       return $this->sendResponse($success, 'User login successfully.');

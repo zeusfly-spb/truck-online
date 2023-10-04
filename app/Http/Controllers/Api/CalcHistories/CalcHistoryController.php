@@ -56,9 +56,13 @@ class CalcHistoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CalcHistory $calcHistory)
+    public function show($id)
     {
-        //
+        try{
+          return response()->json(CalcHistoryResource::make(CalcHistory::find($id)));
+        }catch(Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
     }
 
     /**

@@ -22,6 +22,7 @@ class AddressResource extends JsonResource
           'return' => $this->return,
           'from' => $this->from,
           'to' => $this->to,
+          'accept_status' => $this->accept_status,
       ];
     }
 }

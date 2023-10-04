@@ -27,14 +27,14 @@
 <script setup>
 import Sidebar from "~/components/admin/Sidebar.vue";
 import { onBeforeMount } from "vue";
-import { useUsersStore } from "~/store/admin/users/drivers";
-const userStore = useUsersStore();
+import { useDriversStore } from "~/store/admin/users/drivers";
+const driverStore = useDriversStore();
 onBeforeMount(() => {
- userStore.getAllUsers()
+  driverStore.getAllUsers()
 })
 const allUsers = computed(() => {
-  if (!userStore.users || userStore.loading) return [];
-  return userStore.users;
+  if (!driverStore.drivers || driverStore.loading) return [];
+  return driverStore.drivers;
 });
 </script>
 <style scoped>

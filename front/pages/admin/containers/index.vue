@@ -4,10 +4,30 @@
     <table>
       <tr>
         <th>Name</th>
+        <td>Weight</td>
+        <td>Kit</td>
+        <td>Options</td>
       </tr>
       <tbody>
         <tr v-for="container in allContainers" :key="container.name">
           <td>{{ container.name }}</td>
+          <td>{{ container.weight }}</td>
+          <td>{{ container.kit }}</td>
+          <td>
+            <v-col>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item :to="`containers/${container.id}`">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+          </td>
         </tr>
     </tbody>
     </table>

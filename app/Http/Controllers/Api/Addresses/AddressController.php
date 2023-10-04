@@ -200,10 +200,11 @@ class AddressController extends BaseController
      *     ),
      * )
      */
-    public function accept($id){
+    public function accept(Request $request, $id){
+
 
       $address = Address::find($id);
-      $address->accept_status = true;
+      $address->accept_status = $request->status;
       $address->save();
       return $this->sendResponse($address,'Success');
     }

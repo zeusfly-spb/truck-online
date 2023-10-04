@@ -2,26 +2,25 @@ import _default from "nuxt-icon/dist/module";
 import { defineStore } from "pinia";
 import { opFetch } from "~/composables/opFetch";
 
-export const useDriversStore = defineStore("driverStore", {
+export const useContainersStore = defineStore("containerStore", {
   state: () => ({
-    drivers: [],
+    containers: [],
     loading: false,
   }),
   actions: {
     setLoading(value) {
       this.loading = value;
     },
-  async getAllUsers() {
+  async getAllContainers() {
 
       this.setLoading(true);
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/admin/drivers", {
+        } = await opFetch("/containers", {
           method: "get",
         });
-        this.drivers = _rawValue;
-
+        this.containers = _rawValue;
       } catch (error) {
         console.error(error);
       }

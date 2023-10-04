@@ -25,7 +25,7 @@ class CompanyController extends Controller
     public function index()
     {
         try{
-            $companies = Company::orderBy('created_at', 'desc')->get();
+            $companies = Company::with('user')->orderBy('created_at', 'desc')->get();
             return response()->json(CompanyResource::collection($companies)->collection);
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

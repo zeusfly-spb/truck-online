@@ -6,18 +6,48 @@
         <th>ID</th>
         <th>Name</th>
         <th>Address</th>
+        <th>Status</th>
         <th>From</th>
         <th>Return</th>
         <th>To</th>
+        <th>Options</th>
       </tr>
       <tbody>
         <tr v-for="address in allAddresses" :key="address.name">
           <td>{{ address.id }}</td>
           <td> {{ address.name }} </td>
           <td>{{ address.address }}</td>
+          <td v-if="address.accept_status == false">
+            <v-badge color="error"
+              content="Not Accepted"
+              inline
+            ></v-badge>
+          </td>
+          <td v-if="address.accept_status == true">
+            <v-badge color="success"
+              content="Accepted"
+              inline
+            ></v-badge>
+          </td>
           <td>{{ address.from }}</td>
           <td>{{ address.return }}</td>
           <td>{{ address.to }}</td>
+          <td>
+            <v-col>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                </template>
+
+                <v-list>
+                  <v-list-item :to="`addresses/${address.id}`">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+
+          </td>
         </tr>
     </tbody>
     </table>
@@ -26,7 +56,7 @@
 <script setup>
 import Sidebar from "~/components/admin/Sidebar.vue";
 import { onBeforeMount } from "vue";
-import { useAddressesStore } from "~/store/admin/addresses";
+import { useAddressesStore } from "~/store/admin/addresses/addresses";
 const addressStore = useAddressesStore();
 onBeforeMount(() => {
   addressStore.getAllAddresses()

@@ -12,6 +12,11 @@
               <v-list-item-title>Users</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item to="/admin/companies">
+            <v-list-item-content>
+              <v-list-item-title>Companies</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
           <v-list-item to="/admin/drivers">
             <v-list-item-content>
               <v-list-item-title>Drivers</v-list-item-title>
@@ -20,6 +25,16 @@
           <v-list-item to="/admin/addresses">
             <v-list-item-content>
               <v-list-item-title>Addresses</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/admin/containers">
+            <v-list-item-content>
+              <v-list-item-title>Containers</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item to="/admin/carTypes">
+            <v-list-item-content>
+              <v-list-item-title>CarTypes</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>

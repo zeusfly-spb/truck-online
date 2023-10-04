@@ -3,22 +3,11 @@
   <v-container>
     <table>
       <tr>
-        <th>ID</th>
-        <th>FirstName</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Role</th>
+        <th>Name</th>
       </tr>
       <tbody>
-        <tr v-for="user in allUsers" :key="user.name">
-          <td>{{ user.id }}</td>
-          <td>
-            {{ user.first_name }} {{ user.middle_name }}
-            {{ user.last_name }}
-          </td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.phone }}</td>
-          <td>{{ user?.company?.inn }}</td>
+        <tr v-for="container in allContainers" :key="container.name">
+          <td>{{ container.name }}</td>
         </tr>
     </tbody>
     </table>
@@ -27,14 +16,14 @@
 <script setup>
 import Sidebar from "~/components/admin/Sidebar.vue";
 import { onBeforeMount } from "vue";
-import { useDriversStore } from "~/store/admin/users/drivers";
-const driverStore = useDriversStore();
+import { useContainersStore } from "~/store/admin/containers/containers";
+const containerStore = useContainersStore();
 onBeforeMount(() => {
-  driverStore.getAllUsers()
+  containerStore.getAllContainers()
 })
-const allUsers = computed(() => {
-  if (!driverStore.drivers || driverStore.loading) return [];
-  return driverStore.drivers;
+const allContainers = computed(() => {
+  if (!containerStore.containers || containerStore.loading) return [];
+  return containerStore.containers;
 });
 </script>
 <style scoped>

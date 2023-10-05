@@ -1,6 +1,6 @@
 <template>
   <v-text-field
-    class="inputInn"
+    class="inputNumber"
     label="ВЕС"
     variant="solo"
     name="weight"
@@ -34,11 +34,11 @@ defineExpose({
 });
 </script>
 <style scoped>
-.inputInn >>> input[type="number"] {
+.inputNumber >>> input[type="number"] {
   -moz-appearance: textfield;
 }
-.inputInn >>> input::-webkit-outer-spin-button,
-.inputInn >>> input::-webkit-inner-spin-button {
+.inputNumber >>> input::-webkit-outer-spin-button,
+.inputNumber >>> input::-webkit-inner-spin-button {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;

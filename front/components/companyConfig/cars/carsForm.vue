@@ -69,8 +69,7 @@
           hide-details="auto"
           style="margin-right: 10px"
         >
-
-        </v-file-input>
+          </v-file-input>
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-text-field

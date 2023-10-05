@@ -13,13 +13,13 @@
     </thead>
     <tbody>
       <tr v-for="car in allCars" :key="car.id">
-        <td>{{ car.id }}</td>
-        <td>{{ car.mark_model }}</td>
-        <td>{{ car.number }}</td>
-        <td>{{ car.sts }}</td>
-        <td>{{ car.country.name }}</td>
+        <td>{{ car.id || ''}}</td>
+        <td>{{ car.mark_model || ''}}</td>
+        <td>{{ car.number || ''}}</td>
+        <td>{{ car.sts || ''}}</td>
+        <td>{{ car.country.name || ''}}</td>
         <td>{{ car.car_type || '' }}</td>
-        <td>{{ car.max_weigth }}</td>
+        <td>{{ car.max_weigth || ''}}</td>
         <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
       </tr>
     </tbody>

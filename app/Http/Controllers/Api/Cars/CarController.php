@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api\Cars;
 use App\Http\Resources\Api\Cars\CarResource;
 use App\Http\Requests\CarRequest;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use App\Models\CarPass;
 use App\Models\Car;
-use Auth;
-use File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 
 class CarController extends Controller
@@ -60,7 +61,9 @@ class CarController extends Controller
         //
     }
 
-    /**
+
+
+  /**
     * @OA\Post(
     *     path="/api/cars",
     *     summary="Store Cars",
@@ -140,6 +143,17 @@ class CarController extends Controller
     public function store(CarRequest $request)
     {
       try{
+        $car = Car::create([
+          "number" => $request->number,
+          "company_id" => User::find(Auth::id())->company_id,
+          "country_id" => $request->country_id,
+          "mark_model" => $request->mark_model,
+          "car_type_id" => $request->car_type_id,
+          "sts" => $request->sts,
+          "right_use_id" => $request->right_use_id,
+          "max_weigth" => $request->max_weigth
+        ]);
+/*
         $car = new Car;
         $car->number = $request->number;
         $car->company_id = Auth::user()->company_id;
@@ -149,10 +163,12 @@ class CarController extends Controller
         $car->sts = $request->sts;
         $car->right_use_id = $request->right_use_id;
         $car->max_weigth = $request->max_weigth;
-
+*/
         if ($request->hasFile('icon')){
-          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+//          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+          $car->icon = $request->file('icon')->store('uploads/car/images') ?? '';
         }
+
         if ($request->hasFile('sts_file_1')){
           $car->sts_file_1 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_1'));
         }
@@ -160,7 +176,6 @@ class CarController extends Controller
           $car->sts_file_2 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_2'));
         }
         $car->save();
-
         if($request->has('passes')){
           $passes = json_decode($request->passes);
           foreach($passes as $pass){
@@ -171,7 +186,7 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(Exception $exception){
+      }catch(\Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }
 

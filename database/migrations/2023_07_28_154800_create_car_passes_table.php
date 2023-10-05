@@ -13,10 +13,8 @@ return new class extends Migration
     {
         Schema::create('car_passes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('car_id');
-            $table->foreign('car_id')->references('id')->on('cars')->onDelete('cascade');
-            $table->unsignedBigInteger('pass_id');
-            $table->foreign('pass_id')->references('id')->on('passes')->onDelete('cascade');
+            $table->unsignedBigInteger('car_id')->index();
+            $table->unsignedBigInteger('pass_id')->index();
             $table->timestamps();
         });
     }

@@ -98,7 +98,7 @@
           :rules="[rules.required]"
         ></v-text-field>
       </v-col>
-      <v-col class="mb-3">
+      <v-col class="mb-3 mr-3">
         <v-file-input
           label="СТС Основная Сторона"
           v-model="data.cars.sts.fileOne"
@@ -109,7 +109,7 @@
           :rules="rulesFile"
         ></v-file-input>
       </v-col>
-      <v-col class="mb-3">
+      <v-col class="mb-3 mr-3">
         <v-file-input
           label="СТС Обратная Сторона"
           v-model="data.cars.sts.fileTwo"
@@ -127,7 +127,6 @@
         class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
         >Добавить машину
       </v-btn>
-
       <v-btn
         color="primary"
         @click="resetData"
@@ -136,9 +135,6 @@
       </v-btn>
     </div>
   </v-form>
-  <div style="margin-top: 15px">
-    <cars-table />
-  </div>
 </template>
 <script setup>
 import { computed } from "vue";

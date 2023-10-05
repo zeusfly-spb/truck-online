@@ -144,9 +144,6 @@
       </v-btn>
     </div>
   </v-form>
-  <div style="margin-top: 5px">
-    <table-drivers />
-  </div>
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";

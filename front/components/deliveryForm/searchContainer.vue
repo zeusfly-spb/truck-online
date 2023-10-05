@@ -30,6 +30,7 @@ const updateContainer = () => {
   emit("updateContainer", selectedContainerId.value);
 };
 const allContainers = computed(() => {
+  if (!containersStore.containers || containersStore.loading) return [];
   const base =
     containersStore.containers.map((item) => ({
       ...item,

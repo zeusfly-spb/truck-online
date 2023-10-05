@@ -12,16 +12,12 @@ use App\Models\Document;
 use App\Models\User;
 use App\Models\File;
 use File as RMFile;
+use Illuminate\Support\Facades\Storage;
 use Auth;
 
 
 class DriverController extends BaseController
 {
-  protected $documentService;
-
-    public function __construct(FileUploadService $fileService){
-        $this->documentService = $fileService;
-    }
     /**
      * @OA\Get(
      *     path="/api/drivers",
@@ -176,10 +172,15 @@ class DriverController extends BaseController
       if ($request->hasFile('document')){
 
         $document = Document::where('table_owner_id', $id)->first();
-        $path = $request->document->move('uploads/documents', time().'_'.$request->document->getClientOriginalName());
+
+        $path = "uploads/documents";
+        $originalName = time().'_'.$request->file('document')->getClientOriginalName();
+        $file = request()->document;
+
+        $path = Storage::disk('local')->putFileAs($path, $file, $originalName);
 
         if($document)
-          RMFile::delete($document->path);
+          Storage::disk('local')->delete($document->path);
         else
           $document = new Document;
 
@@ -190,8 +191,8 @@ class DriverController extends BaseController
           $document->table_owner = 'User';
           $document->table_owner_id = $id;
           $document->save();
+          return response()->json(['message' => "success"]);
       }
-      return response()->json(['message' => "success"]);
     }
     /**
     * @OA\Post(
@@ -220,25 +221,25 @@ class DriverController extends BaseController
       if(count($files)>0){
 
         foreach($files as $file){
-          RMFile::delete($file->path);
+          Storage::disk('local')->delete($file->path);
           $file->delete();
         }
       }
 
       foreach ($request->file('files') as $data) {
+
+        $path = "uploads/files";
+        $originalName = time().'_'.$data->getClientOriginalName();
+        $image = $data;
+        $path = Storage::disk('local')->putFileAs($path, $image, $originalName);
+
         $file = new File;
-        $file->path = $data->move('uploads/files', time().'_'.$data->getClientOriginalName());
+        $file->path = $path;
         $file->table_owner = 'User';
         $file->table_owner_id = $id;
         $file->save();
       }
 
-      $file2 = $request->file('file2');
-      $file = new File;
-      $file->path = $file2->move('uploads/files', time().'_'.$file2->getClientOriginalName());
-      $file->table_owner = 'User';
-      $file->table_owner_id = $id;
-      $file->save();
       return response()->json(['message' => "success"]);
     }
 
@@ -272,7 +273,7 @@ class DriverController extends BaseController
       $files = File::where('table_owner', 'User')->where('table_owner_id', $id)->get();
       if(count($files)>0){
         foreach($files as $file){
-          RMFile::delete($file->path);
+          Storage::disk('local')->delete($file->path);
           $file->delete();
         }
       }
@@ -280,7 +281,7 @@ class DriverController extends BaseController
       //remove document
       $document = Document::where('table_owner', 'User')->where('table_owner_id', $id)->first();
       if($document){
-        RMFile::delete($document->path);
+        Storage::disk('local')->delete($document->path);
         $document->delete();
       }
       $user->delete();

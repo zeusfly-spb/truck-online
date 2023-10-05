@@ -21,14 +21,10 @@ return new class extends Migration
         $table->string('sts_file_2');
         $table->string('max_weigth');
         //relation types
-        $table->unsignedBigInteger('company_id');
-        $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
-        $table->unsignedBigInteger('car_type_id');
-        $table->foreign('car_type_id')->references('id')->on('car_types')->onDelete('cascade');
-        $table->unsignedBigInteger('country_id');
-        $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-        $table->unsignedBigInteger('right_use_id');
-        $table->foreign('right_use_id')->references('id')->on('right_uses')->onDelete('cascade');
+        $table->unsignedBigInteger('company_id')->index();
+        $table->unsignedBigInteger('car_type_id')->index();
+        $table->unsignedBigInteger('country_id')->index();
+        $table->unsignedBigInteger('right_use_id')->index();
         $table->timestamps();
     });
     }

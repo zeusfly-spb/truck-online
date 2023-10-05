@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('charges', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_from_id');
-            $table->foreign('company_from_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->unsignedBigInteger('company_to_id');
-            $table->foreign('company_to_id')->references('id')->on('companies')->onDelete('cascade');
-            $table->unsignedBigInteger('order_id');
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            // $table->unsignedBigInteger('company_from_id');
+            // $table->foreign('company_from_id')->references('id')->on('companies')->onDelete('cascade');
+            // $table->unsignedBigInteger('company_to_id');
+            // $table->foreign('company_to_id')->references('id')->on('companies')->onDelete('cascade');
+            // $table->unsignedBigInteger('order_id');
+            // $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->unsignedBigInteger('company_from_id')->index();
+            $table->unsignedBigInteger('company_to_id')->index();
+            $table->unsignedBigInteger('order_id')->index();
             $table->double('amount');
             $table->boolean('notified');
             $table->boolean('payed');

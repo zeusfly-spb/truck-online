@@ -11,16 +11,11 @@ use App\Models\CarPass;
 use App\Models\Car;
 use Auth;
 use File;
+use Illuminate\Support\Facades\Storage;
 
 
 class CarController extends Controller
 {
-    protected $fileService;
-
-    public function __construct(FileUploadService $fileService)
-    {
-        $this->fileService = $fileService;
-    }
     /**
      * @OA\Get(
      *     path="/api/cars",
@@ -151,13 +146,23 @@ class CarController extends Controller
         $car->max_weigth = $request->max_weigth;
 
         if ($request->hasFile('icon')){
-          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+          $path = "uploads/car/images";
+          $originalName = $request->file('icon')->getClientOriginalName();
+          $image = request()->icon;
+
+          $car->icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_1')){
-          $car->sts_file_1 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_1'));
+          $path = "uploads/car/documents";
+          $originalName = $request->file('sts_file_1')->getClientOriginalName();
+          $image = request()->sts_file_1;
+          $car->sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_2')){
-          $car->sts_file_2 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_2'));
+          $path = "uploads/car/documents";
+          $originalName = $request->file('sts_file_2')->getClientOriginalName();
+          $image = request()->sts_file_2;
+          $car->sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         $car->save();
 
@@ -284,17 +289,25 @@ class CarController extends Controller
         $car->max_weigth = $request->max_weigth;
 
         if ($request->hasFile('icon')){
-          File::delete($car->icon);
-          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
+          Storage::disk('local')->delete($car->icon);
+          $path = "uploads/car/images";
+          $originalName = $request->file('icon')->getClientOriginalName();
+          $image = request()->icon;
+          $car->icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
 
         if ($request->hasFile('sts_file_1')){
-          File::delete($car->sts_file_1);
-          $car->sts_file_1 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_1'));
+          $path = "uploads/car/documents";
+          $originalName = $request->file('sts_file_1')->getClientOriginalName();
+          $image = request()->sts_file_1;
+          $car->sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
 
         if ($request->hasFile('sts_file_2')){
-          $car->sts_file_2 = $this->fileService->upload('uploads/car/documents', $request->file('sts_file_2'));
+          $path = "uploads/car/documents";
+          $originalName = $request->file('sts_file_2')->getClientOriginalName();
+          $image = request()->sts_file_2;
+          $car->sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
 
         $car->save();

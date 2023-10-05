@@ -65,7 +65,7 @@ class UserController extends BaseController
   {
     $username = $this->username();
     if (Auth::attempt([$username => $request->input('username'), 'password' => $request->input('password')])) {
-      $user = User::with('company')->find(Auth::id());
+      $user = User::with('company', 'roles')->find(Auth::id());
       $success['token'] = $user->createToken('OnlinePort')->accessToken;
       $success['user'] = new UserResource($user);
       return $this->sendResponse($success, 'User login successfully.');
@@ -79,16 +79,16 @@ class UserController extends BaseController
    */
   public function details()
   {
-    return response()->json(new UserResource(User::with('company')->find(Auth::id())));
+    return response()->json(new UserResource(User::with('company', 'roles')->find(Auth::id())));
   }
 
   public function update(Request $request)
   {
     Auth::user()->update($request->all());
-    return response()->json(new UserResource(User::with('company')->find(Auth::id())));
+    return response()->json(new UserResource(User::with('company', 'roles')->find(Auth::id())));
   }
 
   public function index(){
-    return response()->json(UserResource::collection(User::with('company')->get())->collection);
+    return response()->json(UserResource::collection(User::with('company', 'roles')->get())->collection);
   }
 }

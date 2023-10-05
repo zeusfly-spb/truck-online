@@ -166,7 +166,7 @@ class CarController extends Controller
 */
         if ($request->hasFile('icon')){
 //          $car->icon = $this->fileService->upload('uploads/car/images', $request->file('icon'));
-          $car->icon = $request->file('icon')->store('uploads/car/images') ?? '';
+          $car->icon = $request->file('icon')->store('uploads/car/images');
         }
 
         if ($request->hasFile('sts_file_1')){

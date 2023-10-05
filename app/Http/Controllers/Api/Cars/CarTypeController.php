@@ -109,10 +109,10 @@ class CarTypeController extends Controller
     *     ),
     *     )
     */
-    public function show(CarType $carType)
+    public function show($id)
     {
       try{
-          return response()->json(CarTypeResource::make($carType));
+          return response()->json(CarTypeResource::make(CarType::find($id)));
       }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }

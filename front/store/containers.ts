@@ -14,9 +14,7 @@ export const useContainersStore = defineStore("containersStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/containers", {
-          method: "get",
-        });
+        } = await opFetch("/containers", {method: 'GET'});
         this.containers = _rawValue;
       } catch (error) {
         console.error(error);

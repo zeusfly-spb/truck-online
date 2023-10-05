@@ -1,9 +1,9 @@
 <template>
   <Sidebar />
   <v-container>
-    <v-form @submit.prevent="updateAddress">
+    <v-form @submit.prevent="updateContainer">
     <v-row no-gutters class="align-center">
-      <v-col md :cols="6" class="mr-3 mb-3" style="display: flex">
+      <v-col md :cols="4" class="mr-3 mb-3" style="display: flex">
         <v-text-field
           theme="light"
           label="Name"
@@ -14,22 +14,31 @@
           :rules="[rules.required]"
           style="margin-right: 10px;"
         ></v-text-field>
+      </v-col>
+      <v-col md :cols="4" class="mr-3 mb-3" style="display: flex">
         <v-text-field
           theme="light"
-          label="Address"
-          v-model="data.address"
+          label="Weight"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          v-model="data.weight"
           :rules="[rules.required]"
+          style="margin-right: 10px;"
         ></v-text-field>
       </v-col>
-    </v-row>
-    <v-row>
-      <v-checkbox
-      v-model="data.status"
-      :label="`Accept status`"
-    ></v-checkbox>
+      <v-col md :cols="4" class="mr-3 mb-3" style="display: flex">
+        <v-text-field
+          theme="light"
+          label="Kit"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          v-model="data.kit"
+          :rules="[rules.required]"
+          style="margin-right: 10px;"
+        ></v-text-field>
+      </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col md :cols="12">
@@ -51,8 +60,8 @@
   const route = useRoute();
   const data = reactive({
     name: '',
-    address: '',
-    status: ''
+    weight: '',
+    kit: '',
   })
   const rules = {
     required: (value) => !!value || "Поле обязательно для заполнения",
@@ -60,24 +69,25 @@
 
   onBeforeMount(async () => {
     const route = useRoute();
-    const { data: { _rawValue }, } = await opFetch(`/addresses/${route.params.id}`, { method: "get"});
+    const { data: { _rawValue }, } = await opFetch(`/containers/${route.params.id}`, { method: "get"});
     data.name = _rawValue['name'];
-    data.address = _rawValue['address'];
-    data.status = _rawValue['accept_status'] ? true : false ;
+    data.weight = _rawValue['weight'];
+    data.kit = _rawValue['kit'];
   });
-  const updateAddress = async () => {
+  const updateContainer = async () => {
+
     const token_cookie = useCookie("online_port_token");
     const headers = new Headers();
     if (token_cookie.value) {
       headers.set("Authorization", `Bearer ${token_cookie.value}`);
     }
-    const url = `address/accept/${route.params.id}`;
+    const url = `containers/${route.params.id}`;
     const {
       data: { _rawValue },
     } = await opFetch(url, {
-      method: "post",
-      body: { status: data.status },
+      method: "put",
+      body: { name: data.name, weight: data.weight, kit: data.kit },
     });
-    await navigateTo("/admin/addresses");
+     await navigateTo("/admin/containers");
   };
 </script>

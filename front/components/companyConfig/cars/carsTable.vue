@@ -18,7 +18,7 @@
         <td>{{ car.number }}</td>
         <td>{{ car.sts }}</td>
         <td>{{ car.country.name }}</td>
-        <td>{{ car.car_type.name }}</td>
+        <td>{{ car.car_type || '' }}</td>
         <td>{{ car.max_weigth }}</td>
         <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
       </tr>

@@ -4,10 +4,25 @@
     <table>
       <tr>
         <th>Name</th>
+        <td>Options</td>
       </tr>
       <tbody>
         <tr v-for="carType in allCarTypes" :key="carType.name">
           <td>{{ carType.name }}</td>
+          <td>
+            <v-col>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+                </template>
+                <v-list>
+                  <v-list-item :to="`carTypes/${carType.id}`">
+                    <v-list-item-title>Edit</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+          </td>
         </tr>
     </tbody>
     </table>

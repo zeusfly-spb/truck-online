@@ -10,7 +10,6 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ИМЯ"
           class="text-body-1"
           variant="outlined"
@@ -26,7 +25,6 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ФАМИЛИЯ"
           class="text-body-1"
           variant="outlined"
@@ -42,7 +40,6 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ОТЧЕСТВО"
           class="text-body-1"
           variant="outlined"
@@ -113,7 +110,7 @@
       </v-col>
       <v-col md :cols="12" class="mr-3 mb-3">
         <v-text-field
-          v-model="data.drivers.passport.value"
+          v-model="data.drivers.driveLicense.number"
           label="Номер В/У"
           class="text-body-1"
           variant="outlined"
@@ -218,15 +215,15 @@ async function addDriver() {
 }
 
 async function resetData() {
-  data.drivers.first_name = null;
-  data.drivers.middle_name = null;
-  data.drivers.last_name = null;
+  data.drivers.first_name.value = null;
+  data.drivers.middle_name.value = null;
+  data.drivers.last_name.value = null;
   data.drivers.email = null;
   data.drivers.phone = null;
   data.drivers.password = null;
-  data.drivers.driveLicense = null;
-  data.drivers.driveLicense = null;
-  data.drivers.driveLicense = null;
+  data.drivers.driveLicense.file = null;
+  data.drivers.driveLicense.date = null;
+  data.drivers.driveLicense.number = null;
   data.drivers.files = null;
 }
 

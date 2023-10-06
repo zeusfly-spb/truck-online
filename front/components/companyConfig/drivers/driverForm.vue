@@ -164,7 +164,7 @@ const data = reactive({
     email: null,
     phone: null,
     password: null,
-    files: null,
+    files: [],
     passport: {
       main: null,
       second: null,
@@ -189,13 +189,20 @@ async function addDriver() {
   };
   await driverStore.addDriver(body);
 
-  const driverLicense = {
-    document: data.drivers.driveLicense.file,
-    document_date: data.drivers.driveLicense.date,
-    document_number: data.drivers.driveLicense.number,
-  };
+  const formdata = new FormData();
+  const driverLicense = [
+    data.drivers.driveLicense.file,
+    data.drivers.driveLicense.date,
+    data.drivers.driveLicense.number,
+  ];
+  console.log("fffff:", driverLicense);
+  for (let i = 0; i < driverLicense.length; i++) {
+    formdata.append("document", driverLicense[0]);
+    formdata.append("document_date", driverLicense[1]);
+    formdata.append("document_number", driverLicense[2]);
+  }
 
-  await driverStore.addDriverLicense(driverLicense);
+  await driverStore.addDriverLicense(formdata);
 
   const filesdata = new FormData();
   const files = data.drivers.files;

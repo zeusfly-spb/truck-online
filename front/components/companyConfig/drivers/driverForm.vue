@@ -190,9 +190,9 @@ async function addDriver() {
   await driverStore.addDriver(body);
 
   const driverLicense = {
-    path: data.drivers.driveLicense.file,
-    date: data.drivers.driveLicense.date,
-    number: data.drivers.driveLicense.number,
+    document: data.drivers.driveLicense.file,
+    document_date: data.drivers.driveLicense.date,
+    document_number: data.drivers.driveLicense.number,
   };
 
   await driverStore.addDriverLicense(driverLicense);

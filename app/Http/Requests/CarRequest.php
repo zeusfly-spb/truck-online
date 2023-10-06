@@ -22,16 +22,16 @@ class CarRequest extends FormRequest
     public function rules(): array
     {
       return [
-        'icon'=>'required',
-        'number'=> 'required',
-        'mark_model'=> 'required',
-        'max_weigth'=> 'required',
-        'country_id'=> 'required:countries',
-        'car_type_id'=> 'required:car_types',
-        'right_use_id'=> 'required:right_uses',
-        'sts'=>'required',
-        'sts_file_1'=> 'required',
-        'sts_file_2'=> 'required',
+        //'icon'=>'required',
+        //'number'=> 'required',
+        //'mark_model'=> 'required',
+        //'max_weigth'=> 'required',
+        //'country_id'=> 'required',
+        //'car_type_id'=> 'required',
+        //'right_use_id'=> 'required',
+        //'sts'=>'required',
+        //'sts_file_1'=> 'required',
+        //'sts_file_2'=> 'required',
       ];
     }
 }

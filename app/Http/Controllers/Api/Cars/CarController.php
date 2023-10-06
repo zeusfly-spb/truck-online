@@ -132,13 +132,14 @@ class CarController extends Controller
     *     ),
     * )
     */
-    public function store(CarRequest $request)
+    public function store(Request $request)
     {
-      try{
+      //try{
 
         $icon = null;
         $sts_file_1 = null;
         $sts_file_2 = null;
+
 
         if ($request->hasFile('icon')){
             $path = "uploads/car/images";
@@ -183,9 +184,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+      //}catch(Exception $exception){
+      //    return response()->json(['error' => $exception->getMessage()], 500);
+      //}
 
     }
 

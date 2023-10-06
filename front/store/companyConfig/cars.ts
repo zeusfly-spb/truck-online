@@ -70,21 +70,14 @@ export const useCarsStore = defineStore("cardStore", {
 
     async addNewCar(formData) {
       try {
-        const token_cookie = useCookie("online_port_token");
-        const headers = new Headers();
-        if (token_cookie.value) {
-          headers.set("Authorization", `Bearer ${token_cookie.value}`);
-        }
-        headers.set("Accept", "application/json");
         const {
           data: { _rawValue },
-        } = await useFetch("/cars", {
+        } = await opFetch("/cars", {
           method: "post",
           body: formData,
-          headers,
         });
         console.log("addCar:", _rawValue);
-        this.cars.unshift(_rawValue);
+        //this.cars.unshift(_rawValue);
       } catch (error) {
         console.error(error);
       }

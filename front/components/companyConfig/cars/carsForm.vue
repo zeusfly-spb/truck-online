@@ -62,15 +62,15 @@
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-file-input
-          v-model="data.cars.icon"
+          v-model="icon"
           label="Иконка"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
         >
-
         </v-file-input>
+
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-text-field
@@ -95,7 +95,7 @@
       <v-col class="mb-3">
         <v-file-input
           label="СТС Основная Сторона"
-          v-model="data.cars.sts.fileOne"
+          v-model="fileOne"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
@@ -105,7 +105,7 @@
       <v-col class="mb-3">
         <v-file-input
           label="СТС Обратная Сторона"
-          v-model="data.cars.sts.fileTwo"
+          v-model="fileTwo"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
@@ -124,7 +124,7 @@
     </v-row>
   </v-form>
   <div style="margin-top: 15px">
-    <cars-table />
+    <!-- <cars-table /> -->
   </div>
 </template>
 <script setup>
@@ -132,13 +132,17 @@ import { computed } from "vue";
 import { useCarsStore } from "~/store/companyConfig/cars";
 import carsTable from "./carsTable.vue";
 const carStore = useCarsStore();
+const icon = ref();
+const fileOne = ref();
+const fileTwo = ref();
+
 const data = reactive({
   cars: {
     types: {
       value: null,
     },
     number: {
-      value: null,
+      value: ''
     },
     brand: {
       value: null,
@@ -149,13 +153,12 @@ const data = reactive({
     country: {
       value: null,
     },
-    icon: null,
     weigth: null,
+    fileOne: null,
+    fileTwo: null,
     sts: {
-      fileOne: [],
-      fileTwo: [],
-      number: [],
-    },
+      number: "",
+    }
   },
 });
 
@@ -165,25 +168,7 @@ onBeforeMount(async () => {
   await carStore.getRightUse();
   await carStore.getAllCars();
 });
-watch(
-  () => data.cars.types.value,
-  (newVal) => {
-    console.log("выбранное значение:", newVal);
-  },
-);
-watch(
-  () => data.cars.rightOfUse.value,
-  (newVal) => {
-    console.log("выбранное значение:", newVal);
-  },
-);
 
-watch(
-  () => data.cars.country.value,
-  (newVal) => {
-    console.log("выбранное значение:", newVal);
-  },
-);
 const typesCar = computed(() => {
   if (!carStore.typesCars || carStore.loading) return [];
   return (
@@ -218,17 +203,19 @@ const rightUse = computed(() => {
 });
 
 async function addCar() {
+
   const formdata = new FormData();
   formdata.append("number", data.cars.number.value);
   formdata.append("car_type_id", data.cars.types.value);
   formdata.append("mark_model", data.cars.brand.value);
   formdata.append("country_id", data.cars.country.value);
   formdata.append("sts", data.cars.sts.number);
-  formdata.append("icon", data.cars.icon);
-  formdata.append("sts_file_1", data.cars.sts.fileOne);
-  formdata.append("sts_file_2", data.cars.sts.fileTwo);
+  formdata.append("icon", icon.value[0]);
+  formdata.append("sts_file_1", fileOne.value[0]);
+  formdata.append("sts_file_2", fileTwo.value[0]);
   formdata.append("right_use_id", data.cars.rightOfUse.value);
   formdata.append("max_weigth", data.cars.weigth);
+
   await carStore.addNewCar(formdata);
 }
 </script>

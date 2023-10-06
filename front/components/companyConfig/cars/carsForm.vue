@@ -21,7 +21,6 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 10px"
           :rules="[rules.required]"
         ></v-text-field>
       </v-col>
@@ -65,14 +64,13 @@
           :rules="[rules.required]"
         ></v-select>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
+      <v-col md :cols="12" class="mb-3 mr-3">
         <v-file-input
           v-model="data.cars.icon"
           label="Иконка"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 10px"
           :rules="[rules.required]"
         ></v-file-input>
       </v-col>
@@ -88,7 +86,7 @@
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col md :cols="12" class="mb-3">
+      <v-col md :cols="12" class="mb-3 mr-3">
         <v-text-field
           v-model="data.cars.sts.number"
           label="Cерия и номер СТС"
@@ -102,18 +100,17 @@
         <v-file-input
           label="СТС Основная Сторона"
           v-model="data.cars.sts.fileOne"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 6px; margin-left: 7px"
           :rules="rulesFile"
         ></v-file-input>
       </v-col>
-      <v-col class="mb-3 mr-3">
+      <v-col class="mb-3">
         <v-file-input
           label="СТС Обратная Сторона"
           v-model="data.cars.sts.fileTwo"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
           :rules="rulesFile"
@@ -264,5 +261,10 @@ const rulesFile = [(v) => !!v || "Выберите файл"];
 .btnCarForm {
   display: flex;
   justify-content: space-around;
+}
+@media (max-width: 339px) {
+  :deep(.sts.v-file-input .v-field-label) {
+    font-size: 9px;
+  }
 }
 </style>

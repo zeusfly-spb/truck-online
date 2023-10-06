@@ -78,6 +78,7 @@ const data = reactive({
   }
   .innTag {
     font-size: 30px;
+    margin-left: 5px;
   }
   .window-item {
     display: flex;
@@ -91,7 +92,10 @@ const data = reactive({
     .carTable {
       flex-grow: 1;
       overflow: auto;
-      height: 20%;
+      height: 46vh;
+      position: relative;
+      width: 100%;
+      margin-top: 15px;
     }
 
     .driverForm {
@@ -99,7 +103,12 @@ const data = reactive({
       overflow: auto;
     }
     .driverTable {
+      flex-grow: 1;
       overflow: auto;
+      height: 39vh;
+      position: relative;
+      width: 100%;
+      margin-top: 15px;
     }
   }
   @media (max-width: 960px) {
@@ -110,7 +119,6 @@ const data = reactive({
         overflow: auto;
       }
 
-      .carTable,
       .driverTable {
         width: 100%;
         height: auto;
@@ -142,6 +150,16 @@ const data = reactive({
       font-size: 25px;
     }
   }
+  @media (max-width: 456px) {
+    :deep(.v-file-input .v-input__prepend) {
+      position: absolute;
+      left: 1px;
+      top: 16px;
+    }
+    :deep(.v-file-input .v-field-label) {
+      margin-left: 27px;
+    }
+  }
   @media (max-width: 424px) {
     .mainName {
       font-size: 40px;
@@ -156,6 +174,14 @@ const data = reactive({
     }
     .innTag {
       font-size: 15px;
+    }
+    :deep(.v-file-input .v-input__prepend) {
+      position: absolute;
+      left: 1px;
+      top: 16px;
+    }
+    :deep(.v-file-input .v-field-label) {
+      margin-left: 23px;
     }
   }
 }

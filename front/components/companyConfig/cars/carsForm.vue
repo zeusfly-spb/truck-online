@@ -8,7 +8,7 @@
           item-title="name"
           item-value="id"
           label="Тип машины"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
@@ -17,8 +17,8 @@
       <v-col md :cols="12" class="mb-3">
         <v-text-field
           v-model="data.cars.number.value"
-          label="Номер машины"
-          class="text-body-1"
+          label=" Номер машины"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"

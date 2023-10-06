@@ -1,7 +1,7 @@
 <template>
   <v-form @submit.prevent="addDriver">
     <v-row no-gutters class="align-center">
-      <v-col md :cols="12" class="mr-3 mb-3" style="display: flex">
+      <v-col md :cols="12" class="mr-3 mb-3 mt-1" style="display: flex">
         <v-text-field
           v-model="data.drivers.first_name.value"
           :items="data.drivers.first_name.list"
@@ -11,7 +11,7 @@
           item-props
           menu-icon=""
           label="ИМЯ"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
@@ -26,7 +26,7 @@
           item-props
           menu-icon=""
           label="ФАМИЛИЯ"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
@@ -41,7 +41,7 @@
           item-props
           menu-icon=""
           label="ОТЧЕСТВО"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"

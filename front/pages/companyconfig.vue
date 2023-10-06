@@ -1,5 +1,5 @@
 <template>
-  <div class="basic-data">
+  <div class="h-100 pt-10 container basic-data">
     <div class="mainConfig">
       <h2 class="mainName">Основные данные:</h2>
       <h4 class="innTag">{{ data.inn }}</h4>
@@ -73,6 +73,7 @@ const data = reactive({
 
 <style lang="scss" scoped>
 .basic-data {
+  height: 100%;
   .mainName {
     font-size: 60px;
   }
@@ -83,10 +84,10 @@ const data = reactive({
   .window-item {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    // height: 100%;
     .carForm {
       flex-shrink: 0;
-      max-height: 450px;
+      // max-height: 450px;
     }
 
     .carTable {

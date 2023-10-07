@@ -276,71 +276,103 @@ class OrderController extends Controller
         $calc_history = $this->calcHistoryCreate($data);
         if($calc_history) return response()->json(['data'=> $calc_history ], 201);
       }else{
-        $order = $this->order_create($data);
-        if($order) return response()->json([ 'data'=> $order ], 201);
+
+        if(Auth::user()){
+          $order = $this->order_create($data);
+          if($order) return response()->json([ 'data'=> $order ], 201);
+        }else{
+          return response()->json(['message'=> "Unauthorized" ], 401);
+        }
       }
     }
 
     public function order_create($data){
 
-      $order = new Order;
-      $order['user_id'] = Auth::user()->id ;
-      $order['company_id'] = Auth::user()->company_id;
+      $priceAndDistace = $this->getPriceAndWeight($data);
       $tax = Tax::firstOrCreate(['name' => '20%']);
-      $order['tax_id'] = $tax->id;
-      $order['from_address_id'] = $data['from_address_id'];
-      $order['from_date'] = $data['from_date'];
-      $order['from_slot'] = $data['from_slot'];
-      $order['from_contact_name'] = $data['from_contact_name'];
-      $order['from_contact_phone'] = $data['from_contact_phone'];
-      $order['from_contact_email'] = $data['from_contact_email'];
 
-      $order['delivery_address_id'] = $data['delivery_address_id'];
-      $order['delivery_contact_name'] = $data['delivery_contact_name'];
-      $order['delivery_contact_phone'] = $data['delivery_contact_phone'];
-      $order['delivery_contact_email'] = $data['delivery_contact_email'];
-      $order['delivery_date'] = $data['delivery_date'];
-      $order['delivery_slot'] = $data['delivery_slot'];
+      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
+      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
+      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
 
-      $order['return_address_id'] = $data['return_address_id'];
-      $order['return_contact_name'] = $data['return_contact_name'];
-      $order['return_contact_phone'] = $data['return_contact_phone'];
-      $order['return_contact_email'] = $data['return_contact_email'];
-      $order['return_date'] = $data['return_date'];
-      $order['return_slot'] = $data['return_slot'];
-
-      $order['delivery2_address_id'] = $data['delivery2_address_id'] ?? null;
-      $order['delivery2_contact_name'] = $data['delivery2_contact_name'] ?? null;
-      $order['delivery2_contact_phone'] = $data['delivery2_contact_phone'] ?? null;
-      $order['delivery2_contact_email'] = $data['delivery2_contact_email'] ?? null;
-      $order['delivery2_date'] = $data['delivery2_date'] ?? null;
-      $order['delivery2_slot'] = $data['delivery2_slot'] ?? null;
-
-      $order['return2_address_id'] = $data['return2_address_id'] ?? null;
-      $order['return2_contact_name'] = $data['return2_contact_name'] ?? null;
-      $order['return2_contact_phone'] = $data['return2_contact_phone'] ?? null;
-      $order['return2_contact_email'] = $data['return2_contact_email'] ?? null;
-      $order['return2_date'] = $data['return2_date'] ?? null;
-      $order['return2_slot'] = $data['return2_slot'] ?? null;
-
-      $order['container_id'] = $data['container_id'];
-      $order['length_algo'] = $data['length_algo'];
-      $order['length_real'] = $data['length_real'];
-      $order['price'] = $data['price'];
-      $order['weight'] = $data['weight'];
-      $order['order_status'] = OrderStatus::DRAFT;
-
-      if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
-      if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
-      if(isset($data['temp_reg']) && $data['temp_reg']) $order['temp_reg'] = true; else $order['temp_reg'] = false;
-
-      $order['description'] = $data['description'];
-      $order->save();
+      $order = Order::create([
+        'user_id' => Auth::user()->id,
+        'company_id' => Auth::user()->company_id,
+        'tax_id' => $tax->id,
+        'from_address_id' => $data['from_address_id'] ?? null,
+        'from_date' => $data['from_date'] ?? null,
+        'from_slot' => $data['from_slot'] ?? null,
+        'from_contact_name' => $data['from_contact_name'] ?? null,
+        'from_contact_phone' => $data['from_contact_phone'] ?? null,
+        'from_contact_email' => $data['from_contact_email'] ?? null,
+        'delivery_address_id' => $data['delivery_address_id'] ?? null,
+        'delivery_contact_name' => $data['delivery_contact_name'] ?? null,
+        'delivery_contact_phone' => $data['delivery_contact_phone'] ?? null,
+        'delivery_contact_email' => $data['delivery_contact_email'] ?? null,
+        'delivery_date' => $data['delivery_date'] ?? null,
+        'delivery_slot' => $data['delivery_slot'] ?? null,
+        'return_address_id' => $data['return_address_id'] ?? null,
+        'return_contact_name' => $data['return_contact_name'] ?? null,
+        'return_contact_phone' => $data['return_contact_phone'] ?? null,
+        'return_contact_email' => $data['return_contact_email'] ?? null,
+        'return_date' => $data['return_date'] ?? null,
+        'return_slot' => $data['return_slot'] ?? null,
+        'delivery2_address_id' => $data['delivery2_address_id'] ?? null,
+        'delivery2_contact_name' => $data['delivery2_contact_name'] ?? null,
+        'delivery2_contact_phone' => $data['delivery2_contact_phone'] ?? null,
+        'delivery2_contact_email' => $data['delivery2_contact_email'] ?? null,
+        'delivery2_date' => $data['delivery2_date'] ?? null,
+        'delivery2_slot' => $data['delivery2_slot'] ?? null,
+        'return2_address_id' => $data['return2_address_id'] ?? null,
+        'return2_contact_name' => $data['return2_contact_name'] ?? null,
+        'return2_contact_phone' => $data['return2_contact_phone'] ?? null,
+        'return2_contact_email' => $data['return2_contact_email'] ?? null,
+        'return2_date' => $data['return2_date'] ?? null,
+        'return2_slot' => $data['return2_slot'] ?? null,
+        'container_id' => $data['container_id'] ?? null,
+        'length_algo' => $priceAndDistace['distance'] ?? null,
+        'length_real' => $data['length_real'] ?? null,
+        'price' => $priceAndDistace['price'] ?? null,
+        'weight' => $data['weight'] ?? null,
+        'order_status' => OrderStatus::DRAFT,
+        'description' => $data['description'] ?? null,
+        'imo' => $data['imo'],
+        'is_international' =>$data['is_international'],
+        'temp_reg' => $data['temp_reg']
+      ]);
       return $order;
     }
 
     public function calcHistoryCreate($data){
 
+      $priceAndDistace = $this->getPriceAndWeight($data);
+
+      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
+      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
+      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
+
+      $tax = Tax::firstOrCreate(['name' => '20%']);
+
+      $calc_history = CalcHistory::firstOrCreate([
+          'user_id' => Auth::user() ? Auth::user()->id : null,
+          'from_address_id' => $data['from_address_id'],
+          'delivery_address_id' => $data['delivery_address_id'],
+          'return_address_id' => $data['return_address_id'],
+          'container_id' => $data['container_id'],
+          'price' => $priceAndDistace['price'],
+          'distance' => $priceAndDistace['distance'],
+          'weight' => $data['weight'],
+          'tax_id' => $tax->id,
+          'imo' => $data['imo'],
+          'is_international' => $data['is_international'],
+          'temp_reg' => $data['temp_reg'],
+      ]);
+      $calc_history->updated_at = \Carbon\Carbon::now();
+      $calc_history->save();
+      return $calc_history;
+    }
+
+    public function getPriceAndWeight($data){
       $points = array();
       //from
       if(array_key_exists('from_address_id', $data)){
@@ -389,44 +421,22 @@ class OrderController extends Controller
       $defaultCarPrice = OrderSetting::first()['default_car_price'];
 
       for($i=0; $i<count($points)-1; $i++){
-
         $requestData['points'] = [$points[$i], $points[$i+1]];
-        $fullDistanceLength += $this->getDistance($requestData['points']);
+        $fullDistanceLength +=100;
+        //$fullDistanceLength += $this->getDistance($requestData['points']); //uncomment this line of code when Routing api key will start wirk
       }
       $overWeightSum = $this->getOverWeight($data);
       $price = ($fullDistanceLength*$orderSetting?->default_distance) + $overWeightSum + $defaultCarPrice;
 
-      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
-      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
-      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
-
-      $tax = Tax::firstOrCreate(['name' => '20%']);
-
-      $calc_history = CalcHistory::firstOrCreate([
-          'user_id' => Auth::user()->id,
-          'from_address_id' => $data['from_address_id'],
-          'delivery_address_id' => $data['delivery_address_id'],
-          'return_address_id' => $data['return_address_id'],
-          'container_id' => $data['container_id'],
-          'price' => $price,
-          'weight' => $data['weight'],
-          'tax_id' => $tax->id,
-          'imo' => $data['imo'],
-          'is_international' => $data['is_international'],
-          'temp_reg' => $data['temp_reg'],
-      ]);
-      $calc_history->updated_at = \Carbon\Carbon::now();
-      $calc_history->save();
-      return $calc_history;
+      return ["price" => $price, 'distance' => $fullDistanceLength];
     }
-
     private function getDistance($points){
 
-      //$proxy = 'http://127.0.0.1:10809';
+      $proxy = 'http://127.0.0.1:8888';
       try {
         $response = Http::timeout(30)
-          //->withOptions([
-                //  'proxy' => $proxy,'verify' => false])
+          ->withOptions([
+                  'proxy' => $proxy,'verify' => false])
           ->withHeaders([
                   'Accept' => 'application/json',])
           ->post('https://routing.api.2gis.com/routing/7.0.0/global?key=cb315652-4a77-4656-b55c-2485e210e675', [
@@ -437,7 +447,7 @@ class OrderController extends Controller
                 "traffic_mode"=> "jam",
                 "output" => 'summary'
             ]);
-        if ($response->successful()){
+        if ($response->successful()){return $response->body();
           $body = json_decode($response->body());
           return $body?->result[0]?->length;
         }else return 0;
@@ -445,7 +455,6 @@ class OrderController extends Controller
           // Handle the error after multiple retries
       }
     }
-
     private function getOverWeight($data){
 
       $overWeightSum = 0;

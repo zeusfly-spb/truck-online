@@ -24,6 +24,7 @@ class CalcHistory extends Model
       'weight',
       'imo',
       'temp_reg',
+      'distance',
       'is_international'
     ];
 

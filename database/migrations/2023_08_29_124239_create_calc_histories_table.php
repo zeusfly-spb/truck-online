@@ -13,33 +13,17 @@ return new class extends Migration
     {
         Schema::create('calc_histories', function (Blueprint $table) {
             $table->id();
-
-            // $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            // $table->unsignedBigInteger('container_id');
-            // $table->foreign('container_id')->references('id')->on('containers')->onDelete('cascade');
-            // $table->unsignedBigInteger('from_address_id');
-            // $table->foreign('from_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            // $table->unsignedBigInteger('delivery_address_id');
-            // $table->foreign('delivery_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            // $table->unsignedBigInteger('return_address_id');
-            // $table->foreign('return_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            // $table->unsignedBigInteger('delivery2_address_id')->nullable();
-            // $table->foreign('delivery2_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            // $table->unsignedBigInteger('return2_address_id')->nullable();
-            // $table->foreign('return2_address_id')->references('id')->on('addresses')->onDelete('cascade');
-            // $table->unsignedBigInteger('tax_id');
-            // $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->unsignedBigInteger('container_id')->index();
             $table->unsignedBigInteger('from_address_id')->index();
             $table->unsignedBigInteger('delivery_address_id')->index();
             $table->unsignedBigInteger('return_address_id')->index();
-            $table->unsignedBigInteger('delivery2_address_id')->index();
-            $table->unsignedBigInteger('company_from_id')->index();
-
+            $table->unsignedBigInteger('delivery2_address_id')->index()->nullable();
+            $table->unsignedBigInteger('return2_address_id')->index()->nullable();
+            $table->unsignedBigInteger('tax_id')->index();
 
             $table->double('price');
+            $table->double('distance');
             $table->double('weight');
             $table->boolean('imo');
             $table->boolean('temp_reg');

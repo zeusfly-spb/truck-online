@@ -102,6 +102,7 @@ Route::middleware('auth:api')->group(function () {
   });
 
 });
+
 Route::prefix('confirmation')->group(function () {
   Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);
   Route::post('/get_phone_confirm', [ConfirmationController::class, 'getPhoneConfirmation']);

@@ -38,9 +38,9 @@ return new class extends Migration
         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         $table->unsignedBigInteger('tax_id')->nullable();;
         $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('cascade');
-        $table->unsignedBigInteger('country_id')->nullable();;
+        $table->unsignedBigInteger('country_id')->nullable();
         $table->foreign('country_id')->references('id')->on('countries')->onDelete('cascade');
-        $table->unsignedBigInteger('address_id')->nullable();;
+        $table->unsignedBigInteger('address_id')->nullable();
         $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
         $table->unsignedBigInteger('post_address_id')->nullable();;
         $table->foreign('post_address_id')->references('id')->on('addresses')->onDelete('cascade');

@@ -34,19 +34,12 @@ const clearMarkers = () => {
 .delivery {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 100%;
 }
 .delivery-main {
   display: flex;
   flex-wrap: wrap;
   flex: 1;
-  height: 87vh;
-}
-@media (min-width: 1400px) {
-  FormOrder,
-  TwogisMap {
-    flex-basis: 50%;
-  }
 }
 @media (max-width: 1400px) {
   .delivery-main {
@@ -60,6 +53,5 @@ const clearMarkers = () => {
 .deliveryFooter {
   width: 100%;
   flex: 0.1;
-  height: 3vh;
 }
 </style>

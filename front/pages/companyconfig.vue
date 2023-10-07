@@ -4,12 +4,12 @@
       <h2 class="mainName">Основные данные:</h2>
       <h4 class="innTag">{{ data.inn }}</h4>
       <v-tabs v-model="tab">
+        <v-tab value="rec" class="font-weight-medium text-body-1 text-uppercase"
+          >Общие данные</v-tab
+        >
         <v-tab
           value="main"
           class="font-weight-medium text-body-1 text-uppercase"
-          >Общие данные</v-tab
-        >
-        <v-tab value="rec" class="font-weight-medium text-body-1 text-uppercase"
           >Реквизиты</v-tab
         >
         <v-tab
@@ -30,10 +30,10 @@
       </v-tabs>
     </div>
     <v-window v-model="tab" class="pt-6 windows">
-      <v-window-item value="main">
+      <v-window-item value="rec">
         <rec-form />
       </v-window-item>
-      <v-window-item value="rec">
+      <v-window-item value="main">
         <main-data-form />
       </v-window-item>
       <v-window-item value="cars" class="window-item">

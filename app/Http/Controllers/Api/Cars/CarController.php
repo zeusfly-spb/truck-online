@@ -195,9 +195,12 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+      try{
+          return response()->json(CarResource::make($car));
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -283,13 +286,12 @@ class CarController extends Controller
     *     ),
     * )
     */
-    public function update(CarRequest $request, $id)
+    public function update(Request $request, $id)
     {
-      try{
+      //try{
 
         $car = Car::find($id);
         $car->number = $request->number;
-        $car->company_id = $request->company_id;
         $car->country_id = $request->country_id;
         $car->mark_model = $request->mark_model;
         $car->car_type_id = $request->car_type_id;
@@ -306,6 +308,7 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('sts_file_1')){
+          Storage::disk('local')->delete($car->sts_file_1);
           $path = "uploads/car/documents";
           $originalName = time().'_'.$request->file('sts_file_1')->getClientOriginalName();
           $image = request()->sts_file_1;
@@ -313,6 +316,7 @@ class CarController extends Controller
         }
 
         if ($request->hasFile('sts_file_2')){
+          Storage::disk('local')->delete($car->sts_file_2);
           $path = "uploads/car/documents";
           $originalName = time().'_'.$request->file('sts_file_2')->getClientOriginalName();
           $image = request()->sts_file_2;
@@ -331,9 +335,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+      //}catch(Exception $exception){
+      //    return response()->json(['error' => $exception->getMessage()], 500);
+      //}
     }
 
     /**

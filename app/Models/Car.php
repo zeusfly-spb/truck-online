@@ -28,6 +28,9 @@ class Car extends Model
     public function car_type(){
       return $this->belongsTo(CarType::class);
     }
+    public function right_use(){
+      return $this->belongsTo(RightUse::class);
+    }
     public function company(){
       return $this->belongsTo(Company::class);
     }

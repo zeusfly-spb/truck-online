@@ -77,7 +77,8 @@ export const useCarsStore = defineStore("cardStore", {
           body: formData,
         });
         console.log("addCar:", _rawValue);
-        //this.cars.unshift(_rawValue);
+        this.cars.unshift(_rawValue);
+
       } catch (error) {
         console.error(error);
       }

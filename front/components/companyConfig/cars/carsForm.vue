@@ -8,19 +8,20 @@
           item-title="name"
           item-value="id"
           label="Тип машины"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-select>
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-text-field
           v-model="data.cars.number.value"
-          label="Номер машины"
-          class="text-body-1"
+          label=" Номер машины"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 10px"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -35,6 +36,7 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-select>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -44,6 +46,7 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -58,19 +61,18 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-select>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
+      <v-col md :cols="12" class="mb-3 mr-3">
         <v-file-input
           v-model="data.cars.icon"
           label="Иконка"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 10px"
-        >
-
-        </v-file-input>
+          :rules="[rules.required]"
+        ></v-file-input>
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-text-field
@@ -79,53 +81,57 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
     <v-row no-gutters>
-      <v-col md :cols="12" class="mb-3">
+      <v-col md :cols="12" class="mb-3 mr-3">
         <v-text-field
           v-model="data.cars.sts.number"
           label="Cерия и номер СТС"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
-      <v-col class="mb-3">
+      <v-col class="mb-3 mr-3">
         <v-file-input
           label="СТС Основная Сторона"
           v-model="data.cars.sts.fileOne"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
-          style="margin-right: 6px; margin-left: 7px"
+          :rules="rulesFile"
         ></v-file-input>
       </v-col>
       <v-col class="mb-3">
         <v-file-input
           label="СТС Обратная Сторона"
           v-model="data.cars.sts.fileTwo"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
+          :rules="rulesFile"
         ></v-file-input>
       </v-col>
     </v-row>
-    <v-row no-gutters>
-      <v-col class="">
-        <v-btn
-          color="primary"
-          type="submit"
-          class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
-          >Добавить машину
-        </v-btn>
-      </v-col>
-    </v-row>
+    <div class="btnCarForm">
+      <v-btn
+        color="primary"
+        type="submit"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        >Добавить машину
+      </v-btn>
+      <v-btn
+        color="primary"
+        @click="resetData"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        >Сбросить
+      </v-btn>
+    </div>
   </v-form>
-  <div style="margin-top: 15px">
-    <cars-table />
-  </div>
 </template>
 <script setup>
 import { computed } from "vue";
@@ -152,9 +158,9 @@ const data = reactive({
     icon: null,
     weigth: null,
     sts: {
-      fileOne: [],
-      fileTwo: [],
-      number: [],
+      fileOne: null,
+      fileTwo: null,
+      number: null,
     },
   },
 });
@@ -231,5 +237,34 @@ async function addCar() {
   formdata.append("max_weigth", data.cars.weigth);
   await carStore.addNewCar(formdata);
 }
+
+async function resetData() {
+  data.cars.number.value = null;
+  data.cars.types.value = null;
+  data.cars.brand.value = null;
+  data.cars.country.value = null;
+  data.cars.sts.number = null;
+  data.cars.icon = null;
+  data.cars.sts.fileOne = null;
+  data.cars.sts.fileTwo = null;
+  data.cars.rightOfUse.value = null;
+  data.cars.weigth = null;
+}
+
+const rules = {
+  required: (value) => !!value || "Поле обязательно для заполнения!",
+};
+
+const rulesFile = [(v) => !!v || "Выберите файл"];
 </script>
-<style scoped></style>
+<style scoped>
+.btnCarForm {
+  display: flex;
+  justify-content: space-around;
+}
+@media (max-width: 339px) {
+  :deep(.sts.v-file-input .v-field-label) {
+    font-size: 9px;
+  }
+}
+</style>

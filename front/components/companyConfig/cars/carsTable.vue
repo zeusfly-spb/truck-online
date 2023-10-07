@@ -1,5 +1,5 @@
 <template>
-  <v-table fixed-header height="300px">
+  <v-table fixed-header>
     <thead>
       <tr>
         <th class="text-left">ID</th>
@@ -18,7 +18,7 @@
         <td>{{ car.number }}</td>
         <td>{{ car.sts }}</td>
         <td>{{ car.country.name }}</td>
-        <td>{{ car.car_type || '' }}</td>
+        <td>{{ car.car_type.name || "" }}</td>
         <td>{{ car.max_weigth }}</td>
         <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
       </tr>
@@ -39,7 +39,5 @@ const allCars = computed(() => {
 async function deleteCar(id) {
   await carStore.deleteCar(id);
 }
-
-console.log("cars:", allCars);
 </script>
 <style scoped></style>

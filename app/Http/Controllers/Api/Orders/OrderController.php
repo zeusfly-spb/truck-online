@@ -432,11 +432,11 @@ class OrderController extends Controller
     }
     private function getDistance($points){
 
-      $proxy = 'http://127.0.0.1:8888';
+      //$proxy = 'http://127.0.0.1:8888';
       try {
         $response = Http::timeout(30)
-          ->withOptions([
-                  'proxy' => $proxy,'verify' => false])
+          //->withOptions([
+                  //'proxy' => $proxy,'verify' => false])
           ->withHeaders([
                   'Accept' => 'application/json',])
           ->post('https://routing.api.2gis.com/routing/7.0.0/global?key=cb315652-4a77-4656-b55c-2485e210e675', [

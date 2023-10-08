@@ -1,11 +1,11 @@
 <template>
-  <v-container class="mb-2">
-    <v-form ref="order-create" @submit.prevent="addOrder" id="order-form">
-      <div class="container">
+  <v-form ref="order-create" @submit.prevent="addOrder" id="order-form">
+    <div class="container">
+      <div class="form">
         <div class="addressesData">
           <h3>Откуда везем</h3>
           <div class="fromData">
-            <v-col cols="12" md="4">
+            <v-col cols="40" md="7">
               <v-select
                 label="Выберите адрес"
                 name="from_address_id"
@@ -18,13 +18,12 @@
             </v-col>
             <v-dialog width="400">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     v-bind="props"
                     alt="calendar"
                     src="/календарь.png"
                     class="calendar"
-                    type="click"
                   />
                 </button>
               </template>
@@ -60,13 +59,12 @@
             </v-dialog>
             <v-dialog width="500">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     alt="calendar"
                     src="/contact.png"
                     class="contact"
                     v-bind="props"
-                    type="button"
                   />
                 </button>
               </template>
@@ -113,7 +111,7 @@
           </div>
           <h3>Куда везем</h3>
           <div class="toData">
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="7">
               <v-select
                 label="Select"
                 name="delivery_address_id"
@@ -126,7 +124,7 @@
             </v-col>
             <v-dialog width="500">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     alt="calendar"
                     src="/календарь.png"
@@ -167,7 +165,7 @@
             </v-dialog>
             <v-dialog width="500">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     alt="calendar"
                     src="/contact.png"
@@ -219,7 +217,7 @@
           </div>
           <h3>Место сдачи контейнера</h3>
           <div class="returnData">
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="7">
               <v-select
                 label="Select"
                 name="return_address_id"
@@ -232,7 +230,7 @@
             </v-col>
             <v-dialog width="500">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     alt="calendar"
                     src="/календарь.png"
@@ -273,7 +271,7 @@
             </v-dialog>
             <v-dialog width="500">
               <template v-slot:activator="{ props }">
-                <button>
+                <button type="button">
                   <img
                     alt="calendar"
                     src="/contact.png"
@@ -324,50 +322,56 @@
             </v-dialog>
           </div>
         </div>
-
         <!-- Order Return Data -->
-
         <div class="infoData">
           <h3>INFO</h3>
           <div class="containerInfo">
-            <v-select
-              label="Containers"
-              name="container_id"
-              id="container_id"
-              :items="allContainers"
-              :rules="[rules.required]"
-              v-model="data.order.container"
-            ></v-select>
-            <v-text-field
-              name="weight"
-              label="Вес"
-              type="number"
-              id="weight"
-              :rules="[rules.required]"
-              v-model="data.order.weight"
-            ></v-text-field>
+            <v-col cols="40" md="4">
+              <v-select
+                label="Containers"
+                name="container_id"
+                id="container_id"
+                :items="allContainers"
+                :rules="[rules.required]"
+                v-model="data.order.container"
+              ></v-select>
+            </v-col>
+            <v-col cols="40" md="4">
+              <v-text-field
+                name="weight"
+                label="Вес"
+                type="number"
+                id="weight"
+                :rules="[rules.required]"
+                v-model="data.order.weight"
+              ></v-text-field>
+            </v-col>
           </div>
           <div class="priceLength">
-            <v-text-field
-              name="price"
-              label="Цена"
-              :rules="[rules.required]"
-              v-model="data.order.price"
-            ></v-text-field>
-            <v-text-field
-              name="length_algo"
-              label="Длина маршрута в км"
-              :rules="[rules.required]"
-              v-model="data.order.lengthAlgo"
-            ></v-text-field>
+            <v-col cols="40" md="4">
+              <v-text-field
+                name="price"
+                label="Цена"
+                :rules="[rules.required]"
+                v-model="data.order.price"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="40" md="4">
+              <v-text-field
+                name="length_algo"
+                label="Длина маршрута в км"
+                :rules="[rules.required]"
+                v-model="data.order.lengthAlgo"
+              ></v-text-field>
+            </v-col>
           </div>
           <!-- <v-col cols="12" md="2">
-              <v-text-field
-                name="length_real"
-                label="Реальная длина из данных водителя"
-                :rules="[rules.required]"
-              ></v-text-field>
-            </v-col> -->
+                <v-text-field
+                  name="length_real"
+                  label="Реальная длина из данных водителя"
+                  :rules="[rules.required]"
+                ></v-text-field>
+              </v-col> -->
           <div class="additionalyParametrs">
             <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
             </v-checkbox>
@@ -391,38 +395,42 @@
           </div>
         </div>
       </div>
-      <v-col cols="12" md="12">
-        <v-text-field
-          name="description"
-          label="Комментарий"
-          :rules="[rules.required]"
-          v-model="data.order.description"
-        ></v-text-field>
-      </v-col>
-      <div class="btnsBigForm">
-        <v-col cols="12" md="2">
-          <v-btn
-            :loading="loading"
-            type="submit"
-            block
-            class="mt-2"
-            text="Создать заказ"
-            color="indigo-darken-3"
-          ></v-btn>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-btn
-            :loading="loading"
-            @click="calculate"
-            block
-            class="mt-2"
-            text="Рассчитать"
-            color="indigo-darken-3"
-          ></v-btn>
-        </v-col>
+      <div class="bigFormMap">
+        <twogis-map />
       </div>
-    </v-form>
-  </v-container>
+    </div>
+    <v-col cols="12" md="12">
+      <v-text-field
+        name="description"
+        label="Комментарий"
+        :rules="[rules.required]"
+        v-model="data.order.description"
+        style="margin-top: 30px"
+      ></v-text-field>
+    </v-col>
+    <div class="btnsBigForm">
+      <v-col cols="12" md="2">
+        <v-btn
+          :loading="loading"
+          type="submit"
+          block
+          class="mt-2"
+          text="Создать заказ"
+          color="indigo-darken-3"
+        ></v-btn>
+      </v-col>
+      <v-col cols="12" md="2">
+        <v-btn
+          :loading="loading"
+          @click="calculate"
+          block
+          class="mt-2"
+          text="Рассчитать"
+          color="indigo-darken-3"
+        ></v-btn>
+      </v-col>
+    </div>
+  </v-form>
 </template>
 
 <script setup>
@@ -553,14 +561,21 @@ const rules = {
   padding: 20px;
 }
 .container {
+  width: 100%;
   display: flex;
-  justify-content: space-between;
+}
+.form {
+  flex: 1;
+}
+.bigFormMap {
+  flex: 1;
+}
+#map {
+  width: 100%;
 }
 .addressesData {
-  width: 50%;
 }
 .infoData {
-  width: 50%;
 }
 .btnsBigForm {
   display: flex;
@@ -574,11 +589,9 @@ const rules = {
 }
 .containerInfo {
   display: flex;
-  justify-content: space-evenly;
 }
 .priceLength {
   display: flex;
-  justify-content: space-evenly;
 }
 .additionalyParametrs {
   display: flex;

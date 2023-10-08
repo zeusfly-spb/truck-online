@@ -75,14 +75,12 @@ import SearchInputTo from "./searchInputTo.vue";
 import SearchInputReturn from "./searchInputReturn.vue";
 import searchContainer from "./searchContainer.vue";
 import WeightInput from "./weightInput.vue";
-import { useIntermediateFormData } from "~/store/intermediateFromData";
 import { useCalculate } from "~/store/calculateForm";
 import { defineEmits } from "vue";
 
 const selectedCoordinates = ref([]);
 const showAdditionalOptions = ref(false);
 const containerId = ref(null);
-const intermediateFormData = useIntermediateFormData();
 const calculation = useCalculate();
 const selectedIds = ref([]);
 const weight = ref(null);

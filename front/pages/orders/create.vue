@@ -30,20 +30,22 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card title="Дата и время забора контейнера">
-                  <v-col cols="12" md="4" class="dialogInput">
+                  <v-col cols="12" md="15" class="dialogInput">
                     <v-text-field
                       type="date"
                       name="from_date"
                       :rules="[rules.required]"
                       v-model="data.order.fromDate"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       type="time"
                       name="from_slot"
                       :rules="[rules.required]"
                       v-model="data.order.fromSlot"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -69,32 +71,32 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card title="Данные водителя">
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="from_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
                       v-model="data.order.fromContactName"
-                      style="width: 40vh"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="from_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
                       v-model="data.order.fromContactPhone"
-                      style="width: 40vh"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="from_contact_email"
                       label="Email"
                       :rules="[rules.required]"
+                      variant="solo"
                       v-model="data.order.fromContactEmail"
-                      style="width: 40vh"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -135,22 +137,22 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card title="Дата и время доставки контейнера">
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       type="date"
                       name="delivery_date"
                       :rules="[rules.required]"
                       v-model="data.order.deliveryDate"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       type="time"
                       name="delivery_slot"
                       :rules="[rules.required]"
                       v-model="data.order.deliverySlot"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -176,32 +178,32 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card title="Данные водителя">
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="delivery_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
                       v-model="data.order.deliveryContactName"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="delivery_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
                       v-model="data.order.deliveryContactPhone"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="delivery_contact_email"
                       label="Email"
                       :rules="[rules.required]"
                       v-model="data.order.deliveryContactEmail"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -241,23 +243,23 @@
                 </button>
               </template>
               <template v-slot:default="{ isActive }">
-                <v-card title="Dialog">
-                  <v-col cols="12" md="4">
+                <v-card title="Дата и время сдачи контейнера">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       type="date"
                       name="return_date"
                       :rules="[rules.required]"
                       v-model="data.order.returnDate"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       type="time"
                       name="return_slot"
                       :rules="[rules.required]"
                       v-model="data.order.returnSlot"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -282,33 +284,33 @@
                 </button>
               </template>
               <template v-slot:default="{ isActive }">
-                <v-card title="Dialog">
-                  <v-col cols="12" md="4">
+                <v-card title="Данные водителя">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="return_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
                       v-model="data.order.returnContactName"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="return_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
                       v-model="data.order.returnContactPhone"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="15">
                     <v-text-field
                       name="return_contact_email"
                       label="Email"
                       :rules="[rules.required]"
                       v-model="data.order.returnContactEmail"
-                      style="width: max-content"
+                      variant="solo"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>

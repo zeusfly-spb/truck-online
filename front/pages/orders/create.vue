@@ -5,7 +5,7 @@
         <div class="addressesData">
           <h3>Откуда везем</h3>
           <div class="fromData">
-            <v-col cols="40" md="7">
+            <v-col>
               <v-select
                 label="Выберите адрес"
                 name="from_address_id"
@@ -14,6 +14,7 @@
                 item-title="name"
                 v-model="data.order.fromAdress"
                 :rules="[rules.required]"
+                variant="solo"
               ></v-select>
             </v-col>
             <v-dialog width="400">
@@ -29,13 +30,12 @@
               </template>
               <template v-slot:default="{ isActive }">
                 <v-card title="Дата и время забора контейнера">
-                  <v-col cols="12" md="4">
+                  <v-col cols="12" md="4" class="dialogInput">
                     <v-text-field
                       type="date"
                       name="from_date"
                       :rules="[rules.required]"
                       v-model="data.order.fromDate"
-                      style="width: max-content"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -44,7 +44,6 @@
                       name="from_slot"
                       :rules="[rules.required]"
                       v-model="data.order.fromSlot"
-                      style="width: max-content"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -76,7 +75,7 @@
                       label="Имя"
                       :rules="[rules.required]"
                       v-model="data.order.fromContactName"
-                      style="width: max-content"
+                      style="width: 40vh"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -86,7 +85,7 @@
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
                       v-model="data.order.fromContactPhone"
-                      style="width: max-content"
+                      style="width: 40vh"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4">
@@ -95,7 +94,7 @@
                       label="Email"
                       :rules="[rules.required]"
                       v-model="data.order.fromContactEmail"
-                      style="width: max-content"
+                      style="width: 40vh"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -111,7 +110,7 @@
           </div>
           <h3>Куда везем</h3>
           <div class="toData">
-            <v-col cols="12" md="7">
+            <v-col>
               <v-select
                 label="Select"
                 name="delivery_address_id"
@@ -120,6 +119,7 @@
                 item-title="name"
                 v-model="data.order.deliveryAddress"
                 :rules="[rules.required]"
+                variant="solo"
               ></v-select>
             </v-col>
             <v-dialog width="500">
@@ -217,7 +217,7 @@
           </div>
           <h3>Место сдачи контейнера</h3>
           <div class="returnData">
-            <v-col cols="12" md="7">
+            <v-col>
               <v-select
                 label="Select"
                 name="return_address_id"
@@ -226,6 +226,7 @@
                 item-title="name"
                 v-model="data.order.returnAddress"
                 :rules="[rules.required]"
+                variant="solo"
               ></v-select>
             </v-col>
             <v-dialog width="500">
@@ -326,17 +327,7 @@
         <div class="infoData">
           <h3>INFO</h3>
           <div class="containerInfo">
-            <v-col cols="40" md="4">
-              <v-select
-                label="Containers"
-                name="container_id"
-                id="container_id"
-                :items="allContainers"
-                :rules="[rules.required]"
-                v-model="data.order.container"
-              ></v-select>
-            </v-col>
-            <v-col cols="40" md="4">
+            <v-col cols="40" md="6">
               <v-text-field
                 name="weight"
                 label="Вес"
@@ -344,54 +335,71 @@
                 id="weight"
                 :rules="[rules.required]"
                 v-model="data.order.weight"
+                variant="solo"
               ></v-text-field>
+            </v-col>
+            <v-col cols="40" md="6">
+              <v-select
+                label="Containers"
+                name="container_id"
+                id="container_id"
+                :items="allContainers"
+                :rules="[rules.required]"
+                v-model="data.order.container"
+                variant="solo"
+              ></v-select>
             </v-col>
           </div>
           <div class="priceLength">
-            <v-col cols="40" md="4">
+            <v-col cols="40" md="6">
               <v-text-field
                 name="price"
                 label="Цена"
                 :rules="[rules.required]"
                 v-model="data.order.price"
+                variant="solo"
               ></v-text-field>
             </v-col>
-            <v-col cols="40" md="4">
+            <v-col cols="40" md="6">
               <v-text-field
                 name="length_algo"
                 label="Длина маршрута в км"
                 :rules="[rules.required]"
                 v-model="data.order.lengthAlgo"
+                variant="solo"
               ></v-text-field>
             </v-col>
           </div>
-          <!-- <v-col cols="12" md="2">
-                <v-text-field
-                  name="length_real"
-                  label="Реальная длина из данных водителя"
-                  :rules="[rules.required]"
-                ></v-text-field>
-              </v-col> -->
           <div class="additionalyParametrs">
-            <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
-            </v-checkbox>
-            <v-select
-              label="НДС"
-              name="tax_id"
-              :items="taxes"
-              v-model="data.order.tax"
-            >
-            </v-select>
-            <v-checkbox
-              name="temp_reg"
-              :label="`Температурный режим`"
-              v-model="data.order.temp"
-            ></v-checkbox>
-            <v-checkbox
-              name="is_international"
-              :label="`is_international`"
-              v-model="data.order.international"
-            ></v-checkbox>
+            <v-col>
+              <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
+              </v-checkbox>
+            </v-col>
+            <v-col>
+              <v-select
+                label="НДС"
+                name="tax_id"
+                :items="taxes"
+                v-model="data.order.tax"
+                variant="solo"
+                class="tax"
+              >
+              </v-select>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                name="temp_reg"
+                :label="`Температурный режим`"
+                v-model="data.order.temp"
+              ></v-checkbox>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                name="is_international"
+                :label="`is_international`"
+                v-model="data.order.international"
+              ></v-checkbox>
+            </v-col>
           </div>
         </div>
       </div>
@@ -405,30 +413,24 @@
         label="Комментарий"
         :rules="[rules.required]"
         v-model="data.order.description"
-        style="margin-top: 30px"
+        variant="solo"
       ></v-text-field>
     </v-col>
     <div class="btnsBigForm">
-      <v-col cols="12" md="2">
-        <v-btn
-          :loading="loading"
-          type="submit"
-          block
-          class="mt-2"
-          text="Создать заказ"
-          color="indigo-darken-3"
-        ></v-btn>
-      </v-col>
-      <v-col cols="12" md="2">
-        <v-btn
-          :loading="loading"
-          @click="calculate"
-          block
-          class="mt-2"
-          text="Рассчитать"
-          color="indigo-darken-3"
-        ></v-btn>
-      </v-col>
+      <v-btn
+        :loading="loading"
+        type="submit"
+        text="Создать заказ"
+        color="indigo-darken-3"
+        max-width="150px"
+      ></v-btn>
+      <v-btn
+        :loading="loading"
+        @click="calculate"
+        text="Рассчитать"
+        color="indigo-darken-3"
+        max-width="150px"
+      ></v-btn>
     </div>
   </v-form>
 </template>
@@ -481,7 +483,7 @@ const data = reactive({
     tax: null,
   },
 });
-
+console.log("data:", data.order.fromAdress);
 watch(
   () => data.order.fromAdress,
   (newVal) => console.log("new address:", newVal),
@@ -541,6 +543,7 @@ async function addOrder(event) {
   const formData = new FormData(event.target);
   formData.append("calc", false);
   const formProps = Object.fromEntries(formData);
+  console.log(formData);
   await orderStore.createOrder(formProps);
 }
 
@@ -556,26 +559,30 @@ const rules = {
 .returnData {
   display: flex;
   align-items: baseline;
+  justify-content: space-around;
 }
 .p-20 {
   padding: 20px;
 }
 .container {
-  width: 100%;
   display: flex;
 }
 .form {
-  flex: 1;
+  width: 50%;
 }
 .bigFormMap {
-  flex: 1;
+  width: 50%;
+}
+
+.containerInfo {
+  display: flex;
+  justify-content: space-around;
 }
 #map {
   width: 100%;
 }
-.addressesData {
-}
-.infoData {
+h3 {
+  margin-left: 10px;
 }
 .btnsBigForm {
   display: flex;
@@ -595,5 +602,29 @@ const rules = {
 }
 .additionalyParametrs {
   display: flex;
+}
+.dialogInput,
+.v-col-md-4 {
+  max-width: auto;
+}
+.v-col {
+  padding: 7px;
+}
+
+@media (max-width: 960px) {
+  .container {
+    flex-direction: column;
+  }
+  .form {
+    width: 100%;
+  }
+  .bigFormMap {
+    width: 100%;
+  }
+}
+@media (max-width: 1308px) {
+  :deep(.tax .v-label.v-field-label) {
+    font-size: 12px;
+  }
 }
 </style>

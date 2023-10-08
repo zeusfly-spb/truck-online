@@ -34,6 +34,7 @@
           />
         </div>
         <div class="containerSelect">
+          <div>Тип контейнера</div>
           <search-container
             @updateContainer="updateContainer"
             ref="childSelectContainer"
@@ -187,7 +188,10 @@ const clearData = () => {
   justify-content: space-between;
   margin: 20px 10px 25px 0px;
 }
-
+.containerSelect {
+  display: grid;
+  justify-items: center;
+}
 .buttonsForm .v-btn {
   width: 280px;
   height: 50px;
@@ -248,9 +252,6 @@ const clearData = () => {
     margin-right: 10px;
   }
 
-  .containerSelect {
-    flex: 1;
-  }
   .additionally {
     margin-top: 25px;
   }

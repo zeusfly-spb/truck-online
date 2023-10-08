@@ -19,14 +19,6 @@
 </template>
 <script setup>
 import { useAddressesStore } from "~/store/address";
-import {
-  defineEmits,
-  defineExpose,
-  computed,
-  ref,
-  onBeforeMount,
-  toRaw,
-} from "vue";
 
 const emit = defineEmits(["updateSelectAddressFrom"]);
 const addressesStore = useAddressesStore();

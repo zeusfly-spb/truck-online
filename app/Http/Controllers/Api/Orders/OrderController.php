@@ -269,16 +269,14 @@ class OrderController extends Controller
      * )
      */
     public function store(Request $request){
-
       $data = $request['data'];
-      if($data['calc']){
-
-        $calc_history = $this->calcHistoryCreate($data);
-        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
-      }else{
+//      if($data['calc']){
+//        $calc_history = $this->calcHistoryCreate($data);
+//        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
+//      }else{
         $order = $this->order_create($data);
-        if($order) return response()->json([ 'data'=> $order ], 201);
-      }
+        if($order) return response()->json( $order->toArray(), 201);
+//      }
     }
 
     public function order_create($data){
@@ -330,10 +328,9 @@ class OrderController extends Controller
       $order['weight'] = $data['weight'];
       $order['order_status'] = OrderStatus::DRAFT;
 
-      if(isset($data['imo']) && $data['imo']) $order['imo'] = true; else $order['imo'] = false;
-      if(isset($data['is_international']) && $data['is_international']) $order['is_international'] = true; else $order['is_international'] = false;
-      if(isset($data['temp_reg']) && $data['temp_reg']) $order['temp_reg'] = true; else $order['temp_reg'] = false;
-
+      $order['imo'] = isset($data['imo']) && $data['imo'];
+      $order['is_international'] = isset($data['is_international']) && $data['is_international'];
+      $order['temp_reg'] = isset($data['temp_reg']) && $data['temp_reg'];
       $order['description'] = $data['description'];
       $order->save();
       return $order;

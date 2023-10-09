@@ -270,13 +270,13 @@ class OrderController extends Controller
      */
     public function store(Request $request){
       $data = $request['data'];
-//      if($data['calc']){
-//        $calc_history = $this->calcHistoryCreate($data);
-//        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
-//      }else{
+        if(intval($data['calc'])===1){
+          $calc_history = $this->calcHistoryCreate($data);
+            if($calc_history) return response()->json(['data'=> $calc_history ], 201);
+        }else{
         $order = $this->order_create($data);
         if($order) return response()->json( $order->toArray(), 201);
-//      }
+      }
     }
 
     public function order_create($data){

@@ -542,8 +542,9 @@ const taxes = computed(() => {
 });
 
 async function addOrder(event) {
+
   const formData = new FormData(event.target);
-  formData.append("calc", false);
+  formData.append("calc", 0);
   formData.append("from_date", data.order.fromDate);
   formData.append("rom_slot", data.order.fromSlot);
   formData.append("from_contact_name", data.order.fromContactName);
@@ -560,7 +561,7 @@ async function addOrder(event) {
   formData.append("return_contact_phone", data.order.returnContactPhone);
   formData.append("rreturn_contact_email", data.order.returnContactEmail);
   const formProps = Object.fromEntries(formData);
-  console.log(formData);
+
   await orderStore.createOrder(formProps);
 }
 

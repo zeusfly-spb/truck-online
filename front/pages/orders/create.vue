@@ -543,7 +543,7 @@ const taxes = computed(() => {
 
 async function addOrder(event) {
   const formData = new FormData(event.target);
-  formData.append("calc", false);
+  formData.append("calc", true);
   formData.append("from_date", data.order.fromDate);
   formData.append("rom_slot", data.order.fromSlot);
   formData.append("from_contact_name", data.order.fromContactName);

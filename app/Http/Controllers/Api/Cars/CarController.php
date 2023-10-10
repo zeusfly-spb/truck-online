@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Cars;
 use App\Http\Resources\Api\Cars\CarResource;
 use App\Http\Requests\CarRequest;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CarPass;
 use App\Models\Car;
@@ -135,29 +135,30 @@ class CarController extends Controller
     *     ),
     * )
     */
-    public function store(CarRequest $request)
+    public function store(Request $request)
     {
-      try{
+      //try{
 
         $icon = null;
         $sts_file_1 = null;
         $sts_file_2 = null;
 
+
         if ($request->hasFile('icon')){
             $path = "uploads/car/images";
-            $originalName = time().'_'.$request->file('icon')->getClientOriginalName();
+            $originalName = Str::uuid().'.'.$request->file('icon')->getClientOriginalExtension();
             $image = request()->icon;
             $icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_1')){
             $path = "uploads/car/documents";
-            $originalName = time().'_'.$request->file('sts_file_1')->getClientOriginalName();
+            $originalName = Str::uuid().'.'.$request->file('sts_file_1')->getClientOriginalExtension();
             $image = request()->sts_file_1;
             $sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_2')){
             $path = "uploads/car/documents";
-            $originalName = time().'_'.$request->file('sts_file_2')->getClientOriginalName();
+            $originalName = Str::uuid().'.'.$request->file('sts_file_2')->getClientOriginalExtension();
             $image = request()->sts_file_2;
             $sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
@@ -186,9 +187,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(\Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+      //}catch(Exception $exception){
+      //    return response()->json(['error' => $exception->getMessage()], 500);
+      //}
 
     }
 
@@ -197,9 +198,12 @@ class CarController extends Controller
      */
     public function show(Car $car)
     {
-        //
+      try{
+          return response()->json(CarResource::make($car));
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -285,12 +289,12 @@ class CarController extends Controller
     *     ),
     * )
     */
-    public function update(CarRequest $request, $id)
+    public function update(Request $request, $id)
     {
       try{
+
         $car = Car::find($id);
         $car->number = $request->number;
-        $car->company_id = $request->company_id;
         $car->country_id = $request->country_id;
         $car->mark_model = $request->mark_model;
         $car->car_type_id = $request->car_type_id;
@@ -301,21 +305,23 @@ class CarController extends Controller
         if ($request->hasFile('icon')){
           Storage::disk('local')->delete($car->icon);
           $path = "uploads/car/images";
-          $originalName = time().'_'.$request->file('icon')->getClientOriginalName();
+          $originalName = Str::uuid().'.'.$request->file('icon')->getClientOriginalExtension();
           $image = request()->icon;
           $car->icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
 
         if ($request->hasFile('sts_file_1')){
+          Storage::disk('local')->delete($car->sts_file_1);
           $path = "uploads/car/documents";
-          $originalName = time().'_'.$request->file('sts_file_1')->getClientOriginalName();
+          $originalName = Str::uuid().'.'.$request->file('sts_file_1')->getClientOriginalExtension();
           $image = request()->sts_file_1;
           $car->sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
 
         if ($request->hasFile('sts_file_2')){
+          Storage::disk('local')->delete($car->sts_file_2);
           $path = "uploads/car/documents";
-          $originalName = time().'_'.$request->file('sts_file_2')->getClientOriginalName();
+          $originalName = Str::uuid().'.'.$request->file('sts_file_2')->getClientOriginalExtension();
           $image = request()->sts_file_2;
           $car->sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
@@ -332,7 +338,7 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(\Exception $exception){
+      }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
       }
     }

@@ -23,6 +23,7 @@ use App\Http\Controllers\ConfirmationController;
 use App\Http\Controllers\DadataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MangoInteractionController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -96,12 +97,14 @@ Route::middleware('auth:api')->group(function () {
   //calcHistories
   Route::apiResource('calc/histories', CalcHistoryController::class);
 
+  Route::get('roles', [RoleController::class, 'index']);
   Route::get('/mango-roles', function () {
     $roles = MangoInteractionController::getRoles();
     return response()->json($roles);
   });
 
 });
+
 Route::prefix('confirmation')->group(function () {
   Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);
   Route::post('/get_phone_confirm', [ConfirmationController::class, 'getPhoneConfirmation']);

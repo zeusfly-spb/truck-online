@@ -2,13 +2,14 @@
 <template>
   <Sidebar />
 </template>
-<script>
+<script setup>
 import Sidebar from "~/components/admin/Sidebar.vue";
-
-export default {
-  components: {
-    Sidebar,
-  },
-  // Other layout/page logic goes here
-};
+import { useAuthStore } from "~/store/auth";
+import { useRolesStore } from "~/store/roles";
+const userStore = useAuthStore();
+const rolesStore = useRolesStore();
+onBeforeMount(async () => {
+   userStore.getUserDetails();
+   //rolesStore.getAllRoles();
+})
 </script>

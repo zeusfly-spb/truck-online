@@ -289,16 +289,11 @@ class OrderController extends Controller
     public function order_create($data){
 
       $priceAndDistace = $this->getPriceAndWeight($data);
-      $tax = Tax::firstOrCreate(['name' => '20%']);
-
-      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
-      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
-      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
 
       $order = Order::create([
         'user_id' => Auth::user()->id,
         'company_id' => Auth::user()->company_id,
-        'tax_id' => $tax->id,
+        'tax_id' => $data['tax_id'],
         'from_address_id' => $data['from_address_id'] ?? null,
         'from_date' => $data['from_date'] ?? null,
         'from_slot' => $data['from_slot'] ?? null,
@@ -347,12 +342,6 @@ class OrderController extends Controller
 
       $priceAndDistace = $this->getPriceAndWeight($data);
 
-      if(isset($data['imo']) && $data['imo']) $data['imo'] = true; else $data['imo'] = false;
-      if(isset($data['is_international']) && $data['is_international']) $data['is_international'] = true; else $data['is_international'] = false;
-      if(isset($data['temp_reg']) && $data['temp_reg']) $data['temp_reg'] = true; else $data['temp_reg'] = false;
-
-      $tax = Tax::firstOrCreate(['name' => '20%']);
-
       $calc_history = CalcHistory::firstOrCreate([
           'user_id' => Auth::user() ? Auth::user()->id : null,
           'from_address_id' => $data['from_address_id'],
@@ -362,7 +351,7 @@ class OrderController extends Controller
           'price' => $priceAndDistace['price'],
           'distance' => $priceAndDistace['distance'],
           'weight' => $data['weight'],
-          'tax_id' => $tax->id,
+          'tax_id' => $data['tax_id'],
           'imo' => $data['imo'],
           'is_international' => $data['is_international'],
           'temp_reg' => $data['temp_reg'],

@@ -67,9 +67,9 @@ return new class extends Migration
             $table->boolean('is_international');
 
             $table->longText('description')->nullable();
-            $table->unsignedBigInteger('driver_id')->index();
-            $table->unsignedBigInteger('executer_id')->index();
-            $table->unsignedBigInteger('executer_company_id')->index();
+            $table->unsignedBigInteger('driver_id')->index()->nullable();
+            $table->unsignedBigInteger('executer_id')->index()->nullable();
+            $table->unsignedBigInteger('executer_company_id')->index()->nullable();
             $table->timestamps();
         });
     }

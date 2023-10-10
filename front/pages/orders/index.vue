@@ -1,116 +1,149 @@
 <template>
-  <v-container>
-    <v-btn class="text-none" color="grey-lighten-3" size="x-large">
-      <NuxtLink to="/orders/create" class=""> Создать заказ </NuxtLink>
-    </v-btn>
-    <v-btn @click="clickShowFilter" size="x-large" style="float: right">
-      Фильтры
-    </v-btn>
+  <v-container style="max-width: 2300px; background-color: white">
+    <div class="headerOrderTable">
+      <h2 class="tableOrders">Таблица заказов</h2>
+      <div class="btnsOrderTable">
+        <div class="createOrder">
+          <v-btn style="background-color: #285795">
+            <NuxtLink to="/orders/create" style="color: white">
+              Создать заказ
+            </NuxtLink>
+          </v-btn>
+        </div>
+        <div class="filtersBtn">
+          <v-btn
+            @click="clickShowFilter"
+            style="background-color: white; color: black"
+          >
+            Фильтры
+          </v-btn>
+        </div>
+      </div>
+    </div>
     <div class="filters" v-if="showFilters">
-      <div class="filter">
-        <div class="label">Цена:</div>
-        <div>
+      <div class="filter-price">
+        <p class="label">Цена:</p>
+        <div class="filter">
           <v-text-field
             label="Цена от"
             variant="solo"
-            style="width: 220px"
             v-model="priceFromFilter"
+            density="compact"
+            single-line
+            hide-details
           ></v-text-field>
         </div>
-        <div>
+        <div class="filter">
           <v-text-field
             label="Цена до"
             variant="solo"
-            style="width: 220px"
             v-model="priceToFilter"
+            density="compact"
+            single-line
+            hide-details
           ></v-text-field>
         </div>
       </div>
-      <div class="filter">
-        <v-select
-          label="Тип контейнера"
-          :items="['20 f', '40 f', '20 f + 20 f']"
-          variant="solo"
-          multiple
-          style="width: 115px"
-          v-model="selectedContainerTypes"
-        ></v-select>
-      </div>
-      <div class="filter">
-        <v-select
-          label="Status"
-          :items="['false', 'true']"
-          multiple
-          variant="solo"
-          style="width: 115px"
-          v-model="statusChosen"
-        ></v-select>
-      </div>
-      <div class="filter">
+      <div class="filter-weight">
         <div class="label">Вес:</div>
-        <div>
+        <div class="filter">
           <v-text-field
             label="Вес от"
             variant="solo"
-            style="width: 220px"
             v-model="weightFromFilter"
+            density="compact"
+            single-line
+            hide-details
           ></v-text-field>
         </div>
-        <div>
+        <div class="filter">
           <v-text-field
             label="Вес до"
             variant="solo"
-            style="width: 220px"
             v-model="weightToFilter"
+            density="compact"
+            single-line
+            hide-details
           ></v-text-field>
         </div>
       </div>
+      <div class="another-filters">
+        <div class="filter">
+          <v-select
+            label="Тип контейнера"
+            :items="['20 f', '40 f', '20 f + 20 f']"
+            variant="solo"
+            multiple
+            v-model="selectedContainerTypes"
+            density="compact"
+            single-line
+            hide-details
+          ></v-select>
+        </div>
+        <div class="filter">
+          <v-select
+            label="Status"
+            :items="['false', 'true']"
+            multiple
+            variant="solo"
+            v-model="statusChosen"
+            density="compact"
+            single-line
+            hide-details
+          ></v-select>
+        </div>
+      </div>
+      <div class="deleteFilters">
+        <v-btn
+          size="x-small"
+          @click="deleteFilters"
+          class="delFilters"
+          height="46px"
+          >Сбросить</v-btn
+        >
+      </div>
     </div>
-    <table>
-      <tr>
-        <th>
-          <div class="header-wrapper">
-            <span>ID</span> <span @click="sortOrders('id')">⇅</span>
-          </div>
-        </th>
-        <th>From Address</th>
-        <th>To Address</th>
-        <th>Conatiner</th>
-        <th>
-          <div class="header-wrapper">
-            <span>Weight</span>
-            <span @click="sortOrders('weight')">⇅</span>
-          </div>
-        </th>
-        <th>
-          <div class="header-wrapper">
-            <span>Price</span>
-            <span @click="sortOrders('price')">⇅</span>
-          </div>
-        </th>
-        <th>Status</th>
-      </tr>
-      <tr v-for="order in paginatedOrders" :key="order.id">
-        <td>{{ order.id }}</td>
-        <td>{{ order.fromAddress }}</td>
-        <td>{{ order.deliveryAddress }}</td>
-        <td>{{ order.container }}</td>
-        <td>{{ order.weight }}</td>
-        <td>{{ order.price }}</td>
-        <td>{{ order.status }}</td>
-      </tr>
-    </table>
-    <div class="my-3">
-      <v-btn @click="currentPage > 1 ? currentPage-- : null" color="primary"
-        >Предыдущая</v-btn
-      >
-      Страница {{ currentPage }}
-      <v-btn
-        @click="currentPage < totalPages ? currentPage++ : null"
-        color="primary"
-        >Следующая</v-btn
-      >
+    <div class="table">
+      <v-table style="background-color: white; color: black">
+        <thead>
+          <tr>
+            <th>
+              <div class="heade-wrapper" style="color: black">
+                <span>ID</span> <span @click="sortOrders('id')">⇅</span>
+              </div>
+            </th>
+            <th style="color: black">From Address</th>
+            <th style="color: black">To Address</th>
+            <th style="color: black">Container</th>
+            <th>
+              <div class="header-wrapper">
+                <span>Weight</span>
+                <span @click="sortOrders('weight')">⇅</span>
+              </div>
+            </th>
+            <th>
+              <div class="header-wrapper" style="color: black">
+                <span>Price</span>
+                <span @click="sortOrders('price')">⇅</span>
+              </div>
+            </th>
+            <th style="color: black">Status</th>
+          </tr>
+        </thead>
+        <tbody style="color: black">
+          <tr v-for="order in paginatedOrders" :key="order.id">
+            <td>{{ order.id }}</td>
+            <td>{{ order.fromAddress }}</td>
+            <td>{{ order.deliveryAddress }}</td>
+            <td>{{ order.container }}</td>
+            <td>{{ order.weight }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.status }}</td>
+          </tr>
+        </tbody>
+      </v-table>
     </div>
+    <div v-intersect="onIntersect" class="observer">Загрузка...</div>
   </v-container>
 </template>
 <script setup>
@@ -122,17 +155,22 @@ const weightFromFilter = ref("");
 const weightToFilter = ref("");
 const statusChosen = ref([]);
 const selectedContainerTypes = ref([]);
-
+const isIntersecting = ref(false);
 const sortField = ref(null);
 const sortOrder = ref(1);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
-
 const paginatedOrders = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value;
+  const start = 0;
   const end = start + itemsPerPage.value;
   return sortedOrders.value.slice(start, end);
 });
+
+const onIntersect = (isIntersecting, entries, observer) => {
+  setTimeout(() => {
+    itemsPerPage.value += 10;
+  }, 1500);
+};
 
 const totalPages = computed(() => {
   return Math.ceil(filteredOrders.value.length / itemsPerPage.value);
@@ -193,81 +231,134 @@ const sortedOrders = computed(() => {
 const clickShowFilter = () => {
   showFilters.value = !showFilters.value;
 };
+
+const deleteFilters = () => {
+  priceFromFilter.value = "";
+  priceToFilter.value = "";
+  weightFromFilter.value = "";
+  weightToFilter.value = "";
+  selectedContainerTypes.value = "";
+  statusChosen.value = "";
+};
 </script>
 
-<style scoped>
-.filters {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 20px;
-  align-items: center;
-}
+<style scoped lang="sass">
 
-.label {
-  width: 100%;
-  text-align: center;
-  font-weight: bold;
-}
 
-.filter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+.tableOrders
+  color: rgba(0, 0, 0, 0.704)
+  font-size: 33px
+  font-weight: 600
 
-a {
-  text-decoration: none;
-}
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-  margin-top: 20px;
-}
+.headerOrderTable
+  display: flex
+  justify-content: space-between
+  align-items: center
 
-td,
-th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-  font-size: 1.5vh;
-}
+.btnsOrderTable
+  display: flex
 
-tr:nth-child(even) {
-  background-color: #8d8a8a;
-  color: black;
-}
-.mt-20 {
-  margin-top: 20px;
-}
-.my-3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.header-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+.createOrder
+  margin-right: 10px
 
-.header-wrapper span {
-  cursor: pointer;
-  padding-right: 4px;
-}
+.table
+  margin-top: 50px
+  font-size: 24px
 
-@media (max-width: 496px) {
-  td,
-  th {
-    font-size: 1vh;
-  }
-}
-@media (max-width: 386px) {
-  td,
-  th {
-    font-size: 0.8vh;
-  }
-}
+.filters
+  display: flex
+  flex-direction: row
+  justify-content: space-between
+  align-items: flex-start
+  margin-top: 30px
+  margin-bottom: -40px
+
+  @media (max-width: 767px)
+    flex-direction: column
+    align-content: center
+    align-items: center
+    height: 340px
+
+.filter,
+.deleteFilters
+  flex-grow: 1
+  flex-basis: 200px
+  margin: 1px
+
+.filter-price,
+.filter-weight,
+.another-filters
+  display: flex
+  justify-content: space-between
+  width: 60vh
+
+  .filter-weight
+    margin-left: 10px
+  .another-filters
+    margin-left: 10px
+
+.label
+  position: relative
+  bottom: 30px
+  width: 0px
+  font-size: 18px
+  color: black
+
+.header-wrapper,
+.my-3
+  display: flex
+  align-items: center
+  justify-content: space-between
+  color: black
+
+.delFilters
+  margin-left: 35px
+  height: 56px
+
+@media (max-width: 767px)
+  .tableOrders
+    font-size: 23px
+
+  .filter
+    height: 80px
+
+  .filter-weight,
+  .another-filters
+    margin: 0px 0px 0px
+
+@media (max-width: 536px)
+  .btnsOrderTable
+    flex-direction: column
+
+  .filtersBtn
+    margin: 10px 0px 10px 20px
+
+  .filter-weight,
+  .another-filters,
+  .filter-price
+    margin: 10px 0px 0px
+    width: 50vh
+
+  .delFilters
+    height: 46px
+
+@media (max-width: 432px)
+  .filter-weight,
+  .another-filters,
+  .filter-price
+    margin: 10px 0px 0px
+    width: 40vh
+
+  .delFilters
+    height: 36px
+
+@media (max-width: 364px)
+  .filter-weight,
+  .another-filters,
+  .filter-price
+    margin: 10px 0px 0px
+    width: 35vh
+
+  .delFilters
+    height: 36px
 </style>

@@ -479,9 +479,9 @@ const data = reactive({
     price: null,
     lengthAlgo: null,
     description: null,
-    imo: 1,
-    temp: 1,
-    international: 1,
+    imo: 0,
+    temp: 0,
+    international: 0,
     tax: null,
   },
 });
@@ -541,11 +541,19 @@ const taxes = computed(() => {
   return [{ value: "", title: "Выберите ндс" }, ...base];
 });
 
-async function addOrder(event) {
-  const formData = new FormData(event.target);
-  formData.append("calc", true);
+async function addOrder() {
+  const formData = new FormData();
+  formData.append("calc", 0);
+  formData.append("from_address_id", data.order.fromAdress);
+  formData.append("delivery_address_id", data.order.deliveryAddress);
+  formData.append("return_address_id", data.order.returnAddress);
+  formData.append("weight", data.order.weight);
+  formData.append("container_id", data.order.container);
+  formData.append("price", data.order.price);
+  formData.append("length_algo", data.order.lengthAlgo);
+  formData.append("description", data.order.description);
   formData.append("from_date", data.order.fromDate);
-  formData.append("rom_slot", data.order.fromSlot);
+  formData.append("from_slot", data.order.fromSlot);
   formData.append("from_contact_name", data.order.fromContactName);
   formData.append("from_contact_phone", data.order.fromContactPhone);
   formData.append("from_contact_email", data.order.fromContactEmail);
@@ -558,7 +566,11 @@ async function addOrder(event) {
   formData.append("return_slot", data.order.returnSlot);
   formData.append("return_contact_name", data.order.returnContactName);
   formData.append("return_contact_phone", data.order.returnContactPhone);
-  formData.append("rreturn_contact_email", data.order.returnContactEmail);
+  formData.append("return_contact_email", data.order.returnContactEmail);
+  formData.append("is_international", data.order.international ? 1 : 0);
+  formData.append("temp_reg", data.order.temp ? 1 : 0);
+  formData.append("imo", data.order.imo ? 1 : 0);
+  formData.append("length_real", 11);
   const formProps = Object.fromEntries(formData);
   console.log(formData);
   await orderStore.createOrder(formProps);

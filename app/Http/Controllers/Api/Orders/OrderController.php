@@ -274,12 +274,12 @@ class OrderController extends Controller
       if(intval($data['calc'])===1){
 
         $calc_history = $this->calcHistoryCreate($data);
-        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
+        if($calc_history) return response()->json(['message'=> 'success' ], 201);
       }else{
 
         if(Auth::user()){
           $order = $this->order_create($data);
-          if($order) return response()->json([ 'data'=> $order ], 201);
+          if($order) return response()->json([ 'message'=> 'success' ], 201);
         }else{
           return response()->json(['message'=> "Unauthorized" ], 401);
         }

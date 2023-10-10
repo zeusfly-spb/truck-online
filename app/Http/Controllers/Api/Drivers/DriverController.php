@@ -173,7 +173,7 @@ class DriverController extends BaseController
         $document = Document::where('table_owner_id', $id)->first();
 
         $path = "uploads/documents";
-        $originalName = time().'_'.$request->file('document')->getClientOriginalName();
+        $originalName = uniqid().'.'.$request->file('document')->getClientOriginalExtension();
         $file = request()->document;
 
         $path = Storage::disk('local')->putFileAs($path, $file, $originalName);
@@ -228,7 +228,7 @@ class DriverController extends BaseController
       foreach ($request->file('files') as $data) {
 
         $path = "uploads/files";
-        $originalName = time().'_'.$data->getClientOriginalName();
+        $originalName = uniqid().'.'.$data->getClientOriginalExtension();
         $image = $data;
         $path = Storage::disk('local')->putFileAs($path, $image, $originalName);
 

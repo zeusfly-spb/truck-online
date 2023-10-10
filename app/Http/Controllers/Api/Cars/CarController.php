@@ -143,19 +143,19 @@ class CarController extends Controller
 
         if ($request->hasFile('icon')){
             $path = "uploads/car/images";
-            $originalName = time().'_'.$request->file('icon')->getClientOriginalName();
+            $originalName = uniqid().'.'.$request->file('icon')->getClientOriginalExtension();
             $image = request()->icon;
             $icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_1')){
             $path = "uploads/car/documents";
-            $originalName = time().'_'.$request->file('sts_file_1')->getClientOriginalName();
+            $originalName = uniqid().'.'.$request->file('sts_file_1')->getClientOriginalExtension();
             $image = request()->sts_file_1;
             $sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
         if ($request->hasFile('sts_file_2')){
             $path = "uploads/car/documents";
-            $originalName = time().'_'.$request->file('sts_file_2')->getClientOriginalName();
+            $originalName = uniqid().'.'.$request->file('sts_file_2')->getClientOriginalExtension();
             $image = request()->sts_file_2;
             $sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
@@ -302,7 +302,7 @@ class CarController extends Controller
         if ($request->hasFile('icon')){
           Storage::disk('local')->delete($car->icon);
           $path = "uploads/car/images";
-          $originalName = time().'_'.$request->file('icon')->getClientOriginalName();
+          $originalName = uniqid().'.'.$request->file('icon')->getClientOriginalExtension();
           $image = request()->icon;
           $car->icon = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
@@ -310,7 +310,7 @@ class CarController extends Controller
         if ($request->hasFile('sts_file_1')){
           Storage::disk('local')->delete($car->sts_file_1);
           $path = "uploads/car/documents";
-          $originalName = time().'_'.$request->file('sts_file_1')->getClientOriginalName();
+          $originalName = uniqid().'.'.$request->file('sts_file_1')->getClientOriginalExtension();
           $image = request()->sts_file_1;
           $car->sts_file_1 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }
@@ -318,7 +318,7 @@ class CarController extends Controller
         if ($request->hasFile('sts_file_2')){
           Storage::disk('local')->delete($car->sts_file_2);
           $path = "uploads/car/documents";
-          $originalName = time().'_'.$request->file('sts_file_2')->getClientOriginalName();
+          $originalName = uniqid().'.'.$request->file('sts_file_2')->getClientOriginalExtension();
           $image = request()->sts_file_2;
           $car->sts_file_2 = Storage::disk('local')->putFileAs($path, $image, $originalName);
         }

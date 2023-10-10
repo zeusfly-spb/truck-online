@@ -187,9 +187,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
-      }
+      //}catch(Exception $exception){
+      //    return response()->json(['error' => $exception->getMessage()], 500);
+      //}
 
     }
 

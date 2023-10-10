@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\BaseController;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\Api\Drivers\DriverResource;
-use App\Services\FileUploadService;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Document;
 use App\Models\User;
@@ -173,7 +173,7 @@ class DriverController extends BaseController
         $document = Document::where('table_owner_id', $id)->first();
 
         $path = "uploads/documents";
-        $originalName = uniqid().'.'.$request->file('document')->getClientOriginalExtension();
+        $originalName = Str::uuid().'.'.$request->file('document')->getClientOriginalExtension();
         $file = request()->document;
 
         $path = Storage::disk('local')->putFileAs($path, $file, $originalName);
@@ -228,7 +228,7 @@ class DriverController extends BaseController
       foreach ($request->file('files') as $data) {
 
         $path = "uploads/files";
-        $originalName = uniqid().'.'.$data->getClientOriginalExtension();
+        $originalName = Str::uuid().'.'.$data->getClientOriginalExtension();
         $image = $data;
         $path = Storage::disk('local')->putFileAs($path, $image, $originalName);
 

@@ -572,7 +572,7 @@ async function addOrder() {
   formData.append("imo", data.order.imo ? 1 : 0);
   formData.append("length_real", 11);
   const formProps = Object.fromEntries(formData);
-  console.log(formData);
+
   await orderStore.createOrder(formProps);
 }
 

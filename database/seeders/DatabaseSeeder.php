@@ -9,6 +9,7 @@ use Database\Seeders\ContainerSeeder;
 use Database\Seeders\OrderSettingSeeder;
 use Database\Seeders\RightUseSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
+use Database\Seeders\TestUserSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,7 +25,8 @@ class DatabaseSeeder extends Seeder
         ContainerSeeder::class,
         OrderSettingSeeder::class,
         RightUseSeeder::class,
-        RolesAndPermissionsSeeder::class
+        RolesAndPermissionsSeeder::class,
+        TestUserSeeder::class
       ]);
     }
 }

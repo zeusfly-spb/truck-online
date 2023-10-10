@@ -1,3 +1,7 @@
+const authError = () => {
+  const { $event } = useNuxtApp();
+  $event('auth:error');
+}
 export const opFetch = (request, options) => {
   const config = useRuntimeConfig();
   const headers = new Headers();
@@ -13,5 +17,8 @@ export const opFetch = (request, options) => {
     baseURL: config.public.apiBase,
     headers,
     ...options,
+    async onResponseError({ response }) {
+      response.status === 401 ? authError() : null;
+    },
   });
 };

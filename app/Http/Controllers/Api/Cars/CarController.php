@@ -9,9 +9,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\CarPass;
 use App\Models\Car;
-use Auth;
-use File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+
 
 
 class CarController extends Controller
@@ -42,7 +43,7 @@ class CarController extends Controller
         try{
             $cars = Car::orderBy('created_at', 'desc')->where('company_id', Auth::user()->company_id)->get();
             return response()->json(CarResource::collection($cars)->collection);
-        }catch(Exception $exception){
+        }catch(\Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
@@ -55,7 +56,9 @@ class CarController extends Controller
         //
     }
 
-    /**
+
+
+  /**
     * @OA\Post(
     *     path="/api/cars",
     *     summary="Store Cars",
@@ -184,9 +187,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      //}catch(Exception $exception){
-      //    return response()->json(['error' => $exception->getMessage()], 500);
-      //}
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
 
     }
 
@@ -288,7 +291,7 @@ class CarController extends Controller
     */
     public function update(Request $request, $id)
     {
-      //try{
+      try{
 
         $car = Car::find($id);
         $car->number = $request->number;
@@ -335,9 +338,9 @@ class CarController extends Controller
           }
         }
         return response()->json(CarResource::make($car));
-      //}catch(Exception $exception){
-      //    return response()->json(['error' => $exception->getMessage()], 500);
-      //}
+      }catch(Exception $exception){
+          return response()->json(['error' => $exception->getMessage()], 500);
+      }
     }
 
     /**

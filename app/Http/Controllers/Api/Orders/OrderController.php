@@ -269,7 +269,6 @@ class OrderController extends Controller
      * )
      */
     public function store(Request $request){
-
       $data = $request['data'];
       if(intval($data['calc'])===1){
 

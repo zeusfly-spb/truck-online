@@ -1,7 +1,7 @@
 <template>
   <v-form @submit.prevent="addDriver">
     <v-row no-gutters class="align-center">
-      <v-col md :cols="12" class="mr-3 mb-3" style="display: flex">
+      <v-col md :cols="12" class="mr-3 mb-3 mt-1" style="display: flex">
         <v-text-field
           v-model="data.drivers.first_name.value"
           :items="data.drivers.first_name.list"
@@ -10,12 +10,12 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ИМЯ"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
           v-model="data.drivers.middle_name.value"
@@ -25,12 +25,12 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ФАМИЛИЯ"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
+          :rules="[rules.required]"
         ></v-text-field>
         <v-text-field
           v-model="data.drivers.last_name.value"
@@ -40,11 +40,11 @@
           theme="light"
           item-props
           menu-icon=""
-          append-inner-icon="mdi-magnify"
           label="ОТЧЕСТВО"
-          class="text-body-1"
+          class="mt-1 text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -56,6 +56,7 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -65,6 +66,7 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -77,6 +79,7 @@
           variant="outlined"
           hide-details="auto"
           type="password"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -84,9 +87,11 @@
       <v-col md :cols="12" class="mr-3 mb-3">
         <v-file-input
           v-model="data.drivers.files"
+          hide-details="auto"
           multiple
           label="Сканы паспорта"
           variant="outlined"
+          :rules="rulesFile"
         >
         </v-file-input>
       </v-col>
@@ -100,15 +105,17 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
+          :rules="rulesFile"
         ></v-file-input>
       </v-col>
       <v-col md :cols="12" class="mr-3 mb-3">
         <v-text-field
-          v-model="data.drivers.passport.value"
+          v-model="data.drivers.driveLicense.number"
           label="Номер В/У"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-6">
@@ -118,23 +125,25 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
+          :rules="[rules.required]"
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-row no-gutters>
-      <v-col md :cols="12">
-        <v-btn
-          color="primary"
-          class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
-          type="submit"
-          >Добавить водителя
-        </v-btn>
-      </v-col>
-    </v-row>
+    <div class="btnDriverForm">
+      <v-btn
+        color="primary"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        type="submit"
+        >Добавить водителя
+      </v-btn>
+      <v-btn
+        color="primary"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        @click="resetData"
+        >Cбросить
+      </v-btn>
+    </div>
   </v-form>
-  <div style="margin-top: 5px">
-    <table-drivers />
-  </div>
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
@@ -145,29 +154,26 @@ const data = reactive({
   drivers: {
     first_name: {
       value: null,
-      list: [1],
     },
     middle_name: {
       value: null,
-      list: [1],
     },
     last_name: {
       value: null,
-      list: [1],
     },
-    email: "",
-    phone: "",
-    password: "",
+    email: null,
+    phone: null,
+    password: null,
     files: [],
     passport: {
       main: null,
       second: null,
-      number: "",
+      number: null,
     },
     driveLicense: {
-      file: "",
-      date: "",
-      number: "",
+      file: null,
+      date: null,
+      number: null,
     },
   },
 });
@@ -183,13 +189,20 @@ async function addDriver() {
   };
   await driverStore.addDriver(body);
 
-  const driverLicense = {
-    path: data.drivers.driveLicense.file,
-    date: data.drivers.driveLicense.date,
-    number: data.drivers.driveLicense.number,
-  };
+  const formdata = new FormData();
+  const driverLicense = [
+    data.drivers.driveLicense.file,
+    data.drivers.driveLicense.date,
+    data.drivers.driveLicense.number,
+  ];
+  console.log("fffff:", driverLicense);
+  for (let i = 0; i < driverLicense.length; i++) {
+    formdata.append("document", driverLicense[0]);
+    formdata.append("document_date", driverLicense[1]);
+    formdata.append("document_number", driverLicense[2]);
+  }
 
-  await driverStore.addDriverLicense(driverLicense);
+  await driverStore.addDriverLicense(formdata);
 
   const filesdata = new FormData();
   const files = data.drivers.files;
@@ -204,5 +217,29 @@ async function addDriver() {
   console.log("type:", typeof filesdata);
   await driverStore.addPassportDriver(filesdata);
 }
+
+async function resetData() {
+  data.drivers.first_name.value = null;
+  data.drivers.middle_name.value = null;
+  data.drivers.last_name.value = null;
+  data.drivers.email = null;
+  data.drivers.phone = null;
+  data.drivers.password = null;
+  data.drivers.driveLicense.file = null;
+  data.drivers.driveLicense.date = null;
+  data.drivers.driveLicense.number = null;
+  data.drivers.files = null;
+}
+
+const rules = {
+  required: (value) => !!value || "Поле обязательно для заполнения!",
+};
+
+const rulesFile = [(v) => !!v || "Выберите файл"];
 </script>
-<style scoped></style>
+<style scoped>
+.btnDriverForm {
+  display: flex;
+  justify-content: space-around;
+}
+</style>

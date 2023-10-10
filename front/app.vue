@@ -35,6 +35,7 @@ watchEffect(async () => {
 </script>
 <style>
 #app {
+  height: 100%;
   font-family: "Saira";
   -webkit-touch-callout: none;
   -webkit-user-select: none;

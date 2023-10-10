@@ -1,5 +1,5 @@
 <template>
-  <v-table fixed-header height="300px">
+  <v-table fixed-header>
     <thead>
       <tr>
         <th class="text-left">ID</th>

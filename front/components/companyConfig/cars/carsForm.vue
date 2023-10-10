@@ -62,9 +62,6 @@
       </v-col>
     </v-row>
   </v-form>
-  <div style="margin-top: 15px">
-    <cars-table />
-  </div>
 </template>
 <script setup>
 import { computed } from "vue";
@@ -163,7 +160,16 @@ async function addCar() {
   formdata.append("max_weigth", data.cars.weigth);
 
   await carStore.addNewCar(formdata);
-  data.showFormCar = !data.showFormCar;
 }
 </script>
-<style scoped></style>
+<style scoped>
+.btnCarForm {
+  display: flex;
+  justify-content: space-around;
+}
+@media (max-width: 339px) {
+  :deep(.sts.v-file-input .v-field-label) {
+    font-size: 9px;
+  }
+}
+</style>

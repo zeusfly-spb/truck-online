@@ -34,6 +34,7 @@
           />
         </div>
         <div class="containerSelect">
+          <div>Тип контейнера</div>
           <search-container
             @updateContainer="updateContainer"
             ref="childSelectContainer"
@@ -75,14 +76,12 @@ import SearchInputTo from "./searchInputTo.vue";
 import SearchInputReturn from "./searchInputReturn.vue";
 import searchContainer from "./searchContainer.vue";
 import WeightInput from "./weightInput.vue";
-import { useIntermediateFormData } from "~/store/intermediateFromData";
 import { useCalculate } from "~/store/calculateForm";
 import { defineEmits } from "vue";
 
 const selectedCoordinates = ref([]);
 const showAdditionalOptions = ref(false);
 const containerId = ref(null);
-const intermediateFormData = useIntermediateFormData();
 const calculation = useCalculate();
 const selectedIds = ref([]);
 const weight = ref(null);
@@ -189,7 +188,10 @@ const clearData = () => {
   justify-content: space-between;
   margin: 20px 10px 25px 0px;
 }
-
+.containerSelect {
+  display: grid;
+  justify-items: center;
+}
 .buttonsForm .v-btn {
   width: 280px;
   height: 50px;
@@ -250,9 +252,6 @@ const clearData = () => {
     margin-right: 10px;
   }
 
-  .containerSelect {
-    flex: 1;
-  }
   .additionally {
     margin-top: 25px;
   }

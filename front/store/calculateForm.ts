@@ -7,6 +7,9 @@ export const useCalculate = defineStore("calculateStore", {
     price: null,
   }),
   actions: {
+    resetPrice() {
+      this.price = null;
+    },
     async calculate(body) {
       try {
         const response = await opFetch(url, {

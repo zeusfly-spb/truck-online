@@ -1,279 +1,440 @@
 <template>
-  <v-container class="mb-2">
-    <v-form ref="order-create" @submit.prevent="addOrder" id="order-form">
-      <v-row>
-        <h3>Откуда везем</h3>
-        <v-divider></v-divider>
-        <v-col cols="12" md="4">
-          <v-select
-            label="Выберите адрес"
-            name="from_address_id"
-            :items="addresses.filter((el) => !!el.from)"
-            item-value="id"
-            item-title="name"
-            v-model="data.order.fromAdress"
-            :rules="[rules.required]"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="date"
-            name="from_date"
-            :rules="[rules.required]"
-            v-model="data.order.fromDate"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="time"
-            name="from_slot"
-            :rules="[rules.required]"
-            v-model="data.order.fromSlot"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="from_contact_name"
-            label="From Contact Name"
-            :rules="[rules.required]"
-            v-model="data.order.fromContactName"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="from_contact_phone"
-            label="From Contact Phone"
-            :rules="[rules.required, rules.phoneLength]"
-            placeholder="+7 900 000-00-00"
-            v-model="data.order.fromContactPhone"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="from_contact_email"
-            label="From Contact Email"
-            :rules="[rules.required]"
-            v-model="data.order.fromContactEmail"
-          ></v-text-field>
-        </v-col>
-        <!-- Order From Data -->
-        <h3>Куда везем</h3>
-        <v-divider></v-divider>
-        <!-- Order To Data -->
-        <v-col cols="12" md="4">
-          <v-select
-            label="Select"
-            name="delivery_address_id"
-            :items="addresses.filter((el) => !!el.to)"
-            item-value="id"
-            item-title="name"
-            v-model="data.order.deliveryAddress"
-            :rules="[rules.required]"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="date"
-            name="delivery_date"
-            :rules="[rules.required]"
-            v-model="data.order.deliveryDate"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="time"
-            name="delivery_slot"
-            :rules="[rules.required]"
-            v-model="data.order.deliverySlot"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="delivery_contact_name"
-            label="Delivery Contact Name"
-            :rules="[rules.required]"
-            v-model="data.order.deliveryContactName"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="delivery_contact_phone"
-            label="Delivery Contact Phone"
-            :rules="[rules.required, rules.phoneLength]"
-            placeholder="+7 900 000-00-00"
-            v-model="data.order.deliveryContactPhone"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="delivery_contact_email"
-            label="Delivery Contact Email"
-            :rules="[rules.required]"
-            v-model="data.order.deliveryContactEmail"
-          ></v-text-field>
-        </v-col>
-        <!-- Order To Data -->
+  <v-form ref="order-create" @submit.prevent="addOrder" id="order-form">
+    <div class="container">
+      <div class="form">
+        <div class="addressesData">
+          <h3>Откуда везем</h3>
+          <div class="fromData">
+            <v-col>
+              <v-select
+                label="Выберите адрес"
+                name="from_address_id"
+                :items="addresses.filter((el) => !!el.from)"
+                item-value="id"
+                item-title="name"
+                v-model="data.order.fromAdress"
+                :rules="[rules.required]"
+                variant="solo"
+              ></v-select>
+            </v-col>
+            <v-dialog width="400">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    v-bind="props"
+                    alt="calendar"
+                    src="/календарь.png"
+                    class="calendar"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Дата и время забора контейнера">
+                  <v-col cols="12" md="15" class="dialogInput">
+                    <v-text-field
+                      type="date"
+                      name="from_date"
+                      :rules="[rules.required]"
+                      v-model="data.order.fromDate"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      type="time"
+                      name="from_slot"
+                      :rules="[rules.required]"
+                      v-model="data.order.fromSlot"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+            <v-dialog width="500">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    alt="calendar"
+                    src="/contact.png"
+                    class="contact"
+                    v-bind="props"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Данные водителя">
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="from_contact_name"
+                      label="Имя"
+                      :rules="[rules.required]"
+                      v-model="data.order.fromContactName"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="from_contact_phone"
+                      label="Телефон"
+                      :rules="[rules.required, rules.phoneLength]"
+                      placeholder="+7 900 000-00-00"
+                      v-model="data.order.fromContactPhone"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="from_contact_email"
+                      label="Email"
+                      :rules="[rules.required]"
+                      variant="solo"
+                      v-model="data.order.fromContactEmail"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </div>
+          <h3>Куда везем</h3>
+          <div class="toData">
+            <v-col>
+              <v-select
+                label="Select"
+                name="delivery_address_id"
+                :items="addresses.filter((el) => !!el.to)"
+                item-value="id"
+                item-title="name"
+                v-model="data.order.deliveryAddress"
+                :rules="[rules.required]"
+                variant="solo"
+              ></v-select>
+            </v-col>
+            <v-dialog width="500">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    alt="calendar"
+                    src="/календарь.png"
+                    class="calendar"
+                    v-bind="props"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Дата и время доставки контейнера">
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      type="date"
+                      name="delivery_date"
+                      :rules="[rules.required]"
+                      v-model="data.order.deliveryDate"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      type="time"
+                      name="delivery_slot"
+                      :rules="[rules.required]"
+                      v-model="data.order.deliverySlot"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+            <v-dialog width="500">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    alt="calendar"
+                    src="/contact.png"
+                    class="contact"
+                    v-bind="props"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Данные водителя">
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="delivery_contact_name"
+                      label="Имя"
+                      :rules="[rules.required]"
+                      v-model="data.order.deliveryContactName"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="delivery_contact_phone"
+                      label="Телефон"
+                      :rules="[rules.required, rules.phoneLength]"
+                      placeholder="+7 900 000-00-00"
+                      v-model="data.order.deliveryContactPhone"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="delivery_contact_email"
+                      label="Email"
+                      :rules="[rules.required]"
+                      v-model="data.order.deliveryContactEmail"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </div>
+          <h3>Место сдачи контейнера</h3>
+          <div class="returnData">
+            <v-col>
+              <v-select
+                label="Select"
+                name="return_address_id"
+                :items="addresses.filter((el) => !!el.return)"
+                item-value="id"
+                item-title="name"
+                v-model="data.order.returnAddress"
+                :rules="[rules.required]"
+                variant="solo"
+              ></v-select>
+            </v-col>
+            <v-dialog width="500">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    alt="calendar"
+                    src="/календарь.png"
+                    class="calendar"
+                    v-bind="props"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Дата и время сдачи контейнера">
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      type="date"
+                      name="return_date"
+                      :rules="[rules.required]"
+                      v-model="data.order.returnDate"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      type="time"
+                      name="return_slot"
+                      :rules="[rules.required]"
+                      v-model="data.order.returnSlot"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+            <v-dialog width="500">
+              <template v-slot:activator="{ props }">
+                <button type="button">
+                  <img
+                    alt="calendar"
+                    src="/contact.png"
+                    class="contact"
+                    v-bind="props"
+                  />
+                </button>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card title="Данные водителя">
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="return_contact_name"
+                      label="Имя"
+                      :rules="[rules.required]"
+                      v-model="data.order.returnContactName"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="return_contact_phone"
+                      label="Телефон"
+                      :rules="[rules.required, rules.phoneLength]"
+                      placeholder="+7 900 000-00-00"
+                      v-model="data.order.returnContactPhone"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="15">
+                    <v-text-field
+                      name="return_contact_email"
+                      label="Email"
+                      :rules="[rules.required]"
+                      v-model="data.order.returnContactEmail"
+                      variant="solo"
+                    ></v-text-field>
+                  </v-col>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text="Добавить"
+                      @click="isActive.value = false"
+                    ></v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </div>
+        </div>
         <!-- Order Return Data -->
-        <h3>Место сдачи контейнера</h3>
-        <v-divider></v-divider>
-        <v-col cols="12" md="4">
-          <v-select
-            label="Select"
-            name="return_address_id"
-            :items="addresses.filter((el) => !!el.return)"
-            item-value="id"
-            item-title="name"
-            v-model="data.order.returnAddress"
-            :rules="[rules.required]"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="date"
-            name="return_date"
-            :rules="[rules.required]"
-            v-model="data.order.returnDate"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            type="time"
-            name="return_slot"
-            :rules="[rules.required]"
-            v-model="data.order.returnSlot"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="return_contact_name"
-            label="Return Contact Name"
-            :rules="[rules.required]"
-            v-model="data.order.returnContactName"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="return_contact_phone"
-            label="Return Contact Phone"
-            :rules="[rules.required, rules.phoneLength]"
-            placeholder="+7 900 000-00-00"
-            v-model="data.order.returnContactPhone"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-text-field
-            name="return_contact_email"
-            label="Return Contact Email"
-            :rules="[rules.required]"
-            v-model="data.order.returnContactEmail"
-          ></v-text-field>
-        </v-col>
-        <!-- Order Return Data -->
-        <h3>INFO</h3>
-        <v-divider></v-divider>
-        <v-col cols="12" md="4">
-          <v-select
-            label="Containers"
-            name="container_id"
-            id="container_id"
-            :items="allContainers"
-            :rules="[rules.required]"
-            v-model="data.order.container"
-          ></v-select>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-text-field
-            name="weight"
-            label="Weight"
-            type="number"
-            id="weight"
-            :rules="[rules.required]"
-            v-model="data.order.weight"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-text-field
-            name="price"
-            label="Price"
-            :rules="[rules.required]"
-            v-model="data.order.price"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-text-field
-            name="length_algo"
-            label="Длина маршрута в км"
-            :rules="[rules.required]"
-            v-model="data.order.lengthAlgo"
-          ></v-text-field>
-        </v-col>
-        <!-- <v-col cols="12" md="2">
-          <v-text-field
-            name="length_real"
-            label="Реальная длина из данных водителя"
-            :rules="[rules.required]"
-          ></v-text-field>
-        </v-col> -->
-        <v-col cols="12" md="12">
-          <v-text-field
-            name="description"
-            label="Description"
-            :rules="[rules.required]"
-            v-model="data.order.description"
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
-          </v-checkbox>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-select
-            label="НДС"
-            name="tax_id"
-            :items="taxes"
-            v-model="data.order.tax"
-          >
-          </v-select>
-        </v-col>
-        <v-col cols="12" md="3">
-          <v-checkbox
-            name="temp_reg"
-            :label="`Температурный режим`"
-            v-model="data.order.temp"
-          ></v-checkbox>
-        </v-col>
-        <v-col cols="12" md="3">
-          <v-checkbox
-            name="is_international"
-            :label="`is_international`"
-            v-model="data.order.international"
-          ></v-checkbox>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="2">
-          <v-btn
-            :loading="loading"
-            type="submit"
-            block
-            class="mt-2"
-            text="Создать заказ"
-            color="indigo-darken-3"
-          ></v-btn>
-        </v-col>
-        <v-col cols="12" md="2">
-          <v-btn
-            :loading="loading"
-            @click="calculate"
-            block
-            class="mt-2"
-            text="Рассчитать"
-            color="indigo-darken-3"
-          ></v-btn>
-        </v-col>
-      </v-row>
-    </v-form>
-  </v-container>
+        <div class="infoData">
+          <h3>INFO</h3>
+          <div class="containerInfo">
+            <v-col cols="40" md="6">
+              <v-text-field
+                name="weight"
+                label="Вес"
+                type="number"
+                id="weight"
+                :rules="[rules.required]"
+                v-model="data.order.weight"
+                variant="solo"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="40" md="6">
+              <v-select
+                label="Containers"
+                name="container_id"
+                id="container_id"
+                :items="allContainers"
+                :rules="[rules.required]"
+                v-model="data.order.container"
+                variant="solo"
+              ></v-select>
+            </v-col>
+          </div>
+          <div class="priceLength">
+            <v-col cols="40" md="6">
+              <v-text-field
+                name="price"
+                label="Цена"
+                :rules="[rules.required]"
+                v-model="data.order.price"
+                variant="solo"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="40" md="6">
+              <v-text-field
+                name="length_algo"
+                label="Длина маршрута в км"
+                :rules="[rules.required]"
+                v-model="data.order.lengthAlgo"
+                variant="solo"
+              ></v-text-field>
+            </v-col>
+          </div>
+          <div class="additionalyParametrs">
+            <v-col>
+              <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
+              </v-checkbox>
+            </v-col>
+            <v-col>
+              <v-select
+                label="НДС"
+                name="tax_id"
+                :items="taxes"
+                v-model="data.order.tax"
+                variant="solo"
+                class="tax"
+              >
+              </v-select>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                name="temp_reg"
+                :label="`Температурный режим`"
+                v-model="data.order.temp"
+              ></v-checkbox>
+            </v-col>
+            <v-col>
+              <v-checkbox
+                name="is_international"
+                :label="`is_international`"
+                v-model="data.order.international"
+              ></v-checkbox>
+            </v-col>
+          </div>
+        </div>
+      </div>
+      <div class="bigFormMap">
+        <twogis-map />
+      </div>
+    </div>
+    <v-col cols="12" md="12">
+      <v-text-field
+        name="description"
+        label="Комментарий"
+        :rules="[rules.required]"
+        v-model="data.order.description"
+        variant="solo"
+      ></v-text-field>
+    </v-col>
+    <div class="btnsBigForm">
+      <v-btn
+        :loading="loading"
+        type="submit"
+        text="Создать заказ"
+        color="indigo-darken-3"
+        max-width="150px"
+      ></v-btn>
+      <v-btn
+        :loading="loading"
+        @click="calculate"
+        text="Рассчитать"
+        color="indigo-darken-3"
+        max-width="150px"
+      ></v-btn>
+    </div>
+  </v-form>
 </template>
 
 <script setup>
@@ -318,13 +479,13 @@ const data = reactive({
     price: null,
     lengthAlgo: null,
     description: null,
-    imo: 1,
-    temp: 1,
-    international: 1,
+    imo: 0,
+    temp: 0,
+    international: 0,
     tax: null,
   },
 });
-
+console.log("data:", data.order.fromAdress);
 watch(
   () => data.order.fromAdress,
   (newVal) => console.log("new address:", newVal),
@@ -380,10 +541,38 @@ const taxes = computed(() => {
   return [{ value: "", title: "Выберите ндс" }, ...base];
 });
 
-async function addOrder(event) {
-  const formData = new FormData(event.target);
-  formData.append("calc", false);
+async function addOrder() {
+  const formData = new FormData();
+  formData.append("calc", 0);
+  formData.append("from_address_id", data.order.fromAdress);
+  formData.append("delivery_address_id", data.order.deliveryAddress);
+  formData.append("return_address_id", data.order.returnAddress);
+  formData.append("weight", data.order.weight);
+  formData.append("container_id", data.order.container);
+  formData.append("price", data.order.price);
+  formData.append("length_algo", data.order.lengthAlgo);
+  formData.append("description", data.order.description);
+  formData.append("from_date", data.order.fromDate);
+  formData.append("from_slot", data.order.fromSlot);
+  formData.append("from_contact_name", data.order.fromContactName);
+  formData.append("from_contact_phone", data.order.fromContactPhone);
+  formData.append("from_contact_email", data.order.fromContactEmail);
+  formData.append("delivery_date", data.order.deliveryDate);
+  formData.append("delivery_slot", data.order.deliverySlot);
+  formData.append("delivery_contact_name", data.order.deliveryContactName);
+  formData.append("delivery_contact_phone", data.order.deliveryContactPhone);
+  formData.append("delivery_contact_email", data.order.deliveryContactEmail);
+  formData.append("return_date", data.order.returnDate);
+  formData.append("return_slot", data.order.returnSlot);
+  formData.append("return_contact_name", data.order.returnContactName);
+  formData.append("return_contact_phone", data.order.returnContactPhone);
+  formData.append("return_contact_email", data.order.returnContactEmail);
+  formData.append("is_international", data.order.international ? 1 : 0);
+  formData.append("temp_reg", data.order.temp ? 1 : 0);
+  formData.append("imo", data.order.imo ? 1 : 0);
+  formData.append("length_real", 11);
   const formProps = Object.fromEntries(formData);
+
   await orderStore.createOrder(formProps);
 }
 
@@ -394,7 +583,77 @@ const rules = {
 };
 </script>
 <style scoped>
+.fromData,
+.toData,
+.returnData {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-around;
+}
 .p-20 {
   padding: 20px;
+}
+.container {
+  display: flex;
+}
+.form {
+  width: 50%;
+}
+.bigFormMap {
+  width: 50%;
+}
+
+.containerInfo {
+  display: flex;
+  justify-content: space-around;
+}
+#map {
+  width: 100%;
+}
+h3 {
+  margin-left: 10px;
+}
+.btnsBigForm {
+  display: flex;
+  justify-content: space-evenly;
+}
+.calendar {
+  height: 55px;
+}
+.contact {
+  height: 55px;
+}
+.containerInfo {
+  display: flex;
+}
+.priceLength {
+  display: flex;
+}
+.additionalyParametrs {
+  display: flex;
+}
+.dialogInput,
+.v-col-md-4 {
+  max-width: auto;
+}
+.v-col {
+  padding: 7px;
+}
+
+@media (max-width: 960px) {
+  .container {
+    flex-direction: column;
+  }
+  .form {
+    width: 100%;
+  }
+  .bigFormMap {
+    width: 100%;
+  }
+}
+@media (max-width: 1308px) {
+  :deep(.tax .v-label.v-field-label) {
+    font-size: 12px;
+  }
 }
 </style>

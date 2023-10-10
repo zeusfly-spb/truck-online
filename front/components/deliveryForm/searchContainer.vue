@@ -1,14 +1,20 @@
 <template>
   <div>
-    <v-select
-      v-model="selectedContainerId"
-      @change="updateContainer"
-      :items="allContainers"
-      variant="solo"
-    />
+    <div
+      v-for="container in allContainers"
+      :key="container.id"
+      class="container-button"
+    >
+      <v-btn
+        :class="selectedContainerId === container.id ? 'selected' : null"
+        @click="updateContainer(container.id)"
+        variant="solo"
+      >
+        {{ container.name }}
+      </v-btn>
+    </div>
   </div>
 </template>
-
 <script setup>
 import { useContainersStore } from "~/store/containers";
 import { defineEmits } from "vue";
@@ -26,19 +32,14 @@ onBeforeMount(async () => {
   await containersStore.getContainers();
 });
 
-const updateContainer = () => {
-  emit("updateContainer", selectedContainerId.value);
+const updateContainer = (id) => {
+  selectedContainerId.value = id;
+  emit("updateContainer", id);
 };
+
 const allContainers = computed(() => {
   if (!containersStore.containers || containersStore.loading) return [];
-  const base =
-    containersStore.containers.map((item) => ({
-      ...item,
-      title: item.name,
-      value: item.id,
-      props: { subtitle: `${item.weight} кг.` },
-    })) || [];
-  return [{ value: "", title: "Тип контейнера" }, ...base];
+  return containersStore.containers.slice(0, 3);
 });
 
 const clearSelect = () => {
@@ -47,3 +48,15 @@ const clearSelect = () => {
 
 defineExpose({ clearSelect });
 </script>
+<style scoped>
+.container-button {
+  display: inline-block;
+  margin: 5px;
+}
+
+.selected {
+  font-size: 1.5rem;
+  transform: scale(1);
+  background-color: #285795;
+}
+</style>

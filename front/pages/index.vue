@@ -20,9 +20,11 @@ import DeliveryFooter from "~/components/deliveryForm/deliveryFooter.vue";
 import FormOrder from "~/components/deliveryForm/formOrder.vue";
 const selectedCoordinates = ref([]);
 const twoGisMapRef = ref(null);
+
 const updateMapCoordinates = (coordinates) => {
   selectedCoordinates.value = coordinates;
 };
+
 const clearMarkers = () => {
   if (twoGisMapRef.value) {
     twoGisMapRef.value.removeMarkers();

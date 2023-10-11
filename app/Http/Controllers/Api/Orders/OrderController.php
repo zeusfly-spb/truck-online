@@ -15,6 +15,7 @@ use App\Models\CaclHistory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Http\Resources\Api\Orders\OrderResource;
+use App\Http\Resources\Api\CalcHistories\CalcHistoryResource;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Validator;
@@ -273,7 +274,7 @@ class OrderController extends Controller
       if(intval($data['calc'])===1){
 
         $calc_history = $this->calcHistoryCreate($data);
-        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
+        if($calc_history) return response()->json(['data'=> CalcHistoryResource::make($calc_history) ], 201);
       }else{
 
         if(Auth::user()){

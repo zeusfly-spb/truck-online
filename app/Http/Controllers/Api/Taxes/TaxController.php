@@ -82,7 +82,7 @@ class TaxController extends Controller
     {
         try{
             $tax = new Tax;
-            $tax->setTranslation('name', 'ru', $request->name)->save();
+            $tax->name = $request->name;
             return response()->json(TaxResource::make($tax));
         }catch(Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);

@@ -12,19 +12,14 @@ export const useCalculate = defineStore("calculateStore", {
     },
     async calculate(body) {
       try {
-        const response = await opFetch(url, {
+        const {
+          data: { _rawValue },
+        } = await opFetch(url, {
           method: "POST",
           body: { data: body },
         });
-
-        console.log("Response:", response);
-
-        if (response.status._rawValue === "success") {
-          console.log("New price:", this.price);
-          this.price = response._rawValue.data.price;
-        } else {
-          alert("Что-то не так с созданием заказа!");
-        }
+        console.log("respones:", _rawValue);
+        this.price = _rawValue.price;
       } catch (error) {
         console.error("Error fetching:", error);
         alert("Произошла ошибка во время запроса!");

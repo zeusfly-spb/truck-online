@@ -2,10 +2,11 @@
   <v-navigation-drawer app>
       <v-list>
            <!-- {{ allRoles }} {{ userRoles }} -->
+           {{ userRoles }}
           <v-list-item to="/profile">
               <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/profile/users">
+          <v-list-item to="/profile/users"  v-if="shouldShowSidebar">
               <v-list-item-title>Users</v-list-item-title>
           </v-list-item>
           <v-list-item to="/profile/companies">
@@ -37,17 +38,14 @@ import { onBeforeMount } from "vue";
 import { useAuthStore } from "~/store/auth";
 const userStore = useAuthStore();
 
-const userRolesTest = reactive({
-  data: [],
-})
-onBeforeMount(async () => {
-  userRolesTest.data =  userStore.user?.roles.map(role => role?.name);
-  console.log(userRolesTest.data)
+ const userRoles = ref([]);
+ const shouldShowSidebar = computed(() => {
+
+  //userRoles.value = ['execute'];
+  userRoles = userStore.user?.roles.map(role => role?.name);
+  return userRoles && userRoles.value && userRoles.value.includes('driver');
 });
 
-const userRoles = computed(() => {
-  userRolesTest.data =  userStore.user?.roles.map(role => role?.name);
-})
 // async function shouldShow(allowedRoles) {
 //     return allowedRoles.some(role => hasAccess(role));
 // }

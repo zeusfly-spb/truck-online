@@ -11,6 +11,7 @@ use Database\Seeders\RightUseSeeder;
 use Database\Seeders\RolesAndPermissionsSeeder;
 use Database\Seeders\TestUserSeeder;
 use Database\Seeders\TaxSeeder;
+use Database\Seeders\CountrySeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
         RightUseSeeder::class,
         RolesAndPermissionsSeeder::class,
         TestUserSeeder::class,
-        TaxSeeder::class
+        TaxSeeder::class,
+        CountrySeeder::class
       ]);
     }
 }

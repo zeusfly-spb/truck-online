@@ -1,7 +1,7 @@
 <template>
   <div class="delivery">
     <div class="delivery-main">
-      <FormOrder
+      <calculate-form
         @updateSelectedCoordinates="updateMapCoordinates"
         @clearMarkers="clearMarkers"
       />
@@ -17,7 +17,7 @@
 <script setup>
 import TwogisMap from "../components/TwogisMap.vue";
 import DeliveryFooter from "~/components/deliveryForm/deliveryFooter.vue";
-import FormOrder from "~/components/deliveryForm/formOrder.vue";
+import calculateForm from "~/components/deliveryForm/calculateForm.vue";
 const selectedCoordinates = ref([]);
 const twoGisMapRef = ref(null);
 

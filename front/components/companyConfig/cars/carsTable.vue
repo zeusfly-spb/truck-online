@@ -2,57 +2,132 @@
   <v-form @submit.prevent="updateCar" v-if="data.showFormCar">
     <v-row no-gutters class="align-center">
       <v-col md :cols="12" class="mr-3 mb-3">
-        <v-select v-model="data.cars.types.value" :items="typesCar" item-title="name" item-value="id" label="Тип машины"
-          class="text-body-1" variant="outlined" hide-details="auto" :rules="[rules.required]"></v-select>
+        <v-select
+          v-model="data.cars.types.value"
+          :items="typesCar"
+          item-title="name"
+          item-value="id"
+          label="Тип машины"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-select>
       </v-col>
       <v-col md :cols="12" class="mb-3">
-        <v-text-field v-model="data.cars.number.value" label="Номер машины" class="text-body-1" variant="outlined"
-          hide-details="auto" style="margin-right: 10px" :rules="[rules.required]"></v-text-field>
+        <v-text-field
+          v-model="data.cars.number.value"
+          label="Номер машины"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          style="margin-right: 10px"
+          :rules="[rules.required]"
+        ></v-text-field>
       </v-col>
     </v-row>
-     <v-row no-gutters class="align-center">
+    <v-row no-gutters class="align-center">
       <v-col md :cols="12" class="mr-3 mb-3">
-        <v-select v-model="data.cars.country.value" :items="countries" item-title="name" item-value="id" label="Страна"
-          class="text-body-1" variant="outlined" hide-details="auto" :rules="[rules.required]"></v-select>
+        <v-select
+          v-model="data.cars.country.value"
+          :items="countries"
+          item-title="name"
+          item-value="id"
+          label="Страна"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-select>
       </v-col>
       <v-col md :cols="12" class="mb-3">
-        <v-text-field v-model="data.cars.brand.value" label="Марка машины" class="text-body-1" variant="outlined"
-          hide-details="auto" :rules="[rules.required]"></v-text-field>
+        <v-text-field
+          v-model="data.cars.brand.value"
+          label="Марка машины"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col md :cols="12" class="mr-3 mb-3">
-        <v-select label="Право использования" v-model="data.cars.rightOfUse.value" :items="rightUse" item-value="id"
-          item-title="name" class="text-body-1" variant="outlined" hide-details="auto" :rules="[rules.required]"></v-select>
+        <v-select
+          label="Право использования"
+          v-model="data.cars.rightOfUse.value"
+          :items="rightUse"
+          item-value="id"
+          item-title="name"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-select>
       </v-col>
       <v-col md :cols="12" class="mb-3">
-        <v-file-input v-model="icon" label="Иконка" class="text-body-1" variant="outlined" hide-details="auto"
-          style="margin-right: 10px" :rules="[rules.required]">
+        <v-file-input
+          v-model="icon"
+          label="Иконка"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          style="margin-right: 10px"
+          :rules="[rules.required]"
+        >
         </v-file-input>
       </v-col>
       <v-col md :cols="12" class="mb-3">
-        <v-text-field v-model="data.cars.weigth" label="Грузоподъемность (кг)" class="text-body-1" variant="outlined"
-          hide-details="auto" :rules="[rules.required]"></v-text-field>
+        <v-text-field
+          v-model="data.cars.weigth"
+          label="Грузоподъемность (кг)"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-text-field>
       </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col md :cols="12" class="mb-3">
-        <v-text-field v-model="data.cars.sts.number" label="Cерия и номер СТС" class="text-body-1" variant="outlined"
-          hide-details="auto" :rules="[rules.required]"></v-text-field>
+        <v-text-field
+          v-model="data.cars.sts.number"
+          label="Cерия и номер СТС"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-text-field>
       </v-col>
       <v-col class="mb-3">
-        <v-file-input label="СТС Основная Сторона" v-model="fileOne" class="text-body-1" variant="outlined"
-          hide-details="auto" style="margin-right: 6px; margin-left: 7px" :rules="[rules.required]"></v-file-input>
+        <v-file-input
+          label="СТС Основная Сторона"
+          v-model="fileOne"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          style="margin-right: 6px; margin-left: 7px"
+          :rules="[rules.required]"
+        ></v-file-input>
       </v-col>
       <v-col class="mb-3">
-        <v-file-input label="СТС Обратная Сторона" v-model="fileTwo" class="text-body-1" variant="outlined"
-          hide-details="auto" :rules="[rules.required]"></v-file-input>
+        <v-file-input
+          label="СТС Обратная Сторона"
+          v-model="fileTwo"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+        ></v-file-input>
       </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col class="">
-        <v-btn color="primary" type="submit"
-          class="text-body-2 text-uppercase rounded font-weight-bold elevation-0">Обнавить машину
+        <v-btn
+          color="primary"
+          type="submit"
+          class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+          >Обнавить машину
         </v-btn>
       </v-col>
     </v-row>
@@ -77,14 +152,13 @@
         <td>{{ car.number }}</td>
         <td>{{ car.sts }}</td>
         <td>{{ car.country.name }}</td>
-        <td>{{ car.car_type || '' }}</td>
+        <td>{{ car.car_type || "" }}</td>
         <td>{{ car.max_weigth }}</td>
         <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
         <td><v-btn @click="changeEditFormCar(car.id)">Изменить</v-btn></td>
       </tr>
     </tbody>
   </v-table>
-
 </template>
 <script setup>
 import { useCarsStore } from "~/store/companyConfig/cars";
@@ -97,7 +171,7 @@ const data = reactive({
       value: null,
     },
     number: {
-      value: ''
+      value: "",
     },
     brand: {
       value: null,
@@ -113,7 +187,7 @@ const data = reactive({
     fileTwo: null,
     sts: {
       number: "",
-    }
+    },
   },
 });
 const rules = {
@@ -162,17 +236,19 @@ const rightUse = computed(() => {
     })) || []
   );
 });
-async function changeEditFormCar (id) {
+async function changeEditFormCar(id) {
   data.showFormCar = !data.showFormCar;
-  const { data: { _rawValue }, } = await opFetch(`/cars/${id}`, { method: "get"});
-    data.cars.id = _rawValue['id'];
-    data.cars.number.value = _rawValue['number'];
-    data.cars.types.value = _rawValue['car_type']['id'];
-    data.cars.brand.value = _rawValue['mark_model'];
-    data.cars.country.value = _rawValue['country']['id'];
-    data.cars.sts.number = _rawValue['sts'];
-    data.cars.rightOfUse.value = _rawValue['right_use']['id'];
-    data.cars.weigth = _rawValue['max_weigth'];
+  const {
+    data: { _rawValue },
+  } = await opFetch(`/cars/${id}`, { method: "get" });
+  data.cars.id = _rawValue["id"];
+  data.cars.number.value = _rawValue["number"];
+  data.cars.types.value = _rawValue["car_type"]["id"];
+  data.cars.brand.value = _rawValue["mark_model"];
+  data.cars.country.value = _rawValue["country"]["id"];
+  data.cars.sts.number = _rawValue["sts"];
+  data.cars.rightOfUse.value = _rawValue["right_use"]["id"];
+  data.cars.weigth = _rawValue["max_weigth"];
 }
 const allCars = computed(() => {
   if (!carStore.cars || carStore.loading) return [];

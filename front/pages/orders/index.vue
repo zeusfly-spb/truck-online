@@ -112,9 +112,9 @@
                 <span>ID</span> <span @click="sortOrders('id')">⇅</span>
               </div>
             </th>
-            <th style="color: black">From Address</th>
-            <th style="color: black">To Address</th>
-            <th style="color: black">Container</th>
+            <th style="color: black">Откуда</th>
+            <th style="color: black">Куда</th>
+            <th style="color: black">Тип контейнера</th>
             <th>
               <div class="header-wrapper">
                 <span>Weight</span>
@@ -127,18 +127,16 @@
                 <span @click="sortOrders('price')">⇅</span>
               </div>
             </th>
-            <th style="color: black">Status</th>
           </tr>
         </thead>
         <tbody style="color: black">
           <tr v-for="order in paginatedOrders" :key="order.id">
             <td>{{ order.id }}</td>
-            <td>{{ order.fromAddress }}</td>
-            <td>{{ order.deliveryAddress }}</td>
-            <td>{{ order.container }}</td>
+            <td>{{ order.from_address.address }}</td>
+            <td>{{ order.delivery_address.address }}</td>
+            <td>{{ order.container.name }}</td>
             <td>{{ order.weight }}</td>
             <td>{{ order.price }}</td>
-            <td>{{ order.status }}</td>
           </tr>
         </tbody>
       </v-table>
@@ -147,7 +145,7 @@
   </v-container>
 </template>
 <script setup>
-import { data } from "~/store/dataAddress";
+import { useOrdersStore } from "~/store/order";
 const showFilters = ref(false);
 const priceFromFilter = ref("");
 const priceToFilter = ref("");
@@ -160,6 +158,12 @@ const sortField = ref(null);
 const sortOrder = ref(1);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
+const orderStore = useOrdersStore();
+
+onBeforeMount(async () => {
+  await orderStore.getOrders();
+});
+
 const paginatedOrders = computed(() => {
   const start = 0;
   const end = start + itemsPerPage.value;
@@ -172,8 +176,9 @@ const onIntersect = (isIntersecting, entries, observer) => {
   }, 1500);
 };
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredOrders.value.length / itemsPerPage.value);
+const orders = computed(() => {
+  if (!orderStore.orders || orderStore.loading) return [];
+  return orderStore.orders;
 });
 
 const filteredOrders = computed(() => {
@@ -186,20 +191,18 @@ const filteredOrders = computed(() => {
   const weightTo =
     weightToFilter.value === "" ? Infinity : Number(weightToFilter.value);
 
-  return data.filter((order) => {
+  return orders.value.filter((order) => {
     const priceInRange = order.price >= priceFrom && order.price <= priceTo;
     const weightInRange =
       order.weight >= weightFrom && order.weight <= weightTo;
     const containerTypeAllowed =
       selectedContainerTypes.value.length === 0 ||
-      selectedContainerTypes.value.includes(order.container);
-    const statusMatches =
-      statusChosen.value.length === 0 ||
-      statusChosen.value.includes(String(order.status));
+      selectedContainerTypes.value.includes(order.container.name);
+    // const statusMatches =
+    //   statusChosen.value.length === 0 ||
+    //   statusChosen.value.includes(String(order.status));
 
-    return (
-      priceInRange && weightInRange && containerTypeAllowed && statusMatches
-    );
+    return priceInRange && weightInRange && containerTypeAllowed;
   });
 });
 

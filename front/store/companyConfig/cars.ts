@@ -75,7 +75,6 @@ export const useCarsStore = defineStore("cardStore", {
         } = await opFetch("/cars", {
           method: "post",
           body: formData,
-          headers,
         });
         console.log("newCar:", _rawValue);
         this.cars.unshift(_rawValue);

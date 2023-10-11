@@ -162,7 +162,7 @@ async function submitForm() {
     is_international: 1,
     temp_reg: 1,
     tax_id: 1,
-    calc: true,
+    calc: 1,
   };
   await calculation.calculate(body);
   showCalculateBtn.value = false;

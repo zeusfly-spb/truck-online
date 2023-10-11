@@ -43,14 +43,14 @@ return new class extends Migration
             $table->string('return_contact_email')->nullable();
             $table->unsignedBigInteger('car_id')->index();
             // car trailer
-            $table->unsignedBigInteger('delivery2_address_id')->index();
+            $table->unsignedBigInteger('delivery2_address_id')->index()->nullable();
             $table->date('delivery2_date')->nullable();
             $table->time('delivery2_slot')->nullable();
             $table->string('delivery2_contact_name')->nullable();
             $table->string('delivery2_contact_phone')->nullable();
             $table->string('delivery2_contact_email')->nullable();
 
-            $table->unsignedBigInteger('return2_address_id')->index();
+            $table->unsignedBigInteger('return2_address_id')->index()->nullable();
             $table->date('return2_date')->nullable();
             $table->time('return2_slot')->nullable();
             $table->string('return2_contact_name')->nullable();

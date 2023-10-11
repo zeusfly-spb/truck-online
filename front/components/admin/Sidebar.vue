@@ -43,8 +43,7 @@ const userStore = useAuthStore();
 
   userRoles.value = ['execute'];
 
-  console.log(userStore.user)
-
+  return userRoles && userRoles.value && userRoles.value.includes('driver');
 });
 
 </script>

@@ -273,7 +273,7 @@ class OrderController extends Controller
       if(intval($data['calc'])===1){
 
         $calc_history = $this->calcHistoryCreate($data);
-        if($calc_history) return response()->json(['message'=> 'success' ], 201);
+        if($calc_history) return response()->json(['data'=> $calc_history ], 201);
       }else{
 
         if(Auth::user()){

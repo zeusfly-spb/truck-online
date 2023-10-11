@@ -41,7 +41,7 @@ return new class extends Migration
             $table->string('return_contact_name')->nullable();
             $table->string('return_contact_phone')->nullable();
             $table->string('return_contact_email')->nullable();
-            $table->unsignedBigInteger('car_id')->index();
+            $table->unsignedBigInteger('car_id')->index()->nullable();
             // car trailer
             $table->unsignedBigInteger('delivery2_address_id')->index()->nullable();
             $table->date('delivery2_date')->nullable();
@@ -56,7 +56,7 @@ return new class extends Migration
             $table->string('return2_contact_name')->nullable();
             $table->string('return2_contact_phone')->nullable();
             $table->string('return2_contact_email')->nullable();
-            $table->unsignedBigInteger('car2_id')->index();
+            $table->unsignedBigInteger('car2_id')->index()->nullable();
 
             $table->double('price');
             $table->double('weight');

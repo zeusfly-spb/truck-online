@@ -1,5 +1,6 @@
 <template>
-  <v-table fixed-header>
+  <h1 v-if="allDrivers.length === 0">У вас нет еще ни одного водителя</h1>
+  <v-table fixed-header v-else>
     <thead>
       <tr>
         <th class="text-left">ID</th>
@@ -18,7 +19,24 @@
         </td>
         <td>{{ driver.email }}</td>
         <td>{{ driver.phone }}</td>
-        <td><v-btn @click="deleteDriver(driver.id)">Удалить</v-btn></td>
+        <v-dialog width="400">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" text="Удалить водителя"> </v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card title="Подтвердите удаление водителя">
+              <v-card-text style="display: flex; justify-content: space-around; margin-top: 15px;">
+                <v-btn @click="deleteDriver(driver.id)">Удалить</v-btn>
+                <v-btn text="Отменить" @click="isActive.value = false"></v-btn>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
       </tr>
     </tbody>
   </v-table>

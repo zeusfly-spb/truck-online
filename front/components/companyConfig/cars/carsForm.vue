@@ -126,16 +126,21 @@
         ></v-file-input>
       </v-col>
     </v-row>
-    <v-row no-gutters>
-      <v-col class="">
-        <v-btn
-          color="primary"
-          type="submit"
-          class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
-          >Добавить машину
-        </v-btn>
-      </v-col>
-    </v-row>
+
+    <div class="btnCarForm">
+      <v-btn
+        color="primary"
+        type="submit"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        >Добавить машину
+      </v-btn>
+      <v-btn
+        color="primary"
+        class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
+        @click="resetData"
+        >Cбросить
+      </v-btn>
+    </div>
   </v-form>
 </template>
 <script setup>
@@ -249,6 +254,10 @@ async function resetData() {
 }
 </script>
 <style scoped>
+.btnCarForm {
+  display: flex;
+  justify-content: space-around;
+}
 .btnCarForm {
   display: flex;
   justify-content: space-around;

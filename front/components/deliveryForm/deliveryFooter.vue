@@ -18,19 +18,12 @@
     </ul>
   </v-bottom-navigation>
 </template>
-<script>
+<script setup>
 import { useCalculate } from "~/store/calculateForm";
 import { computed } from "vue";
 
-export default {
-  setup() {
-    const calculate = useCalculate();
-    const price = computed(() => calculate.price);
-    return {
-      price,
-    };
-  },
-};
+const calculate = useCalculate();
+const price = computed(() => calculate.price);
 </script>
 <style scoped>
 li {

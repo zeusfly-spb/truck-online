@@ -132,8 +132,8 @@
       </v-col>
     </v-row>
   </v-form>
-
-  <v-table fixed-header height="300px">
+  <h1 v-if="!!allCars" class="noCars">У вас еще нет ни одной машины</h1>
+  <v-table fixed-header height="300px" v-else>
     <thead>
       <tr>
         <th class="text-left">ID</th>
@@ -154,7 +154,30 @@
         <td>{{ car.country.name }}</td>
         <td>{{ car.car_type || "" }}</td>
         <td>{{ car.max_weigth }}</td>
-        <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
+        <v-dialog width="400">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" text="Удалить машину"> </v-btn>
+          </template>
+
+          <template v-slot:default="{ isActive }">
+            <v-card title="Подтвердите удаление машины">
+              <v-card-text
+                style="
+                  display: flex;
+                  justify-content: space-around;
+                  margin-top: 15px;
+                "
+              >
+                <v-btn @click="deleteCar(car.id)">Удалить</v-btn>
+                <v-btn text="Отменить" @click="isActive.value = false"></v-btn>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </template>
+        </v-dialog>
         <td><v-btn @click="changeEditFormCar(car.id)">Изменить</v-btn></td>
       </tr>
     </tbody>
@@ -261,4 +284,7 @@ async function deleteCar(id) {
 
 console.log("cars:", allCars);
 </script>
-<style scoped></style>
+<style scoped>
+.noCars {
+}
+</style>

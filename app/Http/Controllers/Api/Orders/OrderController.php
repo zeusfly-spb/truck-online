@@ -270,12 +270,10 @@ class OrderController extends Controller
      */
     public function store(Request $request){
       $data = $request['data'];
-      if(intval($data['calc'])===1){
-
+      if(intval($data['calc'])){
         $calc_history = $this->calcHistoryCreate($data);
         if($calc_history) return response()->json(['message'=> 'success' ], 201);
       }else{
-
         if(Auth::user()){
           $order = $this->order_create($data);
           if($order) return response()->json([ 'message'=> 'success' ], 201);

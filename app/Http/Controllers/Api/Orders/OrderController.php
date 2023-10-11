@@ -271,8 +271,7 @@ class OrderController extends Controller
      */
     public function store(Request $request){
       $data = $request['data'];
-      if(intval($data['calc'])===1){
-
+      if(intval($data['calc'])){
         $calc_history = $this->calcHistoryCreate($data);
         if($calc_history) return response()->json(CalcHistoryResource::make($calc_history));
       }else{

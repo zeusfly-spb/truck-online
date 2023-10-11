@@ -30,7 +30,7 @@ export const useOrdersStore = defineStore("ordersStore", {
           method: "post",
           body: { data: body },
         });
-        if (_rawValue === "success") {
+        if (_rawValue) {
           useSnack({
             show: true,
             type: "success",

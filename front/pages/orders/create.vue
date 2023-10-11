@@ -193,7 +193,7 @@
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
-                      v-model="data.order.delivery_contact_phone"
+                      v-model="order.delivery_contact_phone"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -202,7 +202,7 @@
                       name="delivery_contact_email"
                       label="Email"
                       :rules="[rules.required]"
-                      v-model="data.order.delivery_contact_email"
+                      v-model="order.delivery_contact_email"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -482,26 +482,27 @@ const order = reactive({
   temp_reg: 0,
   is_international: 0,
   tax_id: null,
+  calc: 0,
 });
-console.log("data:", data.order.fromAdress);
+
 watch(
-  () => data.order.fromAdress,
+  () => order.from_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.deliveryAddress,
+  () => order.delivery_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.returnAddress,
+  () => order.return_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.container,
+  () => order.container_id,
   (newVal) => console.log("new container:", newVal),
 );
 watch(
-  () => data.order.tax,
+  () => order.tax_id,
   (newVal) => console.log("tax:", newVal),
 );
 

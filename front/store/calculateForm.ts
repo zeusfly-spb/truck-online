@@ -18,8 +18,15 @@ export const useCalculate = defineStore("calculateStore", {
           method: "POST",
           body: { data: body },
         });
-        console.log("respones:", _rawValue);
-        this.price = _rawValue.price;
+        if (_rawValue) {
+          this.price = _rawValue.price;
+          useSnack({
+            show: true,
+            type: "success",
+            title: "Предварительная стоимость произведена!",
+            message: "Цена отображается внизу",
+          });
+        }
       } catch (error) {
         console.error("Error fetching:", error);
         alert("Произошла ошибка во время запроса!");

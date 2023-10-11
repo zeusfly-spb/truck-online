@@ -277,9 +277,9 @@ class OrderController extends Controller
         if($calc_history) return response()->json(CalcHistoryResource::make($calc_history));
       }else{
 
-        if(Auth::user()){
+        if(Auth::guard('api')->user()){
           $order = $this->order_create($data);
-          if($order) return response()->json([ 'message'=> 'success' ], 201);
+          if($order) return response()->json(OrderResource::make($order));
         }else{
           return response()->json(['message'=> "Unauthorized" ], 401);
         }
@@ -291,8 +291,8 @@ class OrderController extends Controller
       $priceAndDistace = $this->getPriceAndWeight($data);
 
       $order = Order::create([
-        'user_id' => Auth::user()->id,
-        'company_id' => Auth::user()->company_id,
+        'user_id' => Auth::guard('api')->user()->id,
+        'company_id' => Auth::guard('api')->user()->company_id,
         'tax_id' => $data['tax_id'],
         'from_address_id' => $data['from_address_id'] ?? null,
         'from_date' => $data['from_date'] ?? null,
@@ -343,7 +343,7 @@ class OrderController extends Controller
       $priceAndDistace = $this->getPriceAndWeight($data);
 
       $calc_history = CalcHistory::firstOrCreate([
-          'user_id' => Auth::user() ? Auth::user()->id : null,
+          'user_id' => Auth::guard('api')->user() ? Auth::guard('api')->user()->id : null,
           'from_address_id' => $data['from_address_id'],
           'delivery_address_id' => $data['delivery_address_id'],
           'return_address_id' => $data['return_address_id'],

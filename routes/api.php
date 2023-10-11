@@ -70,7 +70,7 @@ Route::middleware('auth:api')->group(function () {
   //Orders
   Route::prefix('orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
-    Route::post('store', [OrderController::class, 'store']);
+    //Route::post('store', [OrderController::class, 'store']);
     Route::get('show/{order_id}', [OrderController::class, 'show']);
     Route::put('update/{order_id}', [OrderController::class, 'update']);
     Route::post('accept/action/{order_action_id}', [OrderActionController::class, 'accept']);
@@ -104,6 +104,8 @@ Route::middleware('auth:api')->group(function () {
   });
 
 });
+
+Route::post('orders/store', [OrderController::class, 'store']);
 
 Route::prefix('confirmation')->group(function () {
   Route::post('/get_email_confirm', [ConfirmationController::class, 'getEmailConfirmation']);

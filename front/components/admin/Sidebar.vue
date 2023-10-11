@@ -42,25 +42,9 @@ const userStore = useAuthStore();
  const shouldShowSidebar = computed(() => {
 
   userRoles.value = ['execute'];
-  //userRoles = userStore.user?.roles.map(role => role?.name);
-  return userRoles && userRoles.value && userRoles.value.includes('driver');
+
+  console.log(userStore.user)
+
 });
 
-// async function shouldShow(allowedRoles) {
-//     return allowedRoles.some(role => hasAccess(role));
-// }
-// const hasAccess = computed(() => {
-//   const test = ['manager', 'admin'];
-//       return test.includes(role);
-// })
-
-// const allRoles = computed(() => {
-//   if (!rolesStore.roles || rolesStore.loading) return [];
-//   const roleNames = rolesStore.roles.map(role => role.name);
-//   return roleNames;
-// });
-// async function userHasAccess(role){
-//   return userRoles && userRoles.value && userRoles.value.includes(role);
-//   console.log("here")
-// }
 </script>

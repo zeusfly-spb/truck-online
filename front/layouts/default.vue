@@ -33,7 +33,15 @@ import { useAuthStore } from "~/store/auth";
 import ConfirmDialog from "~/components/dialogs/ConfirmDialog.vue";
 import LoginDialog from "~/components/dialogs/LoginDialog.vue";
 import RegisterDialog from "~/components/dialogs/RegisterDialog.vue";
-
+const { $listen } = useNuxtApp();
+$listen('auth:error', () => {
+  if(authDialog.value) {
+    authDialog.value = false;
+    setTimeout(() => authDialog.value = true, 300);
+  } else {
+    authDialog.value = true;
+  }
+});
 const authStore = useAuthStore();
 const authenticated = computed(() => authStore.authenticated);
 const { logUserOut } = authStore;

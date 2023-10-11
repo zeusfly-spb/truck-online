@@ -32,6 +32,7 @@
     "axios": "^1.5.1",
     "import": "^0.0.6",
     "maska": "^2.1.10",
+    "mitt": "^3.0.1",
     "vee-validate": "^4.10.8",
     "vite-plugin-vuetify": "^1.0.2",
     "vuetify": "^3.1.2"

@@ -16,14 +16,8 @@ export const useCalculate = defineStore("calculateStore", {
           method: "POST",
           body: { data: body },
         });
-
-        console.log("Response:", response);
-
         if (response.status._rawValue === "success") {
           this.price = response.data._rawValue.data.price;
-          console.log("New price:", this.price);
-        } else {
-          alert("Что-то не так с созданием заказа!");
         }
       } catch (error) {
         console.error("Error fetching:", error);

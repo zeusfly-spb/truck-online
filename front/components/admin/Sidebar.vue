@@ -41,8 +41,8 @@ const userStore = useAuthStore();
  const userRoles = ref([]);
  const shouldShowSidebar = computed(() => {
 
-  //userRoles.value = ['execute'];
-  userRoles = userStore.user?.roles.map(role => role?.name);
+  userRoles.value = ['execute'];
+  //userRoles = userStore.user?.roles.map(role => role?.name);
   return userRoles && userRoles.value && userRoles.value.includes('driver');
 });
 

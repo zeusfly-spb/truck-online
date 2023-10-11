@@ -299,7 +299,7 @@
                       name="return_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
-                      placeholder="+7 900 000-00-00"
+                      placeholder="900-00-00-00"
                       v-model="order.return_contact_phone"
                       variant="solo"
                     ></v-text-field>

@@ -66,7 +66,8 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          :rules="[rules.required]"
+          :rules="[rules.phoneLength]"
+          placeholder="900-000-00-00"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -233,6 +234,8 @@ async function resetData() {
 
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения!",
+  phoneLength: (value) =>
+    value.toString().length === 10 || "Телефон должен быть длинной 10 цифр",
 };
 
 const rulesFile = [(v) => !!v || "Выберите файл"];

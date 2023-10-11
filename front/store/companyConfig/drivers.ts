@@ -51,7 +51,7 @@ export const useDriversStore = defineStore("driversStore", {
             show: true,
             type: "success",
             title: "Новый водитель успешно добавлен!",
-            message: "Поздравляю",
+            message: "Поздравляем",
           });
         }
         console.log("filesADd:", response.status._rawValue);

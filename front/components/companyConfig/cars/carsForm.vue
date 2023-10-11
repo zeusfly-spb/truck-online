@@ -27,7 +27,9 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
-          :rules="[rules.required]"
+          :rules="[rules.carNumber]"
+          type="number"
+          placeholder="000"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -53,6 +55,7 @@
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
+          type="text"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -90,6 +93,7 @@
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
+          type="number"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -101,7 +105,9 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          :rules="[rules.required]"
+          :rules="[rules.sts]"
+          placeholder="00000000"
+          type="number"
         ></v-text-field>
       </v-col>
       <v-col class="mb-3">
@@ -156,6 +162,10 @@ const changeShowFormCar = () => {
 };
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
+  carNumber: (value) =>
+    value.toString().length === 3 || "Номер машины должен быть длиной 3 цифры",
+  sts: (value) =>
+    String(value).length === 8 || "CТС-номер должен быть восьмизначным числом",
 };
 const data = reactive({
   showFormCar: false,

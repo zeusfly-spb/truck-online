@@ -132,7 +132,9 @@
       </v-col>
     </v-row>
   </v-form>
-  <h1 v-if="!!allCars" class="noCars">У вас еще нет ни одной машины</h1>
+  <h1 v-if="allCars.length === 0" class="noCars">
+    У вас еще нет ни одной машины
+  </h1>
   <v-table fixed-header height="300px" v-else>
     <thead>
       <tr>
@@ -156,7 +158,9 @@
         <td>{{ car.max_weigth }}</td>
         <v-dialog width="400">
           <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" text="Удалить машину"> </v-btn>
+            <td>
+              <v-btn v-bind="props" text="Удалить машину"> </v-btn>
+            </td>
           </template>
 
           <template v-slot:default="{ isActive }">

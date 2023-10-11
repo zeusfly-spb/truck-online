@@ -26,8 +26,16 @@
 
           <template v-slot:default="{ isActive }">
             <v-card title="Подтвердите удаление водителя">
-              <v-card-text style="display: flex; justify-content: space-around; margin-top: 15px;">
-                <v-btn @click="deleteDriver(driver.id)">Удалить</v-btn>
+              <v-card-text
+                style="
+                  display: flex;
+                  justify-content: space-around;
+                  margin-top: 15px;
+                "
+              >
+                <td>
+                  <v-btn @click="deleteDriver(driver.id)">Удалить</v-btn>
+                </td>
                 <v-btn text="Отменить" @click="isActive.value = false"></v-btn>
               </v-card-text>
 

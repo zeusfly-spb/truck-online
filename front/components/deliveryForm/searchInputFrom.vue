@@ -55,7 +55,7 @@ const clearInput = () => {
 
 const rules = {
   required: (value) =>
-    !selectedAddress.value || "Поле обязательно для заполнения",
+    !!selectedAddress.value || "Поле обязательно для заполнения",
 };
 defineExpose({
   clearInput,

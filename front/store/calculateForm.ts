@@ -20,8 +20,8 @@ export const useCalculate = defineStore("calculateStore", {
         console.log("Response:", response);
 
         if (response.status._rawValue === "success") {
-          this.price = response.data._rawValue.data.price;
           console.log("New price:", this.price);
+          this.price = response._rawValue.data.price;
         } else {
           alert("Что-то не так с созданием заказа!");
         }

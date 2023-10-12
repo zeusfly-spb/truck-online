@@ -13,9 +13,11 @@ export const useOrdersStore = defineStore("ordersStore", {
     async getOrders() {
       this.setLoading(true);
       try {
-        const response = await opFetch("/orders", { method: "get" });
-        // this.orders = _rawValue;
-        console.log("aaaaaaaaaaaa:", response);
+        const {
+          data: { _rawValue },
+        } = await opFetch("/orders", { method: "get" });
+        this.orders = _rawValue;
+        console.log("aaaaaaaaaaaa:", _rawValue);
       } catch (error) {
         console.error(error);
       }

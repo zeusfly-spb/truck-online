@@ -3,14 +3,20 @@
     <v-dialog v-model="registerDialog" :persistent="true" :width="modalWidth">
       <v-card>
         <v-card-title>
-          <v-row class="flex-row-reverse">
-            <v-icon class="ma-3 close" @click="registerDialog = false">
+          <v-row class="flex-row">
+            <h3 class="ma-3">Регистрация</h3>
+            <v-spacer/>
+            <v-icon
+              title="Отмена"
+              class="ma-3 close"
+              @click="registerDialog = false"
+            >
               mdi-close
             </v-icon>
           </v-row>
         </v-card-title>
         <v-card-text>
-          <v-layout class="rounded rounded-md justify-center">
+          <v-layout class="rounded rounded-md justify-center"  id="reg-row" ref="reg-row">
               <v-card
                 class="pa-md-4 mx-lg-auto register-class register-card unselect"
               >
@@ -252,6 +258,13 @@ const registered = async () => {
   goLogin();
 };
 const company_id = computed(() => company.value && company.value.id);
+
+
+onMounted(() => {
+  const regRow = document.getElementById('reg-row');
+  console.log(regRow);
+});
+
 const goLogin = () => {
   authDialog.value = true;
   registerDialog.value = false;

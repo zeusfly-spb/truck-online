@@ -3,7 +3,9 @@
     <v-dialog v-model="authDialog" :persistent="true" :width="modalWidth" :height="modalHeight">
       <v-card>
         <v-card-title>
-          <v-row class="flex-row-reverse">
+          <v-row class="flex-row">
+            <h3 class="mt-3 ml-3">Авторизация</h3>
+            <v-spacer/>
             <v-icon title="Закрыть" class="ma-3 close" @click="close">
               mdi-close
             </v-icon>
@@ -68,7 +70,7 @@
           <p class="text-medium-emphasis text-body-2 mt-3">
             Нет аккаунта?
             <a
-              class="font-weight-medium text-primary"
+              class="font-weight-medium"
               href=""
               @click.prevent="goRegister"
             >

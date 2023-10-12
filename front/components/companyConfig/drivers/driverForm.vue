@@ -66,7 +66,8 @@
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
-          :rules="[rules.required]"
+          :rules="[rules.phoneLength]"
+          placeholder="900-000-00-00"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -112,10 +113,11 @@
         <v-text-field
           v-model="data.drivers.driveLicense.number"
           label="Номер В/У"
-          class="text-body-1"
+          class="text-body-1 inputNumber"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
+          type="number"
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-6">
@@ -201,7 +203,6 @@ async function addDriver() {
     formdata.append("document_date", driverLicense[1]);
     formdata.append("document_number", driverLicense[2]);
   }
-
   await driverStore.addDriverLicense(formdata);
 
   const filesdata = new FormData();
@@ -210,11 +211,6 @@ async function addDriver() {
   for (let i = 0; i < files.length; i++) {
     filesdata.append("files[]", files[i]);
   }
-
-  for (const [key, value] of filesdata.entries()) {
-    console.log("aaaaaaмммммм:", key, value);
-  }
-  console.log("type:", typeof filesdata);
   await driverStore.addPassportDriver(filesdata);
 }
 
@@ -233,6 +229,8 @@ async function resetData() {
 
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения!",
+  phoneLength: (value) =>
+    value.toString().length === 10 || "Телефон должен быть длинной 10 цифр",
 };
 
 const rulesFile = [(v) => !!v || "Выберите файл"];
@@ -241,5 +239,15 @@ const rulesFile = [(v) => !!v || "Выберите файл"];
 .btnDriverForm {
   display: flex;
   justify-content: space-around;
+}
+.inputNumber >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputNumber >>> input::-webkit-outer-spin-button,
+.inputNumber >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 </style>

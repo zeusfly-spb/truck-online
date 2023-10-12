@@ -299,7 +299,7 @@
                       name="return_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
-                      placeholder="+7 900 000-00-00"
+                      placeholder="900-00-00-00"
                       v-model="order.return_contact_phone"
                       variant="solo"
                     ></v-text-field>
@@ -338,6 +338,7 @@
                 :rules="[rules.required]"
                 v-model="order.weight"
                 variant="solo"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
             <v-col cols="40" md="6">
@@ -360,6 +361,8 @@
                 :rules="[rules.required]"
                 v-model="order.price"
                 variant="solo"
+                type="number"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
             <v-col cols="40" md="6">
@@ -369,6 +372,8 @@
                 :rules="[rules.required]"
                 v-model="order.length_algo"
                 variant="solo"
+                type="number"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
           </div>
@@ -574,6 +579,16 @@ const rules = {
 .containerInfo {
   display: flex;
   justify-content: space-around;
+}
+.inputNumber >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputNumber >>> input::-webkit-outer-spin-button,
+.inputNumber >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 #map {
   width: 100%;

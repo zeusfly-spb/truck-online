@@ -39,18 +39,20 @@ export const useDriversStore = defineStore("driversStore", {
     },
     async addPassportDriver(formData) {
       try {
-        const token_cookie = useCookie("online_port_token");
-        const headers = new Headers();
-        if (token_cookie.value) {
-          headers.set("Authorization", `Bearer ${token_cookie.value}`);
-        }
-        const response = await useFetch(`/driver/files/${this.driverId}`, {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/driver/files/${this.driverId}`, {
           method: "post",
           body: formData,
-          headers,
         });
-        if (response.status._rawValue === "success") {
+        if (_rawValue) {
           await this.getDrivers();
+          useSnack({
+            show: true,
+            type: "success",
+            title: "Новый водитель успешно добавлен!",
+            message: "Поздравляем",
+          });
         }
         console.log("filesADd:", response.status._rawValue);
       } catch (error) {

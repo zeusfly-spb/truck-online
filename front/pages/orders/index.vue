@@ -112,8 +112,11 @@
                 <span>ID</span> <span @click="sortOrders('id')">⇅</span>
               </div>
             </th>
-            <th style="color: black">Откуда</th>
-            <th style="color: black">Куда</th>
+            <th style="color: black">Адрес погрузки</th>
+            <th style="color: black">Дата погрузки</th>
+            <th style="color: black">Адрес доставки</th>
+            <th style="color: black">Возврат контейнера</th>
+
             <th style="color: black">Тип контейнера</th>
             <th>
               <div class="header-wrapper">
@@ -132,8 +135,16 @@
         <tbody style="color: black">
           <tr v-for="order in paginatedOrders" :key="order.id">
             <td>{{ order.id }}</td>
-            <td>{{ order.from_address.address }}</td>
-            <td>{{ order.delivery_address.address }}</td>
+            <td>{{ order.from_address.name }}</td>
+            <td>{{ order.from_date }}</td>
+            <td>
+              {{ order.delivery_address.name }}, дата доставки:
+              <p class="date">{{ order.delivery_date }}</p>
+            </td>
+            <td>
+              {{ order.return_address.name }}, дата возврата:
+              <p class="date">{{ order.return_date }}</p>
+            </td>
             <td>{{ order.container.name }}</td>
             <td>{{ order.weight }}</td>
             <td>{{ order.price }}</td>
@@ -267,7 +278,10 @@ const deleteFilters = () => {
 .table
   margin-top: 50px
   font-size: 24px
-
+  height: 100vh
+.date
+  color: red
+  font-weight: 900
 .filters
   display: flex
   flex-direction: row

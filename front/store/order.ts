@@ -17,6 +17,7 @@ export const useOrdersStore = defineStore("ordersStore", {
           data: { _rawValue },
         } = await opFetch("/orders", { method: "get" });
         this.orders = _rawValue;
+        console.log("aaaaaaaaaaaa:", _rawValue);
       } catch (error) {
         console.error(error);
       }
@@ -35,8 +36,11 @@ export const useOrdersStore = defineStore("ordersStore", {
             show: true,
             type: "success",
             title: "Заказ успешно создан!",
-            message: "Заказ отображается в вашем профиле",
+            message: "Перенаправляем в таблицу заказов",
           });
+          setTimeout(() => {
+            navigateTo("/orders");
+          }, 2000);
         }
       } catch (error) {
         console.error(error);

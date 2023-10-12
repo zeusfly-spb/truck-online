@@ -12,7 +12,7 @@
                 :items="addresses.filter((el) => !!el.from)"
                 item-value="id"
                 item-title="name"
-                v-model="data.order.fromAdress"
+                v-model="order.from_address_id"
                 :rules="[rules.required]"
                 variant="solo"
               ></v-select>
@@ -35,7 +35,7 @@
                       type="date"
                       name="from_date"
                       :rules="[rules.required]"
-                      v-model="data.order.fromDate"
+                      v-model="order.from_date"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -44,7 +44,7 @@
                       type="time"
                       name="from_slot"
                       :rules="[rules.required]"
-                      v-model="data.order.fromSlot"
+                      v-model="order.from_slot"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -76,7 +76,7 @@
                       name="from_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
-                      v-model="data.order.fromContactName"
+                      v-model="order.from_contact_name"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -86,7 +86,7 @@
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
-                      v-model="data.order.fromContactPhone"
+                      v-model="order.from_contact_phone"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -96,7 +96,7 @@
                       label="Email"
                       :rules="[rules.required]"
                       variant="solo"
-                      v-model="data.order.fromContactEmail"
+                      v-model="order.from_contact_email"
                     ></v-text-field>
                   </v-col>
                   <v-card-actions>
@@ -119,7 +119,7 @@
                 :items="addresses.filter((el) => !!el.to)"
                 item-value="id"
                 item-title="name"
-                v-model="data.order.deliveryAddress"
+                v-model="order.delivery_address_id"
                 :rules="[rules.required]"
                 variant="solo"
               ></v-select>
@@ -142,7 +142,7 @@
                       type="date"
                       name="delivery_date"
                       :rules="[rules.required]"
-                      v-model="data.order.deliveryDate"
+                      v-model="order.delivery_date"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -151,7 +151,7 @@
                       type="time"
                       name="delivery_slot"
                       :rules="[rules.required]"
-                      v-model="data.order.deliverySlot"
+                      v-model="order.delivery_slot"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -183,7 +183,7 @@
                       name="delivery_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
-                      v-model="data.order.deliveryContactName"
+                      v-model="order.delivery_contact_name"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -193,7 +193,7 @@
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
                       placeholder="+7 900 000-00-00"
-                      v-model="data.order.deliveryContactPhone"
+                      v-model="order.delivery_contact_phone"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -202,7 +202,7 @@
                       name="delivery_contact_email"
                       label="Email"
                       :rules="[rules.required]"
-                      v-model="data.order.deliveryContactEmail"
+                      v-model="order.delivery_contact_email"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -226,7 +226,7 @@
                 :items="addresses.filter((el) => !!el.return)"
                 item-value="id"
                 item-title="name"
-                v-model="data.order.returnAddress"
+                v-model="order.return_address_id"
                 :rules="[rules.required]"
                 variant="solo"
               ></v-select>
@@ -249,7 +249,7 @@
                       type="date"
                       name="return_date"
                       :rules="[rules.required]"
-                      v-model="data.order.returnDate"
+                      v-model="order.return_date"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -258,7 +258,7 @@
                       type="time"
                       name="return_slot"
                       :rules="[rules.required]"
-                      v-model="data.order.returnSlot"
+                      v-model="order.return_slot"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -290,7 +290,7 @@
                       name="return_contact_name"
                       label="Имя"
                       :rules="[rules.required]"
-                      v-model="data.order.returnContactName"
+                      v-model="order.return_contact_name"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -299,8 +299,8 @@
                       name="return_contact_phone"
                       label="Телефон"
                       :rules="[rules.required, rules.phoneLength]"
-                      placeholder="+7 900 000-00-00"
-                      v-model="data.order.returnContactPhone"
+                      placeholder="900-00-00-00"
+                      v-model="order.return_contact_phone"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -309,7 +309,7 @@
                       name="return_contact_email"
                       label="Email"
                       :rules="[rules.required]"
-                      v-model="data.order.returnContactEmail"
+                      v-model="order.return_contact_email"
                       variant="solo"
                     ></v-text-field>
                   </v-col>
@@ -336,8 +336,9 @@
                 type="number"
                 id="weight"
                 :rules="[rules.required]"
-                v-model="data.order.weight"
+                v-model="order.weight"
                 variant="solo"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
             <v-col cols="40" md="6">
@@ -347,7 +348,7 @@
                 id="container_id"
                 :items="allContainers"
                 :rules="[rules.required]"
-                v-model="data.order.container"
+                v-model="order.container_id"
                 variant="solo"
               ></v-select>
             </v-col>
@@ -358,8 +359,10 @@
                 name="price"
                 label="Цена"
                 :rules="[rules.required]"
-                v-model="data.order.price"
+                v-model="order.price"
                 variant="solo"
+                type="number"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
             <v-col cols="40" md="6">
@@ -367,14 +370,16 @@
                 name="length_algo"
                 label="Длина маршрута в км"
                 :rules="[rules.required]"
-                v-model="data.order.lengthAlgo"
+                v-model="order.length_algo"
                 variant="solo"
+                type="number"
+                class="inputNumber"
               ></v-text-field>
             </v-col>
           </div>
           <div class="additionalyParametrs">
             <v-col>
-              <v-checkbox name="imo" label="Класс imo" v-model="data.order.imo">
+              <v-checkbox name="imo" label="Класс imo" v-model="order.imo">
               </v-checkbox>
             </v-col>
             <v-col>
@@ -382,7 +387,7 @@
                 label="НДС"
                 name="tax_id"
                 :items="taxes"
-                v-model="data.order.tax"
+                v-model="order.tax_id"
                 variant="solo"
                 class="tax"
               >
@@ -392,14 +397,14 @@
               <v-checkbox
                 name="temp_reg"
                 :label="`Температурный режим`"
-                v-model="data.order.temp"
+                v-model="order.temp_reg"
               ></v-checkbox>
             </v-col>
             <v-col>
               <v-checkbox
                 name="is_international"
                 :label="`is_international`"
-                v-model="data.order.international"
+                v-model="order.is_international"
               ></v-checkbox>
             </v-col>
           </div>
@@ -414,7 +419,7 @@
         name="description"
         label="Комментарий"
         :rules="[rules.required]"
-        v-model="data.order.description"
+        v-model="order.description"
         variant="solo"
       ></v-text-field>
     </v-col>
@@ -454,56 +459,55 @@ onBeforeMount(async () => {
   await taxStore.getTaxes();
 });
 
-const data = reactive({
-  order: {
-    fromAdress: null,
-    fromDate: null,
-    fromSlot: null,
-    fromContactName: null,
-    fromContactPhone: null,
-    fromContactEmail: null,
-    deliveryAddress: null,
-    deliveryDate: null,
-    deliverySlot: null,
-    deliveryContactName: null,
-    deliveryContactPhone: null,
-    deliveryContactEmail: null,
-    returnAddress: null,
-    returnDate: null,
-    returnSlot: null,
-    returnContactName: null,
-    returnContactPhone: null,
-    returnContactEmail: null,
-    container: null,
-    weight: null,
-    price: null,
-    lengthAlgo: null,
-    description: null,
-    imo: 0,
-    temp: 0,
-    international: 0,
-    tax: null,
-  },
+const order = reactive({
+  from_address_id: null,
+  from_date: null,
+  from_slot: null,
+  from_contact_name: null,
+  from_contact_phone: null,
+  from_contact_email: null,
+  delivery_address_id: null,
+  delivery_date: null,
+  delivery_slot: null,
+  delivery_contact_name: null,
+  delivery_contact_phone: null,
+  delivery_contact_email: null,
+  return_address_id: null,
+  return_date: null,
+  return_slot: null,
+  return_contact_name: null,
+  return_contact_phone: null,
+  return_contact_email: null,
+  container_id: null,
+  weight: null,
+  price: null,
+  length_algo: null,
+  description: null,
+  imo: 0,
+  temp_reg: 0,
+  is_international: 0,
+  tax_id: null,
+  calc: 0,
 });
-console.log("data:", data.order.fromAdress);
+
 watch(
-  () => data.order.fromAdress,
+  () => order.from_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.deliveryAddress,
+  () => order.delivery_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.returnAddress,
+  () => order.return_address_id,
   (newVal) => console.log("new address:", newVal),
 );
 watch(
-  () => data.order.container,
+  () => order.container_id,
   (newVal) => console.log("new container:", newVal),
 );
 watch(
-  () => data.order.tax,
+  () => order.tax_id,
   (newVal) => console.log("tax:", newVal),
 );
 
@@ -542,38 +546,7 @@ const taxes = computed(() => {
 });
 
 async function addOrder() {
-  const formData = new FormData();
-  formData.append("calc", 0);
-  formData.append("from_address_id", data.order.fromAdress);
-  formData.append("delivery_address_id", data.order.deliveryAddress);
-  formData.append("return_address_id", data.order.returnAddress);
-  formData.append("weight", data.order.weight);
-  formData.append("container_id", data.order.container);
-  formData.append("price", data.order.price);
-  formData.append("length_algo", data.order.lengthAlgo);
-  formData.append("description", data.order.description);
-  formData.append("from_date", data.order.fromDate);
-  formData.append("from_slot", data.order.fromSlot);
-  formData.append("from_contact_name", data.order.fromContactName);
-  formData.append("from_contact_phone", data.order.fromContactPhone);
-  formData.append("from_contact_email", data.order.fromContactEmail);
-  formData.append("delivery_date", data.order.deliveryDate);
-  formData.append("delivery_slot", data.order.deliverySlot);
-  formData.append("delivery_contact_name", data.order.deliveryContactName);
-  formData.append("delivery_contact_phone", data.order.deliveryContactPhone);
-  formData.append("delivery_contact_email", data.order.deliveryContactEmail);
-  formData.append("return_date", data.order.returnDate);
-  formData.append("return_slot", data.order.returnSlot);
-  formData.append("return_contact_name", data.order.returnContactName);
-  formData.append("return_contact_phone", data.order.returnContactPhone);
-  formData.append("return_contact_email", data.order.returnContactEmail);
-  formData.append("is_international", data.order.international ? 1 : 0);
-  formData.append("temp_reg", data.order.temp ? 1 : 0);
-  formData.append("imo", data.order.imo ? 1 : 0);
-  formData.append("length_real", 11);
-  const formProps = Object.fromEntries(formData);
-
-  await orderStore.createOrder(formProps);
+  await orderStore.createOrder(order);
 }
 
 const rules = {
@@ -606,6 +579,16 @@ const rules = {
 .containerInfo {
   display: flex;
   justify-content: space-around;
+}
+.inputNumber >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputNumber >>> input::-webkit-outer-spin-button,
+.inputNumber >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 #map {
   width: 100%;

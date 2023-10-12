@@ -61,15 +61,12 @@ const clearInput = () => {
   selectedAddress.value = "";
 };
 
-const focusInput = () => {
-  selectedAddress.value.focus();
-};
 const rules = {
-  required: (value) => !!value || "Поле обязательно для заполнения",
+  required: (value) =>
+    !selectedAddress.value || "Поле обязательно для заполнения",
 };
 defineExpose({
   clearInput,
-  focusInput,
 });
 </script>
 <style scoped></style>

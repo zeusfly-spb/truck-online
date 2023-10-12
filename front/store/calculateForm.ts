@@ -12,12 +12,20 @@ export const useCalculate = defineStore("calculateStore", {
     },
     async calculate(body) {
       try {
-        const response = await opFetch(url, {
+        const {
+          data: { _rawValue },
+        } = await opFetch(url, {
           method: "POST",
           body: { data: body },
         });
-        if (response.status._rawValue === "success") {
-          this.price = response.data._rawValue.data.price;
+        if (_rawValue) {
+          this.price = _rawValue.price;
+          useSnack({
+            show: true,
+            type: "success",
+            title: "Предварительная стоимость произведена!",
+            message: "Цена отображается внизу",
+          });
         }
       } catch (error) {
         console.error("Error fetching:", error);

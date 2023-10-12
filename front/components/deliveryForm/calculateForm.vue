@@ -120,13 +120,6 @@ const updateSelectAdressReturn = (address) => {
   selectedIds.value[2] = address.id;
   emit("updateSelectedCoordinates", selectedCoordinates.value);
   showCalculateBtn.value = true;
-  console.log("ВСЕ КООРДИНАТЫ:", selectedCoordinates.value);
-  console.log(
-    "АЙДИШНИКИ:",
-    selectedIds.value[0],
-    selectedIds.value[1],
-    selectedIds.value[2],
-  );
 };
 
 const updateWeight = (value) => {
@@ -162,7 +155,7 @@ async function submitForm() {
     is_international: 1,
     temp_reg: 1,
     tax_id: 1,
-    calc: true,
+    calc: 1,
   };
   await calculation.calculate(body);
   showCalculateBtn.value = false;
@@ -188,10 +181,12 @@ const clearData = () => {
   justify-content: space-between;
   margin: 20px 10px 25px 0px;
 }
+
 .containerSelect {
   display: grid;
   justify-items: center;
 }
+
 .buttonsForm .v-btn {
   width: 280px;
   height: 50px;
@@ -245,11 +240,10 @@ const clearData = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 4px;
   }
   .inputWeight {
     flex: 1;
-    margin-right: 10px;
+    max-width: 400px;
   }
 
   .additionally {

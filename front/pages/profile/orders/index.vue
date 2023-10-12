@@ -115,7 +115,6 @@
   </v-container>
 </template>
 <script setup>
-import { data } from "~/store/dataAddress";
 import Sidebar from "~/components/admin/Sidebar.vue";
 const showFilters = ref(false);
 const priceFromFilter = ref("");

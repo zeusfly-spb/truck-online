@@ -75,10 +75,17 @@ export const useCarsStore = defineStore("cardStore", {
         } = await opFetch("/cars", {
           method: "post",
           body: formData,
+          headers,
         });
-        console.log("newCar:", _rawValue);
-        //this.cars.unshift(_rawValue);
-
+        if (_rawValue) {
+          this.cars.unshift(_rawValue);
+          useSnack({
+            show: true,
+            type: "success",
+            title: "Новая машина успешно добавлена!",
+            message: "Поздравляем",
+          });
+        }
       } catch (error) {
         console.error(error);
       }

@@ -15,8 +15,9 @@ export const useOrdersStore = defineStore("ordersStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("orders", { method: "get" });
+        } = await opFetch("/orders", { method: "get" });
         this.orders = _rawValue;
+        console.log("aaaaaaaaaaaa:", _rawValue);
       } catch (error) {
         console.error(error);
       }
@@ -30,13 +31,16 @@ export const useOrdersStore = defineStore("ordersStore", {
           method: "post",
           body: { data: body },
         });
-        if (_rawValue === "success") {
+        if (_rawValue) {
           useSnack({
             show: true,
             type: "success",
             title: "Заказ успешно создан!",
-            message: "Заказ отображается в вашем профиле",
+            message: "Перенаправляем в таблицу заказов",
           });
+          setTimeout(() => {
+            navigateTo("/orders");
+          }, 2000);
         }
       } catch (error) {
         console.error(error);

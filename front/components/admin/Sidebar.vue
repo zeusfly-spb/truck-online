@@ -1,8 +1,8 @@
 <template>
-  <v-navigation-drawer app>
+  <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon >
+  <v-navigation-drawer app v-model="drawer">
       <v-list>
-           <!-- {{ allRoles }} {{ userRoles }} -->
-           {{ data.userRoles }}
+           <!-- {{ data.userRoles }} -->
           <v-list-item to="/profile">
               <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
@@ -39,6 +39,7 @@
 <script setup>
 import { useAuthStore } from "~/store/auth";
 const userStore = useAuthStore();
+const  drawer = ref();
 const data = reactive({
   userRoles: ['customer'],
   roles: []

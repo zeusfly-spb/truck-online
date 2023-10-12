@@ -7,6 +7,19 @@
   <v-form @submit.prevent="addCar" v-if="data.showFormCar">
     <v-row no-gutters class="align-center">
       <v-col md :cols="12" class="mr-3 mb-3">
+        <v-text-field
+          v-model="data.cars.number.value"
+          label="Номер машины"
+          class="text-body-1 inputNumber"
+          variant="outlined"
+          hide-details="auto"
+          style="margin-right: 10px"
+          :rules="[rules.carNumber]"
+          type="number"
+          placeholder="000"
+        ></v-text-field>
+      </v-col>
+      <v-col md :cols="12" class="mb-3">
         <v-select
           v-model="data.cars.types.value"
           :items="typesCar"
@@ -19,22 +32,20 @@
           :rules="[rules.required]"
         ></v-select>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
-        <v-text-field
-          v-model="data.cars.number.value"
-          label="Номер машины"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-          style="margin-right: 10px"
-          :rules="[rules.carNumber]"
-          type="number"
-          placeholder="000"
-        ></v-text-field>
-      </v-col>
     </v-row>
     <v-row no-gutters class="align-center">
       <v-col md :cols="12" class="mr-3 mb-3">
+        <v-text-field
+          v-model="data.cars.brand.value"
+          label="Марка машины"
+          class="text-body-1"
+          variant="outlined"
+          hide-details="auto"
+          :rules="[rules.required]"
+          type="text"
+        ></v-text-field>
+      </v-col>
+      <v-col md :cols="12" class="mb-3">
         <v-select
           v-model="data.cars.country.value"
           :items="countries"
@@ -47,31 +58,18 @@
           :rules="[rules.required]"
         ></v-select>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
-        <v-text-field
-          v-model="data.cars.brand.value"
-          label="Марка машины"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-          :rules="[rules.required]"
-          type="text"
-        ></v-text-field>
-      </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col md :cols="12" class="mr-3 mb-3">
-        <v-select
-          label="Право использования"
-          v-model="data.cars.rightOfUse.value"
-          :items="rightUse"
-          item-value="id"
-          item-title="name"
-          class="text-body-1"
+        <v-text-field
+          v-model="data.cars.weigth"
+          label="Грузоподъемность (кг)"
+          class="text-body-1 inputNumber"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
-        ></v-select>
+          type="number"
+        ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-3">
         <v-file-input
@@ -86,15 +84,17 @@
         </v-file-input>
       </v-col>
       <v-col md :cols="12" class="mb-3">
-        <v-text-field
-          v-model="data.cars.weigth"
-          label="Грузоподъемность (кг)"
+        <v-select
+          label="Право использования"
+          v-model="data.cars.rightOfUse.value"
+          :items="rightUse"
+          item-value="id"
+          item-title="name"
           class="text-body-1"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
-          type="number"
-        ></v-text-field>
+        ></v-select>
       </v-col>
     </v-row>
     <v-row no-gutters>
@@ -102,7 +102,7 @@
         <v-text-field
           v-model="data.cars.sts.number"
           label="Cерия и номер СТС"
-          class="text-body-1"
+          class="text-body-1 inputNumber"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.sts]"
@@ -114,7 +114,7 @@
         <v-file-input
           label="СТС Основная Сторона"
           v-model="fileOne"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
           style="margin-right: 6px; margin-left: 7px"
@@ -125,7 +125,7 @@
         <v-file-input
           label="СТС Обратная Сторона"
           v-model="fileTwo"
-          class="text-body-1"
+          class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
@@ -150,7 +150,6 @@
   </v-form>
 </template>
 <script setup>
-import { computed } from "vue";
 import { useCarsStore } from "~/store/companyConfig/cars";
 const carStore = useCarsStore();
 const icon = ref();
@@ -271,6 +270,16 @@ async function resetData() {
 .btnCarForm {
   display: flex;
   justify-content: space-around;
+}
+.inputNumber >>> input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputNumber >>> input::-webkit-outer-spin-button,
+.inputNumber >>> input::-webkit-inner-spin-button {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 @media (max-width: 339px) {
   :deep(.sts.v-file-input .v-field-label) {

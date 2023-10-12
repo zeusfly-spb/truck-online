@@ -38,8 +38,9 @@ const updateContainer = (id) => {
 };
 
 const allContainers = computed(() => {
+  const names = ["20f", "40f", "20+20"];
   if (!containersStore.containers || containersStore.loading) return [];
-  return containersStore.containers.slice(0, 3);
+  return containersStore.containers.filter((el) => names.includes(el.name));
 });
 
 const clearSelect = () => {

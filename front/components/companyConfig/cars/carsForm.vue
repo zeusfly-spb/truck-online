@@ -160,16 +160,8 @@ async function addCar() {
   formdata.append("max_weigth", data.cars.weigth);
 
   await carStore.addNewCar(formdata);
+  data.showFormCar = !data.showFormCar;
+  
 }
 </script>
-<style scoped>
-.btnCarForm {
-  display: flex;
-  justify-content: space-around;
-}
-@media (max-width: 339px) {
-  :deep(.sts.v-file-input .v-field-label) {
-    font-size: 9px;
-  }
-}
-</style>
+<style scoped></style>

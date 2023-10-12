@@ -270,6 +270,7 @@ class OrderController extends Controller
      * )
      */
     public function store(Request $request){
+     
       $data = $request['data'];
       if(intval($data['calc'])){
         $calc_history = $this->calcHistoryCreate($data);
@@ -359,7 +360,6 @@ class OrderController extends Controller
       $calc_history->save();
       return $calc_history;
     }
-
     public function getPriceAndWeight($data){
       $points = array();
       //from

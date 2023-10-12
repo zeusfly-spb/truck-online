@@ -76,8 +76,8 @@
         <td>{{ car.mark_model }}</td>
         <td>{{ car.number }}</td>
         <td>{{ car.sts }}</td>
-        <td>{{ car.country.name }}</td>
-        <td>{{ car.car_type || '' }}</td>
+        <td>{{ car.country?.name || '' }}</td>
+        <td>{{ car.car_type?.name || '' }}</td>
         <td>{{ car.max_weigth }}</td>
         <td><v-btn @click="deleteCar(car.id)">Удалить</v-btn></td>
         <td><v-btn @click="changeEditFormCar(car.id)">Изменить</v-btn></td>
@@ -183,6 +183,32 @@ async function deleteCar(id) {
   await carStore.deleteCar(id);
 }
 
-console.log("cars:", allCars);
+const updateCar = async () => {
+
+  const formData = new FormData();
+  formData.append("_method", "PUT");
+  formData.append("number", data.cars.number.value);
+  formData.append("car_type_id", data.cars.types.value);
+  formData.append("mark_model", data.cars.brand.value);
+  formData.append("country_id", data.cars.country.value);
+  formData.append("sts", data.cars.sts.number);
+  formData.append("icon", icon.value && icon.value[0]);
+  formData.append("sts_file_1", fileOne.value && fileOne.value[0]);
+  formData.append("sts_file_2", fileTwo.value && fileTwo.value[0]);
+  formData.append("right_use_id", data.cars.rightOfUse.value);
+  formData.append("max_weigth", data.cars.weigth);
+
+  const url = `/cars/${data.cars.id}`;
+    const {
+      data: { _rawValue },
+    } = await opFetch(url, {
+      method: "post",
+      body: formData,
+    });
+    data.showFormCar = !data.showFormCar;
+    await carStore.getAllCars();
+    //await navigateTo("/admin/addresses");
+}
+
 </script>
 <style scoped></style>

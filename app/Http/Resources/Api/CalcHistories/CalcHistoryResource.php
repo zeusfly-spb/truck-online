@@ -25,7 +25,7 @@ class CalcHistoryResource extends JsonResource
         'return_address' => AddressResource::make($this->return_address),
         'delivery2_address' => AddressResource::make($this->delivery2_address),
         'return2_address' => AddressResource::make($this->return2_address),
-        "tax_id" => TaxResource::make($this->tax),
+        "tax" => TaxResource::make($this->tax),
         "price" => $this->price,
         "weight"=> $this->weight,
         "imo"=> $this->imo,

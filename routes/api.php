@@ -60,9 +60,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
     Route::get('address/accept/{id}', [AddressController::class, 'accept']);
-
     Route::apiResource('companies', CompanyController::class);
-
   });
 
     Route::get('users', [UserController::class, 'index']);

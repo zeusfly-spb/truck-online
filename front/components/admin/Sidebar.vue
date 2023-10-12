@@ -21,10 +21,10 @@
           <v-list-item to="/profile/addresses">
               <v-list-item-title>Addresses</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/profile/containers" v-show="hasRoles(['super-admin','driver'])">
+          <v-list-item to="/profile/containers" v-show="hasRoles(['super-admin'])">
               <v-list-item-title>Containers</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/profile/carTypes" v-show="hasRoles(['super-admin','driver'])">
+          <v-list-item to="/profile/carTypes" v-show="hasRoles(['super-admin'])">
               <v-list-item-title>CarTypes</v-list-item-title>
           </v-list-item>
           <v-list-item to="/profile/orders" v-show="hasRoles(['super-admin','driver'])">

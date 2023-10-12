@@ -17,7 +17,7 @@ export const useDriversStore = defineStore("driverStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/admin/drivers", {
+        } = await opFetch("/drivers", {
           method: "get",
         });
         this.drivers = _rawValue;

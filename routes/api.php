@@ -61,11 +61,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
     Route::get('address/accept/{id}', [AddressController::class, 'accept']);
 
+    Route::apiResource('companies', CompanyController::class);
+
   });
-    //on production add middleware super-admin
+
     Route::get('users', [UserController::class, 'index']);
-    Route::get('admin/drivers', [DriverController::class, 'admin_index']);
-    Route::post('address/accept/{id}', [AddressController::class, 'accept']);
+    Route::get('user/addresses', [AddressController::class, 'userAddress']);
 
   //Orders
   Route::prefix('orders')->group(function () {
@@ -115,12 +116,12 @@ Route::prefix('confirmation')->group(function () {
 });
 
 Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
-Route::get('address/client', [AddressController::class, 'addressCLient']);
+
 Route::apiResource('addresses', AddressController::class);
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);
-Route::apiResource('companies', CompanyController::class);
+
 Route::get('order/settings', [OrderSettingController::class, 'index']);
 
 

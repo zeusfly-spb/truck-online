@@ -40,14 +40,14 @@ class DriverController extends BaseController
     */
     public function index(){
 
-      $users = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
-      return response()->json(DriverResource::collection($users)->collection);
-    }
-    public function admin_index(){
+      $drivers = [];
+      if(Auth::user()->hasRole('super-admin'))
+        $drivers = User::role('driver')->get();
 
-      $users = User::role('driver')->get();
-      return response()->json(DriverResource::collection($users)->collection);
+      else $drivers = User::role('driver')->where('company_id', Auth::user()->company_id)->get();
+      return response()->json(DriverResource::collection($drivers)->collection);
     }
+
     /**
     * @OA\Post(
     *     path="/api/drivers",

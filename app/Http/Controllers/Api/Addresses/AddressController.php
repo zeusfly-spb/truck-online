@@ -36,8 +36,8 @@ class AddressController extends BaseController
     public function index()
     {
         try{
-            return response()->json(Address::all());
-        }catch(Exception $exception){
+            return response()->json(AddressResource::collection(Address::all()));
+        }catch(\Exception $exception){
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }

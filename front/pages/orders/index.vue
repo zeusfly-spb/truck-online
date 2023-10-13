@@ -134,24 +134,33 @@
           </tr>
         </thead>
         <tbody style="color: black">
-          <tr v-for="order in paginatedOrders" :key="order.id">
-            <td>{{ order.id }}</td>
-            <td>{{ order.from_address.name }}</td>
-            <td>{{ order.from_date }}</td>
-            <td>{{ order.from_slot }}</td>
-
-            <td>
-              {{ order.delivery_address.name }}, дата доставки:
-              <p class="date">{{ order.delivery_date }}</p>
-            </td>
-            <td>
-              {{ order.return_address.name }}, дата возврата:
-              <p class="date">{{ order.return_date }}</p>
-            </td>
-            <td>{{ order.container.name }}</td>
-            <td>{{ order.weight }}</td>
-            <td>{{ order.price }}</td>
-          </tr>
+          <template v-for="order in paginatedOrders" :key="order.id">
+            <tr @click="paramsOrder(order.id)" style="cursor: pointer">
+              <td>{{ order.id }}</td>
+              <td>{{ order.from_address.name }}</td>
+              <td>{{ order.from_date }}</td>
+              <td>{{ order.from_slot }}</td>
+              <td>
+                {{ order.delivery_address.name }}, дата доставки:
+                <p class="date">
+                  {{ order.delivery_date.split("-").reverse().join("-") }}
+                </p>
+              </td>
+              <td>
+                {{ order.return_address.name }}, дата возврата:
+                <p class="date">
+                  {{ order.return_date.split("-").reverse().join("-") }}
+                </p>
+              </td>
+              <td>{{ order.container.name }}</td>
+              <td>{{ order.weight }}</td>
+              <td>{{ order.price }}</td>
+            </tr>
+            <tr v-if="selectOrderId === order.id" class="dopParams">
+              <div>Вес: {{ oneOrder.weight }} Цена: {{ oneOrder.price }}</div>
+              <v-btn>Принять</v-btn>
+            </tr>
+          </template>
         </tbody>
       </v-table>
     </div>
@@ -173,9 +182,11 @@ const sortOrder = ref(1);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const orderStore = useOrdersStore();
+const selectOrderId = ref(null);
 
 onBeforeMount(async () => {
   await orderStore.getOrders();
+  await orderStore.getOneOrder();
 });
 
 const paginatedOrders = computed(() => {
@@ -257,6 +268,16 @@ const deleteFilters = () => {
   selectedContainerTypes.value = "";
   statusChosen.value = "";
 };
+
+async function paramsOrder(id) {
+  await orderStore.getOneOrder(id);
+  selectOrderId.value = id;
+}
+
+const oneOrder = computed(() => {
+  if (!orderStore.oneOrder || orderStore.loading) return [];
+  return orderStore.oneOrder.order;
+});
 </script>
 
 <style scoped lang="sass">

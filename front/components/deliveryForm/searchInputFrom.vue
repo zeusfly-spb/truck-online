@@ -22,7 +22,7 @@ import { useAddressesStore } from "~/store/address";
 
 const emit = defineEmits(["updateSelectAddressFrom"]);
 const addressesStore = useAddressesStore();
-const selectedAddress = ref([]);
+const selectedAddress = ref(null);
 
 onBeforeMount(async () => {
   watch(selectedAddress, (coordinates) => {
@@ -55,7 +55,7 @@ const clearInput = () => {
 
 const rules = {
   required: (value) =>
-    !selectedAddress.value || "Поле обязательно для заполнения",
+    !!selectedAddress.value || "Поле обязательно для заполнения",
 };
 defineExpose({
   clearInput,

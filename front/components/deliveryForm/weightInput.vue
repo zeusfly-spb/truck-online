@@ -26,7 +26,7 @@ const clearInput = () => {
 };
 
 const rules = {
-  required: (value) => !!value || "Поле обязательно для заполнения",
+  required: (value) => !!weight.value || "Поле обязательно для заполнения",
 };
 
 defineExpose({

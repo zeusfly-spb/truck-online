@@ -36,6 +36,7 @@ class OrderResource extends JsonResource
             'container' => ContainerResource::make($this->container),
             'weight' => $this->weight,
             'price' => $this->price,
+            'status' => $this->order_status,
             'created_date' => \Carbon\Carbon::parse($this->created_at)->format('Y-m-d')
         ];
     }

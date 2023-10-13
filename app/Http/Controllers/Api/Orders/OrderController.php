@@ -287,7 +287,7 @@ class OrderController extends Controller
     }
     public function createOrderByCalcHistoryId($id){
 
-      $calcHistory = CalcHistory::find($id); 
+      $calcHistory = CalcHistory::find($id);
 
       $order = Order::create([
         'user_id' => Auth::user()->id,
@@ -513,7 +513,7 @@ class OrderController extends Controller
       }
       $order['actions'] = $orderActions;
       return response()->json([
-        'order' => Order::find($orderId),
+        'order' => OrderResource::make(Order::find($orderId)),
         'orderActions' => $orderActions
       ]);
 

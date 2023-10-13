@@ -33,8 +33,12 @@ class CalcHistoryController extends Controller
     */
     public function index()
     {
-        $calcHistories = CalcHistory::where('user_id', Auth::user()->id)->where('hidden', false)->orderBy('updated_at', 'desc')->get();
-        return response()->json(CalcHistoryResource::collection($calcHistories)->collection);
+      $calcHistories = [];
+      if(Auth::user()->hasRole('super-admin'))
+        $calcHistories = CalcHistory::orderBy('updated_at', 'desc')->get();
+      else $calcHistories = CalcHistory::where('user_id', Auth::user()->id)->where('hidden', false)->orderBy('updated_at', 'desc')->get();
+
+      return response()->json(CalcHistoryResource::collection($calcHistories)->collection);
     }
 
     /**

@@ -15,19 +15,19 @@
     <tbody>
         <tr>
           <td>Container</td>
-          <td>{{ historyData.container.name }}</td>
+          <td>{{ historyData.container?.name }}</td>
         </tr>
         <tr>
           <td>From address</td>
-          <td>{{ historyData.from_address.name }}</td>
+          <td>{{ historyData.from_address?.name }}</td>
         </tr>
         <tr>
           <td>Delivery Address</td>
-          <td>{{ historyData.delivery_address.name }}</td>
+          <td>{{ historyData.delivery_address?.name }}</td>
         </tr>
         <tr>
           <td>Return address</td>
-          <td>{{ historyData.return_address.name }}</td>
+          <td>{{ historyData.return_address?.name }}</td>
         </tr>
         <tr>
           <td>Delivery2 Address</td>
@@ -39,7 +39,7 @@
         </tr>
         <tr>
           <td>Tax</td>
-          <td>{{ historyData.tax_id.name }}</td>
+          <td>{{ historyData.tax?.name }}</td>
         </tr>
         <tr>
           <td>Price</td>

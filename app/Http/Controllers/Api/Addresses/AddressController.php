@@ -36,9 +36,10 @@ class AddressController extends BaseController
     public function index()
     {
         try{
-            return response()->json(Address::all());
+          $addresses = Address::query()->where('accept_status', true);
+          return response()->json($addresses->get());
         }catch(Exception $exception){
-            return response()->json(['error' => $exception->getMessage()], 500);
+          return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
     /**
@@ -61,10 +62,12 @@ class AddressController extends BaseController
      *     ),
      * )
     */
-    public function addressCLient(Request $request){
+    public function userAddress(Request $request){
       try{
+        if(Auth::user()->hasRole('super-admin'))
+          $addresses = Address::query();
+        else $addresses = Address::query()->where('user_id', Auth::user()->id);
 
-        $addresses = Address::query()->where('accept_status', true);
         if($request->has('name'))
           $addresses = $addresses->filterByName($request->name);
 

@@ -137,7 +137,6 @@
           <template v-for="order in paginatedOrders" :key="order.id">
             <tr @click="paramsOrder(order.id)" style="cursor: pointer">
               <td>{{ order.id }}</td>
-              <td>{{ order.from_address.name }}</td>
               <td>{{ order.from_date }}</td>
               <td>{{ order.from_slot }}</td>
               <td>
@@ -156,9 +155,16 @@
               <td>{{ order.weight }}</td>
               <td>{{ order.price }}</td>
             </tr>
-            <tr v-if="selectOrderId === order.id" class="dopParams">
-              <div>Вес: {{ oneOrder.weight }} Цена: {{ oneOrder.price }}</div>
-              <v-btn>Принять</v-btn>
+            <tr v-if="selectOrderId === order.id">
+              <td colspan="9">
+                <div class="dopParams">
+                  <div>Класс imo</div>
+                  <div>НДС</div>
+                  <div>Температурный режим</div>
+                  <div>Is international</div>
+                  <v-btn>Принять</v-btn>
+                </div>
+              </td>
             </tr>
           </template>
         </tbody>
@@ -282,6 +288,11 @@ const oneOrder = computed(() => {
 
 <style scoped lang="sass">
 
+.dopParams
+  height: 11vh
+  display: flex
+  justify-content: space-between
+  margin-top: 15px
 
 .tableOrders
   color: rgba(0, 0, 0, 0.704)

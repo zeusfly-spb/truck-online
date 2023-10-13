@@ -31,6 +31,7 @@ export const useOrdersStore = defineStore("ordersStore", {
           data: { _rawValue },
         } = await opFetch(`/orders/show/${id}`, { method: "get" });
         this.oneOrder = _rawValue;
+        console.log(_rawValue);
       } catch (error) {
         console.error(error);
       }

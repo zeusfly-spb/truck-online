@@ -270,7 +270,7 @@ class OrderController extends Controller
      * )
      */
     public function store(Request $request){
-     
+
       $data = $request['data'];
       if(intval($data['calc'])){
         $calc_history = $this->calcHistoryCreate($data);
@@ -285,7 +285,29 @@ class OrderController extends Controller
         }
       }
     }
+    public function createOrderByCalcHistoryId($id){
 
+      $calcHistory = CalcHistory::find($id); 
+
+      $order = Order::create([
+        'user_id' => Auth::user()->id,
+        'company_id' => Auth::user()->company_id,
+        'from_address_id' => $calcHistory->from_address_id,
+        'delivery_address_id' => $calcHistory->delivery_address_id,
+        'return_address_id' => $calcHistory->return_address_id,
+        'container_id' => $calcHistory->container_id,
+        'price' => $calcHistory->price,
+        'distance' => $calcHistory->distance,
+        'weight' => $calcHistory->weight,
+        'tax_id' => $calcHistory->tax_id,
+        'imo' => $calcHistory->imo,
+        'is_international' => $calcHistory->is_international,
+        'temp_reg' => $calcHistory->temp_reg,
+        'length_algo' => $calcHistory->distance,
+        'order_status' => OrderStatus::DRAFT,
+      ]);
+      if($order) return response()->json(OrderResource::make($order));
+    }
     public function order_create($data){
 
       $priceAndDistace = $this->getPriceAndWeight($data);
@@ -337,7 +359,6 @@ class OrderController extends Controller
       ]);
       return $order;
     }
-
     public function calcHistoryCreate($data){
 
       $priceAndDistace = $this->getPriceAndWeight($data);
@@ -453,7 +474,6 @@ class OrderController extends Controller
       }
       return $overWeightSum;
     }
-
     /**
       * @OA\Get(
       *      path="/api/orders/show/{order_id}",

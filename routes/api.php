@@ -70,6 +70,7 @@ Route::middleware('auth:api')->group(function () {
   Route::prefix('orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
     //Route::post('store', [OrderController::class, 'store']);
+    Route::post('store/byCalcHistory/{calcHistoryId}', [OrderController::class, 'createOrderByCalcHistoryId']);
     Route::get('show/{order_id}', [OrderController::class, 'show']);
     Route::put('update/{order_id}', [OrderController::class, 'update']);
     Route::post('accept/action/{order_action_id}', [OrderActionController::class, 'accept']);

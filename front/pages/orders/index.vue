@@ -112,8 +112,9 @@
                 <span>ID</span> <span @click="sortOrders('id')">⇅</span>
               </div>
             </th>
-            <th style="color: black">Адрес погрузки</th>
+            <th style="color: black">Погрузка</th>
             <th style="color: black">Дата погрузки</th>
+            <th style="color: black">Cлот</th>
             <th style="color: black">Адрес доставки</th>
             <th style="color: black">Возврат контейнера</th>
 
@@ -137,6 +138,8 @@
             <td>{{ order.id }}</td>
             <td>{{ order.from_address.name }}</td>
             <td>{{ order.from_date }}</td>
+            <td>{{ order.from_slot }}</td>
+
             <td>
               {{ order.delivery_address.name }}, дата доставки:
               <p class="date">{{ order.delivery_date }}</p>

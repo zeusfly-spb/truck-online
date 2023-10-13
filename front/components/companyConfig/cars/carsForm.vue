@@ -16,7 +16,7 @@
           style="margin-right: 10px"
           :rules="[rules.carNumber]"
           type="number"
-          placeholder="000"
+          placeholder="М170ХТ178"
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -79,7 +79,6 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
-          :rules="[rules.required]"
         >
         </v-file-input>
       </v-col>

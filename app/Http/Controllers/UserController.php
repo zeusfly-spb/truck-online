@@ -89,6 +89,6 @@ class UserController extends BaseController
   }
 
   public function index(){
-    return response()->json(UserResource::collection(User::with('company', 'roles')->get())->collection);
+    return response()->json(UserResource::collection(User::with('company', 'roles')->get()));
   }
 }

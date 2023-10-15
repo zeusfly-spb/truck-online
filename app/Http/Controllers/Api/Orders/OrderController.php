@@ -270,16 +270,15 @@ class OrderController extends Controller
      * )
      */
     public function store(Request $request){
-     
+
       $data = $request['data'];
       if(intval($data['calc'])){
         $calc_history = $this->calcHistoryCreate($data);
-        if($calc_history) return response()->json(CalcHistoryResource::make($calc_history));
+        if($calc_history) return response()->json(new CalcHistoryResource($calc_history));
       }else{
-
         if(Auth::guard('api')->user()){
           $order = $this->order_create($data);
-          if($order) return response()->json(OrderResource::make($order));
+          if($order) return response()->json(new OrderResource($order));
         }else{
           return response()->json(['message'=> "Unauthorized" ], 401);
         }

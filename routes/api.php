@@ -85,7 +85,7 @@ Route::middleware('auth:api')->group(function () {
   });
 
   Route::apiResource('bank_details', BankDetailController::class);
-
+  Route::post('update/company', [CompanyController::class, 'updateCompany']);
   //CRUD Driver
   Route::apiResource('drivers', DriverController::class);
   Route::post('driver/documents/{driver_id}', [DriverController::class, 'uploadDocument']);

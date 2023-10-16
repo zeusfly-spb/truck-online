@@ -90,7 +90,7 @@ watch(selectedAddress, (coordinates) => {
 });
 
 const rules = {
-  required: (value) => !!value || "Поле обязательно для заполнения",
+  required: (value) => !!inputTextTo.value || "Поле обязательно для заполнения",
 };
 
 const addressesTo = computed(() => {

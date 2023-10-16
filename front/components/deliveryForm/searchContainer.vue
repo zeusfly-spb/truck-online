@@ -13,6 +13,9 @@
         {{ container.name }}
       </v-btn>
     </div>
+    <div v-if="!isValid && showError" class="error-message">
+      Выберите тип контейнера
+    </div>
   </div>
 </template>
 <script setup>
@@ -22,19 +25,16 @@ import { defineEmits } from "vue";
 const emit = defineEmits(["updateContainer"]);
 const containersStore = useContainersStore();
 const selectedContainerId = ref("");
+const showError = ref(false);
 
 onBeforeMount(async () => {
-  watch(selectedContainerId, (container) => {
-    if (container) {
-      emit("updateContainer", selectedContainerId.value);
-    }
-  });
   await containersStore.getContainers();
 });
 
 const updateContainer = (id) => {
   selectedContainerId.value = id;
   emit("updateContainer", id);
+  showError.value = false;
 };
 
 const allContainers = computed(() => {
@@ -45,14 +45,25 @@ const allContainers = computed(() => {
 
 const clearSelect = () => {
   selectedContainerId.value = "";
+  showError.value = false;
 };
 
-defineExpose({ clearSelect });
+const isValid = computed(() => !!selectedContainerId.value);
+
+const validate = () => {
+  showError.value = !isValid.value;
+  return isValid.value;
+};
+
+defineExpose({ clearSelect, validate });
 </script>
 <style scoped>
 .container-button {
   display: inline-block;
   margin: 5px;
+}
+.error-message {
+  color: red;
 }
 
 .selected {

@@ -155,7 +155,7 @@
               <td>{{ order.weight }}</td>
               <td>{{ order.price }}</td>
             </tr>
-            <tr v-if="selectOrderId === order.id">
+            <tr v-if="selectOrderId === order.id && oneOrder">
               <td colspan="9">
                 <div class="dopParams">
                   <div>Класс imo</div>
@@ -315,7 +315,6 @@ const oneOrder = computed(() => {
   font-size: 24px
   height: 100vh
 .date
-  color: red
   font-weight: 900
 .filters
   display: flex

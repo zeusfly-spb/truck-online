@@ -1,7 +1,7 @@
 <template>
   <v-text-field
     class="inputNumber"
-    label="ВЕС"
+    label="ВЕС, кг"
     variant="solo"
     name="weight"
     type="number"
@@ -11,7 +11,6 @@
   ></v-text-field>
 </template>
 <script setup>
-import { defineEmits, defineExpose } from "vue";
 const emit = defineEmits(["updateWeight"]);
 
 const weight = ref(null);

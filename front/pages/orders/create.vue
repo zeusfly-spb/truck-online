@@ -496,19 +496,15 @@ watch(
 );
 watch(
   () => order.delivery_address_id,
-  (newVal) => console.log("new address:", newVal),
 );
 watch(
   () => order.return_address_id,
-  (newVal) => console.log("new address:", newVal),
 );
 watch(
   () => order.container_id,
-  (newVal) => console.log("new container:", newVal),
 );
 watch(
   () => order.tax_id,
-  (newVal) => console.log("tax:", newVal),
 );
 
 const addresses = computed(() => {

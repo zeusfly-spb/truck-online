@@ -72,6 +72,6 @@ const updateAddress = async () => {
     method: "post",
     body: { status: data.status },
   });
-  await navigateTo("/admin/addresses");
+  await navigateTo("/profile/addresses");
 };
 </script>

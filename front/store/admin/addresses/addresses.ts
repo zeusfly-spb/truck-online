@@ -17,7 +17,7 @@ export const useAddressesStore = defineStore("addressStore", {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch("/addresses", {
+        } = await opFetch("/user/addresses", {
           method: "get",
         });
         this.addresses = _rawValue;

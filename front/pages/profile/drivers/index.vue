@@ -7,10 +7,9 @@
         <th>FirstName</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Role</th>
       </tr>
       <tbody>
-        <tr v-for="user in allUsers" :key="user.name">
+        <tr v-for="user in allDrivers" :key="user.name">
           <td>{{ user.id }}</td>
           <td>
             {{ user.first_name }} {{ user.middle_name }}
@@ -18,7 +17,6 @@
           </td>
           <td>{{ user.email }}</td>
           <td>{{ user.phone }}</td>
-          <td>{{ user?.company?.inn }}</td>
         </tr>
     </tbody>
     </table>
@@ -32,7 +30,7 @@ const driverStore = useDriversStore();
 onBeforeMount(() => {
   driverStore.getAllUsers()
 })
-const allUsers = computed(() => {
+const allDrivers = computed(() => {
   if (!driverStore.drivers || driverStore.loading) return [];
   return driverStore.drivers;
 });

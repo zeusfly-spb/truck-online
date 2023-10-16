@@ -89,6 +89,6 @@ const updateContainer = async () => {
     method: "put",
     body: { name: data.name, weight: data.weight, kit: data.kit },
   });
-  await navigateTo("/admin/containers");
+  await navigateTo("/profile/containers");
 };
 </script>

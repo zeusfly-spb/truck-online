@@ -46,7 +46,6 @@ const selectAddressFrom = (id) => {
       name: address.name,
       coordinates: address.coordinates.coordinates,
     });
-    console.log("ВЫБРАННЫЙ АДРЕС:", selectedAddress.value);
   }
 };
 const clearInput = () => {

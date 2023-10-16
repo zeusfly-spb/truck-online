@@ -9,13 +9,12 @@
               <v-select
                 label="Выберите адрес"
                 name="from_address_id"
-                :items="addresses.filter((el) => !!el.from)"
-                item-value="value"
-                item-title="title"
+                :items="filteredAddresses"
+                item-value="id"
+                item-title="name"
                 v-model="order.from_address_id"
                 :rules="[rules.required]"
                 variant="solo"
-                :value="selectAddress ? selectAddress.name : ''"
               ></v-select>
             </v-col>
             <v-dialog width="400">
@@ -521,12 +520,13 @@ const addresses = computed(() => {
   );
 });
 
-// const selectAddress = computed(() => {
-//   return addresses.value.find(
-//     (address) => address.name === intermediateData.from_address.name,
-//   );
-// });
-console.log(selectAddress.value);
+const filteredAddresses = computed(() => {
+  const selectedAddress = addresses.value.find(
+    (address) => address.name === intermediateData.value?.from_address.name,
+  );
+  return selectedAddress ? [selectedAddress] : addresses.value;
+});
+
 const allContainers = computed(() => {
   if (!containerStore.containers || containerStore.loading) return [];
   const base =

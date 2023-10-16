@@ -494,18 +494,10 @@ watch(
   () => order.from_address_id,
   (newVal) => console.log("new address:", newVal),
 );
-watch(
-  () => order.delivery_address_id,
-);
-watch(
-  () => order.return_address_id,
-);
-watch(
-  () => order.container_id,
-);
-watch(
-  () => order.tax_id,
-);
+watch(() => order.delivery_address_id);
+watch(() => order.return_address_id);
+watch(() => order.container_id);
+watch(() => order.tax_id);
 
 const addresses = computed(() => {
   if (!addresStore.addresses || addresStore.loading) return [];
@@ -559,11 +551,10 @@ const rules = {
   align-items: baseline;
   justify-content: space-around;
 }
-.p-20 {
-  padding: 20px;
-}
+
 .container {
   display: flex;
+  height: 76vh;
 }
 .form {
   width: 50%;
@@ -614,9 +605,6 @@ h3 {
 .dialogInput,
 .v-col-md-4 {
   max-width: auto;
-}
-.v-col {
-  padding: 7px;
 }
 
 @media (max-width: 960px) {

@@ -80,7 +80,7 @@
           variant="outlined"
           hide-details="auto"
           type="password"
-          :rules="[rules.required]"
+          :rules="[rules.password]"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -231,6 +231,8 @@ const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения!",
   phoneLength: (value) =>
     value.toString().length === 10 || "Телефон должен быть длинной 10 цифр",
+  password: (value) =>
+    value.length < 8 || "Пароль должен быть длиной больше 8 символов",
 };
 
 const rulesFile = [(v) => !!v || "Выберите файл"];

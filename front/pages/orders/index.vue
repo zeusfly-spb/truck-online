@@ -1,5 +1,5 @@
 <template>
-  <v-container style="max-width: 2300px; background-color: white">
+  <div style="max-width: 2300px; background-color: white">
     <div class="headerOrderTable">
       <h2 class="tableOrders">Таблица заказов</h2>
       <div class="btnsOrderTable">
@@ -134,7 +134,10 @@
           </tr>
         </thead>
         <tbody style="color: black">
-          <template v-for="order in paginatedOrders" :key="order.id">
+          <template
+            v-for="order in paginatedOrders"
+            :key="order.id"
+          >
             <tr @click="paramsOrder(order.id)" style="cursor: pointer">
               <td>{{ order.id }}</td>
               <td>{{ order.from_date }}</td>
@@ -162,7 +165,7 @@
                   <div>НДС</div>
                   <div>Температурный режим</div>
                   <div>Is international</div>
-                  <v-btn>Принять</v-btn>
+                  <v-btn type="button" @click="closeOneOrder">Принять</v-btn>
                 </div>
               </td>
             </tr>
@@ -171,7 +174,7 @@
       </v-table>
     </div>
     <div v-intersect="onIntersect" class="observer">Загрузка...</div>
-  </v-container>
+  </div>
 </template>
 <script setup>
 import { useOrdersStore } from "~/store/order";
@@ -284,6 +287,10 @@ const oneOrder = computed(() => {
   if (!orderStore.oneOrder || orderStore.loading) return [];
   return orderStore.oneOrder.order;
 });
+
+const closeOneOrder = () => {
+  selectOrderId.value = null;
+};
 </script>
 
 <style scoped lang="sass">
@@ -303,6 +310,7 @@ const oneOrder = computed(() => {
   display: flex
   justify-content: space-between
   align-items: center
+  margin: 0px 15px 15px 10px
 
 .btnsOrderTable
   display: flex

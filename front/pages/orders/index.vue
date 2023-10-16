@@ -113,8 +113,8 @@
               </div>
             </th>
             <th style="color: black">Погрузка</th>
-            <th style="color: black">Дата погрузки</th>
             <th style="color: black">Cлот</th>
+            <th style="color: black">Адрес погрузки</th>
             <th style="color: black">Адрес доставки</th>
             <th style="color: black">Возврат контейнера</th>
 
@@ -134,24 +134,24 @@
           </tr>
         </thead>
         <tbody style="color: black">
-          <template
-            v-for="order in paginatedOrders"
-            :key="order.id"
-          >
+          <template v-for="order in paginatedOrders" :key="order.id">
             <tr @click="paramsOrder(order.id)" style="cursor: pointer">
               <td>{{ order.id }}</td>
               <td>{{ order.from_date }}</td>
               <td>{{ order.from_slot }}</td>
               <td>
+                {{ order.from_address.name }}
+              </td>
+              <td>
                 {{ order.delivery_address.name }}, дата доставки:
                 <p class="date">
-                  {{ order.delivery_date.split("-").reverse().join("-") }}
+                  {{ order.delivery_date }}
                 </p>
               </td>
               <td>
                 {{ order.return_address.name }}, дата возврата:
                 <p class="date">
-                  {{ order.return_date.split("-").reverse().join("-") }}
+                  {{ order.return_date }}
                 </p>
               </td>
               <td>{{ order.container.name }}</td>

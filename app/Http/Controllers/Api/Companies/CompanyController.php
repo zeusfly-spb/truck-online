@@ -362,13 +362,19 @@ class CompanyController extends Controller
    *     ),
    *   )
    */
-  public function update(CompanyRequest $request, $id)
+  public function update(Request $request, $id)
   {
     try {
       $company = Company::find($id);
-      $company->update($request->all());
+      if ($company) {
+        $company->update([
+          'phone' => $request->phone,
+          'email' => $request->email,
+          'cceo_name' => $request->cceo_name
+        ]);
+      }
       return response()->json(CompanyResource::make($company));
-    } catch (Exception $exception) {
+    }catch (Exception $exception) {
       return response()->json(['error' => $exception->getMessage()], 500);
     }
   }

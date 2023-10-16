@@ -52,7 +52,7 @@ const selectAddressReturn = (id) => {
     selectedAddress.value = toRaw({
       id: address.id,
       name: address.name,
-      coordinates: address.location.coordinates,
+      coordinates: address.coordinates.coordinates,
     });
     console.log("ВЫБРАННЫЙ АДРЕС RETURN:", selectedAddress.value);
   }

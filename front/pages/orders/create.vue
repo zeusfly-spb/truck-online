@@ -10,11 +10,12 @@
                 label="Выберите адрес"
                 name="from_address_id"
                 :items="addresses.filter((el) => !!el.from)"
-                item-value="id"
-                item-title="name"
+                item-value="value"
+                item-title="title"
                 v-model="order.from_address_id"
                 :rules="[rules.required]"
                 variant="solo"
+                :value="selectAddress ? selectAddress.name : ''"
               ></v-select>
             </v-col>
             <v-dialog width="400">
@@ -447,17 +448,30 @@ import { useContainersStore } from "~/store/containers";
 import { useAddressesStore } from "~/store/address";
 import { useOrdersStore } from "~/store/order";
 import { useTaxesStore } from "~/store/tax";
+import { useCalculate } from "~/store/calculateForm";
 
 const containerStore = useContainersStore();
 const addresStore = useAddressesStore();
 const orderStore = useOrdersStore();
 const taxStore = useTaxesStore();
+const calculate = useCalculate();
 
 onBeforeMount(async () => {
   await containerStore.getContainers();
   await addresStore.getAddresses();
   await taxStore.getTaxes();
 });
+
+const intermediateData = computed(() => {
+  return calculate.intermediateData;
+});
+
+watch(
+  () => intermediateData.value,
+  (newData) => {
+    order.from_address_id = newData.from_address.name;
+  },
+);
 
 const order = reactive({
   from_address_id: null,
@@ -490,10 +504,7 @@ const order = reactive({
   calc: 0,
 });
 
-watch(
-  () => order.from_address_id,
-  (newVal) => console.log("new address:", newVal),
-);
+watch(() => order.from_address_id);
 watch(() => order.delivery_address_id);
 watch(() => order.return_address_id);
 watch(() => order.container_id);
@@ -510,6 +521,12 @@ const addresses = computed(() => {
   );
 });
 
+// const selectAddress = computed(() => {
+//   return addresses.value.find(
+//     (address) => address.name === intermediateData.from_address.name,
+//   );
+// });
+console.log(selectAddress.value);
 const allContainers = computed(() => {
   if (!containerStore.containers || containerStore.loading) return [];
   const base =

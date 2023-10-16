@@ -131,7 +131,7 @@ const selectAddressTo = (address) => {
   selectedAddress.value = toRaw({
     id: address.id,
     name: address.name,
-    coordinates: toRaw(address.location.coordinates),
+    coordinates: toRaw(address.coordinates.coordinates),
   });
 };
 

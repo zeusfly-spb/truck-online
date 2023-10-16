@@ -420,4 +420,14 @@ class CompanyController extends Controller
         'short_name' => $res[0]['value']]))]);
     }
   }
+
+  /**
+   * @param Request $request
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function findByStr(Request $request)
+  {
+    return response()
+      ->json(CompanyResource::collection(Company::where('short_name', 'like', '%' . $request->str . '%')->get()));
+  }
 }

@@ -107,14 +107,16 @@ class UserController extends BaseController
    *         @OA\JsonContent()
    *     ),
    * )
-  */
-  public function index(){
+   */
+  public function index()
+  {
     $users = [];
-    if(Auth::user()->hasRole('super-admin'))
+    if (Auth::user()->hasRole('super-admin')) {
       $users = User::with('company', 'roles')->get();
-    else $users = User::where('company_id', Auth::user()->company_id)->with('company', 'roles')->get();
-
-    return response()->json(UserResource::collection($users)->collection);
+    } else {
+      $users = User::where('company_id', Auth::user()->company_id)->with('company', 'roles')->get();
+    }
+    return response()->json(UserResource::collection($users));
 
   }
 }

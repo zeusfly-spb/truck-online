@@ -260,11 +260,6 @@ const registered = async () => {
 const company_id = computed(() => company.value && company.value.id);
 
 
-onMounted(() => {
-  const regRow = document.getElementById('reg-row');
-  console.log(regRow);
-});
-
 const goLogin = () => {
   authDialog.value = true;
   registerDialog.value = false;

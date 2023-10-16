@@ -158,7 +158,6 @@ const redirect = async () => {
       title: "Авторизован",
       message: "Вы успешно авторизовались в системе",
     });
-    await navigateTo("/profile");
   }
 };
 </script>

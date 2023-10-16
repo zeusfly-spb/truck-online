@@ -24,6 +24,7 @@ use App\Http\Controllers\DadataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MangoInteractionController;
 use App\Http\Controllers\RoleController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 

@@ -84,6 +84,13 @@
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
     ),
   ),
+  'onecentlin/laravel-adminer' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Onecentlin\\Adminer\\ServiceProvider',
+    ),
+  ),
   'spatie/laravel-ignition' => 
   array (
     'providers' => 

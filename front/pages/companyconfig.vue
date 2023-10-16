@@ -7,10 +7,10 @@
         <v-tab
           value="main"
           class="font-weight-medium text-body-1 text-uppercase"
-          >Общие данные</v-tab
+          >Реквизиты</v-tab
         >
         <v-tab value="rec" class="font-weight-medium text-body-1 text-uppercase"
-          >Реквизиты</v-tab
+          >Общие данные</v-tab
         >
         <v-tab
           value="cars"

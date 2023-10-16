@@ -9,7 +9,7 @@
               <v-select
                 label="Выберите адрес"
                 name="from_address_id"
-                :items="filteredAddresses"
+                :items="addresses"
                 item-value="id"
                 item-title="name"
                 v-model="order.from_address_id"
@@ -471,44 +471,6 @@ watch(
     order.from_address_id = newData.from_address.name;
   },
 );
-
-const order = reactive({
-  from_address_id: null,
-  from_date: null,
-  from_slot: null,
-  from_contact_name: null,
-  from_contact_phone: null,
-  from_contact_email: null,
-  delivery_address_id: null,
-  delivery_date: null,
-  delivery_slot: null,
-  delivery_contact_name: null,
-  delivery_contact_phone: null,
-  delivery_contact_email: null,
-  return_address_id: null,
-  return_date: null,
-  return_slot: null,
-  return_contact_name: null,
-  return_contact_phone: null,
-  return_contact_email: null,
-  container_id: null,
-  weight: null,
-  price: null,
-  length_algo: null,
-  description: null,
-  imo: 0,
-  temp_reg: 0,
-  is_international: 0,
-  tax_id: null,
-  calc: 0,
-});
-
-watch(() => order.from_address_id);
-watch(() => order.delivery_address_id);
-watch(() => order.return_address_id);
-watch(() => order.container_id);
-watch(() => order.tax_id);
-
 const addresses = computed(() => {
   if (!addresStore.addresses || addresStore.loading) return [];
   return (
@@ -520,12 +482,63 @@ const addresses = computed(() => {
   );
 });
 
-const filteredAddresses = computed(() => {
-  const selectedAddress = addresses.value.find(
-    (address) => address.name === intermediateData.value?.from_address.name,
-  );
-  return selectedAddress ? [selectedAddress] : addresses.value;
+const order = reactive({
+  from_address_id: intermediateData.value
+    ? addresses.value.filter(
+        (el) => el.id === intermediateData.value.from_address.id,
+      )
+    : null,
+  from_date: null,
+  from_slot: null,
+  from_contact_name: null,
+  from_contact_phone: null,
+  from_contact_email: null,
+  delivery_address_id: intermediateData.value
+    ? addresses.value.filter(
+        (el) => el.id === intermediateData.value.delivery_address.id,
+      )
+    : null,
+  delivery_date: null,
+  delivery_slot: null,
+  delivery_contact_name: null,
+  delivery_contact_phone: null,
+  delivery_contact_email: null,
+  return_address_id: intermediateData.value
+    ? addresses.value.filter(
+        (el) => el.id === intermediateData.value.return_address.id,
+      )
+    : null,
+  return_date: null,
+  return_slot: null,
+  return_contact_name: null,
+  return_contact_phone: null,
+  return_contact_email: null,
+  container_id: intermediateData.value
+    ? intermediateData.value.container.name
+    : null,
+  weight: intermediateData.value ? intermediateData.value.weight : null,
+  price: intermediateData.value ? intermediateData.value.price : null,
+  length_algo: null,
+  description: null,
+  imo: 0,
+  temp_reg: 0,
+  is_international: 0,
+  tax_id: intermediateData.value ? intermediateData.value.tax_id.name : null,
+  calc: 0,
 });
+
+watch(() => order.from_address_id);
+watch(() => order.delivery_address_id);
+watch(() => order.return_address_id);
+watch(() => order.container_id);
+watch(() => order.tax_id);
+
+// const filteredAddresses = computed(() => {
+//   const selectedAddress = addresses.value.find(
+//     (address) => address.name === intermediateData.value?.from_address.name,
+//   );
+//   return selectedAddress ? [selectedAddress] : addresses.value;
+// });
 
 const allContainers = computed(() => {
   if (!containerStore.containers || containerStore.loading) return [];

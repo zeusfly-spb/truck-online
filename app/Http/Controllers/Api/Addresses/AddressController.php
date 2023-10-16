@@ -36,10 +36,9 @@ class AddressController extends BaseController
     public function index()
     {
         try{
-          $addresses = Address::query()->where('accept_status', true);
-          return response()->json($addresses->get());
-        }catch(Exception $exception){
-          return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(AddressResource::collection(Address::all()));
+        }catch(\Exception $exception){
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
     /**

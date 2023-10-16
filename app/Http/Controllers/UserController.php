@@ -109,12 +109,6 @@ class UserController extends BaseController
    * )
   */
   public function index(){
-    $users = [];
-    if(Auth::user()->hasRole('super-admin'))
-      $users = User::with('company', 'roles')->get();
-    else $users = User::where('company_id', Auth::user()->company_id)->with('company', 'roles')->get();
-
-    return response()->json(UserResource::collection($users)->collection);
-
+    return response()->json(UserResource::collection(User::with('company', 'roles')->get()));
   }
 }

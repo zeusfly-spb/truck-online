@@ -24,6 +24,7 @@ use App\Http\Controllers\DadataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MangoInteractionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Api\BankDetails\BankDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -70,7 +71,6 @@ Route::middleware('auth:api')->group(function () {
   //Orders
   Route::prefix('orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
-    //Route::post('store', [OrderController::class, 'store']);
     Route::post('store/byCalcHistory/{calcHistoryId}', [OrderController::class, 'createOrderByCalcHistoryId']);
     Route::get('show/{order_id}', [OrderController::class, 'show']);
     Route::put('update/{order_id}', [OrderController::class, 'update']);
@@ -83,6 +83,8 @@ Route::middleware('auth:api')->group(function () {
   Route::middleware('driver')->group(function () {
     Route::apiResource('way/points', WayPointController::class);
   });
+
+  Route::apiResource('bank_details', BankDetailController::class);
 
   //CRUD Driver
   Route::apiResource('drivers', DriverController::class);

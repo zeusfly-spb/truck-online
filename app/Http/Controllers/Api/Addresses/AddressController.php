@@ -37,7 +37,7 @@ class AddressController extends BaseController
     {
         try{
           $addresses = Address::query()->where('accept_status', true);
-          return response()->json($addresses->get());
+          return response()->json(AddressResource::collection($addresses->get())->collection);
         }catch(Exception $exception){
           return response()->json(['error' => $exception->getMessage()], 500);
         }

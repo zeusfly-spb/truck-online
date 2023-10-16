@@ -482,6 +482,29 @@ const addresses = computed(() => {
   );
 });
 
+const allContainers = computed(() => {
+  if (!containerStore.containers || containerStore.loading) return [];
+  const base =
+    containerStore.containers.map((item) => ({
+      ...item,
+      title: item.name,
+      value: item.id,
+      props: { subtitle: `${item.weight} кг.` },
+    })) || [];
+  return [{ value: "", title: "Тип контейнера" }, ...base];
+});
+
+const taxes = computed(() => {
+  if (!taxStore.taxes || taxStore.loading) return [];
+  const base =
+    taxStore.taxes.map((item) => ({
+      ...item,
+      title: item.name,
+      value: item.id,
+    })) || [];
+  return [{ value: "", title: "Выберите ндс" }, ...base];
+});
+
 const order = reactive({
   from_address_id: intermediateData.value
     ? addresses.value.filter(
@@ -514,7 +537,9 @@ const order = reactive({
   return_contact_phone: null,
   return_contact_email: null,
   container_id: intermediateData.value
-    ? intermediateData.value.container.name
+    ? allContainers.value.filter(
+        (el) => el.id === intermediateData.value.container.id,
+      )
     : null,
   weight: intermediateData.value ? intermediateData.value.weight : null,
   price: intermediateData.value ? intermediateData.value.price : null,
@@ -523,7 +548,9 @@ const order = reactive({
   imo: 0,
   temp_reg: 0,
   is_international: 0,
-  tax_id: intermediateData.value ? intermediateData.value.tax_id.name : null,
+  tax_id: intermediateData.value
+    ? taxes.value.filter((el) => el.id === intermediateData.value.tax_id.id)
+    : null,
   calc: 0,
 });
 
@@ -532,36 +559,6 @@ watch(() => order.delivery_address_id);
 watch(() => order.return_address_id);
 watch(() => order.container_id);
 watch(() => order.tax_id);
-
-// const filteredAddresses = computed(() => {
-//   const selectedAddress = addresses.value.find(
-//     (address) => address.name === intermediateData.value?.from_address.name,
-//   );
-//   return selectedAddress ? [selectedAddress] : addresses.value;
-// });
-
-const allContainers = computed(() => {
-  if (!containerStore.containers || containerStore.loading) return [];
-  const base =
-    containerStore.containers.map((item) => ({
-      ...item,
-      title: item.name,
-      value: item.id,
-      props: { subtitle: `${item.weight} кг.` },
-    })) || [];
-  return [{ value: "", title: "Тип контейнера" }, ...base];
-});
-
-const taxes = computed(() => {
-  if (!taxStore.taxes || taxStore.loading) return [];
-  const base =
-    taxStore.taxes.map((item) => ({
-      ...item,
-      title: item.name,
-      value: item.id,
-    })) || [];
-  return [{ value: "", title: "Выберите ндс" }, ...base];
-});
 
 async function addOrder() {
   await orderStore.createOrder(order);

@@ -9,7 +9,7 @@
           item-title="value"
           @update:search="handleInputBik"
           @input="updateBik"
-          @click="completeFileds"
+          variant="solo"
         ></v-autocomplete>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -33,6 +33,21 @@
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-3">
+        <v-autocomplete
+          v-model="bik"
+          label="БИК"
+          :items="r"
+          item-title="value"
+          item-value="bik"
+          @update:search="handleInputBik"
+          @input="updateBik"
+          variant="solo"
+          no-data-text="Введите БИК"
+        ></v-autocomplete>
+      </v-col>
+    </v-row>
+    <v-row no-gutters>
+      <v-col md :cols="12" class="mr-3 mb-3">
         <v-text-field
           v-model="data.requisites.paymentAccount"
           label="Р/счет"
@@ -41,50 +56,71 @@
           hide-details="auto"
         ></v-text-field>
       </v-col>
+      <v-col md :cols="12" class="mb-3">
+        <v-autocomplete
+          v-model="bankName"
+          label="Название банка"
+          @update:search="handleInputBankName"
+          @input="updateNameBank"
+          item-title="value"
+          class="text-body-1"
+          :items="dadataStore.dadata"
+          variant="solo"
+          hide-details="auto"
+          no-data-text="Введите название банка"
+        ></v-autocomplete>
+      </v-col>
     </v-row>
   </v-form>
 </template>
 <script setup>
-
+import { useDadataStore } from "~/store/companyConfig/dadata";
+const dadataStore = useDadataStore();
 const bik = ref();
+const bankName = ref();
 const data = reactive({
   inn: "ИНН организации",
   requisites: {
-    bik: "",
-    bankName: "",
-    corporateAccount: "",
+    corporateAccount: null,
     paymentAccount: "",
   },
   dadata: [],
-  filedValues: ""
 });
+
+watch(() => bik.value);
 
 const updateBik = (event) => {
   bik.value = event.target.value;
 };
 
-const handleInputBik = async () => {
-
-  data.filedValues = data.dadata.find(record => record.value === bik.value);
-  console.log("filtered",data.filedValues);
-  data.requisites.bik = data.filedValues.bic;
-
-  var token = "1f871a72833bf0acbdde9976e17aeb519149480d";
-  var serviceUrl =
-    "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/bank";
-  var request = {
-    query: bik.value,
-  };
-  const headers = new Headers();
-  headers.set("Authorization", `Token ${token}`);
-  headers.set("Content-Type", "application/json");
-  const response = await fetch(serviceUrl, {
-    method: "post",
-    headers,
-    body: JSON.stringify(request),
-  });
-  const responseData = await response.json();
-  data.dadata = responseData.suggestions;
+const updateNameBank = (event) => {
+  bankName.value = event.target.value;
 };
+
+const handleInputBik = async () => {
+  await dadataStore.getDadata(bik.value);
+  if (dadataStore.dadata.length > 0) {
+    bankName.value = dadataStore.dadata[0].data.name.payment;
+    data.requisites.corporateAccount =
+      dadataStore.dadata[0].data.correspondent_account;
+  } else {
+    bankName.value = "";
+    data.requisites.corporateAccount = "";
+  }
+};
+
+const handleInputBankName = async () => {
+  await dadataStore.getDadata(bankName.value);
+  bik.value = dadataStore.dadata[0].data.bic;
+  data.requisites.corporateAccount =
+    dadataStore.dadata[0].data.correspondent_account;
+};
+
+const r = computed(() => {
+  if (!dadataStore.dadata || dadataStore.loading) return [];
+  return dadataStore.dadata;
+});
+
+
 </script>
 <style scoped></style>

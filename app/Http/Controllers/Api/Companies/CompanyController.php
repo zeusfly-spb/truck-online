@@ -380,6 +380,8 @@ class CompanyController extends Controller
     }
   }
 
+  
+
   /**
    * @OA\Delete(
    *      path="/api/companies/{id}",

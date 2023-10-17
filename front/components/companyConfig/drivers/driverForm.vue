@@ -100,7 +100,7 @@
     <v-row no-gutters>
       <v-col md :cols="12" class="mb-3">
         <v-file-input
-          v-model="data.drivers.driveLicense.file"
+          v-model="licenseFile"
           label="В/У водителя"
           class="text-body-1"
           variant="outlined"
@@ -128,6 +128,7 @@
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
+          type="date"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -149,9 +150,8 @@
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
-import tableDrivers from "./tableDrivers.vue";
 const driverStore = useDriversStore();
-
+const licenseFile = ref();
 const data = reactive({
   drivers: {
     first_name: {
@@ -168,12 +168,9 @@ const data = reactive({
     password: null,
     files: [],
     passport: {
-      main: null,
-      second: null,
       number: null,
     },
     driveLicense: {
-      file: null,
       date: null,
       number: null,
     },
@@ -181,37 +178,47 @@ const data = reactive({
 });
 
 async function addDriver() {
-  const body = {
-    first_name: data.drivers.first_name.value,
-    middle_name: data.drivers.middle_name.value,
-    last_name: data.drivers.last_name.value,
-    email: data.drivers.email,
-    phone: data.drivers.phone,
-    password: data.drivers.password,
-  };
-  await driverStore.addDriver(body);
 
   const formdata = new FormData();
-  const driverLicense = [
-    data.drivers.driveLicense.file,
-    data.drivers.driveLicense.date,
-    data.drivers.driveLicense.number,
-  ];
-  console.log("fffff:", driverLicense);
-  for (let i = 0; i < driverLicense.length; i++) {
-    formdata.append("document", driverLicense[0]);
-    formdata.append("document_date", driverLicense[1]);
-    formdata.append("document_number", driverLicense[2]);
-  }
-  await driverStore.addDriverLicense(formdata);
+  formdata.append("first_name", data.drivers.first_name.value);
+  formdata.append("middle_name", data.drivers.middle_name.value);
+  formdata.append("last_name", data.drivers.last_name.value);
+  formdata.append("email", data.drivers.email);
+  formdata.append("phone", data.drivers.phone);
+  formdata.append("password", data.drivers.password);
+  formdata.append("document", licenseFile.value[0]);
+  formdata.append("document_date", data.drivers.driveLicense.date);
+  formdata.append("document_number", data.drivers.driveLicense.number);
 
-  const filesdata = new FormData();
-  const files = data.drivers.files;
-  console.log("files:", files);
+  var files = data.drivers.files;
   for (let i = 0; i < files.length; i++) {
-    filesdata.append("files[]", files[i]);
+    formdata.append("files[]", files[i]);
   }
-  await driverStore.addPassportDriver(filesdata);
+
+  await driverStore.addDriver(formdata);
+
+  // const body = {
+  //   first_name: data.drivers.first_name.value,
+  //   middle_name: data.drivers.middle_name.value,
+  //   last_name: data.drivers.last_name.value,
+  //   email: data.drivers.email,
+  //   phone: data.drivers.phone,
+  //   password: data.drivers.password,
+  // };
+
+
+  // const formdata = new FormData();
+  // formdata.append("document", licenseFile.value[0]);
+  // formdata.append("document_date", data.drivers.driveLicense.date);
+  // formdata.append("document_number", data.drivers.driveLicense.number);
+  // await driverStore.addDriverLicense(formdata);
+
+  // const filesdata = new FormData();
+  // const files = data.drivers.files;
+  // for (let i = 0; i < files.length; i++) {
+  //   filesdata.append("files[]", files[i]);
+  // }
+  // await driverStore.addPassportDriver(filesdata);
 }
 
 async function resetData() {
@@ -230,7 +237,7 @@ async function resetData() {
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения!",
   phoneLength: (value) =>
-    value.toString().length === 10 || "Телефон должен быть длинной 10 цифр",
+    String(value).length === 10 || "Телефон должен быть длинной 10 цифр",
 };
 
 const rulesFile = [(v) => !!v || "Выберите файл"];

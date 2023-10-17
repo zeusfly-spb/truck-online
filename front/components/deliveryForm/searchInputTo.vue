@@ -90,7 +90,7 @@ watch(selectedAddress, (coordinates) => {
 });
 
 const rules = {
-  required: (value) => !!value || "Поле обязательно для заполнения",
+  required: (value) => !!inputTextTo.value || "Поле обязательно для заполнения",
 };
 
 const addressesTo = computed(() => {
@@ -131,7 +131,7 @@ const selectAddressTo = (address) => {
   selectedAddress.value = toRaw({
     id: address.id,
     name: address.name,
-    coordinates: toRaw(address.location.coordinates),
+    coordinates: toRaw(address.coordinates.coordinates),
   });
 };
 

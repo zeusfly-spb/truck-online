@@ -5,6 +5,7 @@ const url = "orders/store";
 export const useCalculate = defineStore("calculateStore", {
   state: () => ({
     price: null,
+    intermediateData: null,
   }),
   actions: {
     resetPrice() {
@@ -20,6 +21,8 @@ export const useCalculate = defineStore("calculateStore", {
         });
         if (_rawValue) {
           this.price = _rawValue.price;
+          console.log(_rawValue);
+          this.intermediateData = _rawValue;
           useSnack({
             show: true,
             type: "success",

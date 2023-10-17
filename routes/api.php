@@ -24,6 +24,7 @@ use App\Http\Controllers\DadataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MangoInteractionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Api\BankDetails\BankDetailController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -61,17 +62,16 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('orderAction/{order_id}/show', [OrderActionController::class, 'show']);
     Route::get('address/accept/{id}', [AddressController::class, 'accept']);
-
+    Route::apiResource('companies', CompanyController::class);
   });
-    //on production add middleware super-admin
+
     Route::get('users', [UserController::class, 'index']);
-    Route::get('admin/drivers', [DriverController::class, 'admin_index']);
-    Route::post('address/accept/{id}', [AddressController::class, 'accept']);
+    Route::get('user/addresses', [AddressController::class, 'userAddress']);
 
   //Orders
   Route::prefix('orders')->group(function () {
     Route::get('/', [OrderController::class, 'index']);
-    //Route::post('store', [OrderController::class, 'store']);
+    Route::post('store/byCalcHistory/{calcHistoryId}', [OrderController::class, 'createOrderByCalcHistoryId']);
     Route::get('show/{order_id}', [OrderController::class, 'show']);
     Route::put('update/{order_id}', [OrderController::class, 'update']);
     Route::post('accept/action/{order_action_id}', [OrderActionController::class, 'accept']);
@@ -84,6 +84,8 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('way/points', WayPointController::class);
   });
 
+  Route::apiResource('bank_details', BankDetailController::class);
+  Route::post('update/company', [CompanyController::class, 'updateCompany']);
   //CRUD Driver
   Route::apiResource('drivers', DriverController::class);
   Route::post('driver/documents/{driver_id}', [DriverController::class, 'uploadDocument']);
@@ -116,12 +118,12 @@ Route::prefix('confirmation')->group(function () {
 });
 
 Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
-Route::get('address/client', [AddressController::class, 'addressCLient']);
+
 Route::apiResource('addresses', AddressController::class);
 Route::apiResource('containers', ContainerController::class);
 Route::apiResource('taxes', TaxController::class);
 Route::apiResource('countries', CountryController::class);
-Route::apiResource('companies', CompanyController::class);
+
 Route::get('order/settings', [OrderSettingController::class, 'index']);
 
 

@@ -17,10 +17,10 @@
           <td>{{ history.container?.name }}</td>
           <td>{{ history.price }}</td>
           <td>{{ history.weight }}</td>
-          <td>{{ history.from_address.name }}</td>
-          <td>{{ history.delivery_address.name }}</td>
-          <td>{{ history.return_address.name }}</td>
-          <td>{{ history.tax_id.name }}</td>
+          <td>{{ history.from_address?.name }}</td>
+          <td>{{ history.delivery_address?.name }}</td>
+          <td>{{ history.return_address?.name }}</td>
+          <td>{{ history.tax?.name }}</td>
           <td>
             <v-col>
               <v-menu>

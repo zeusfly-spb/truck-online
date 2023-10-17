@@ -87,8 +87,36 @@ class UserController extends BaseController
     Auth::user()->update($request->all());
     return response()->json(new UserResource(User::with('company', 'roles')->find(Auth::id())));
   }
+  /**
+   * @OA\Get(
+   *     path="/api/users",
+   *     summary="Get list of Users",
+   *     security={{"bearer_token": {}}},
+   *     tags = {"Users"},
+   *     @OA\Parameter(
+   *         description="Localization",
+   *         in="header",
+   *         name="X-Localization",
+   *         required=false,
+   *         @OA\Schema(type="string"),
+   *         @OA\Examples(example="ru", value="ru", summary="Russian")
+   *    ),
+   *     @OA\Response(
+   *         response=200,
+   *         description="SUCCESS",
+   *         @OA\JsonContent()
+   *     ),
+   * )
+   */
+  public function index()
+  {
+    $users = [];
+    if (Auth::user()->hasRole('super-admin')) {
+      $users = User::with('company', 'roles')->get();
+    } else {
+      $users = User::where('company_id', Auth::user()->company_id)->with('company', 'roles')->get();
+    }
+    return response()->json(UserResource::collection($users));
 
-  public function index(){
-    return response()->json(UserResource::collection(User::with('company', 'roles')->get()));
   }
 }

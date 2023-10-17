@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Api\Addresses\AddressResource;
 use App\Http\Resources\Api\Containers\ContainerResource;
+use App\Http\Resources\Api\Companies\CompanyResource;
 
 class OrderResource extends JsonResource
 {
@@ -36,6 +37,8 @@ class OrderResource extends JsonResource
             'container' => ContainerResource::make($this->container),
             'weight' => $this->weight,
             'price' => $this->price,
+            'company' => CompanyResource::make($this->company),
+            'status' => $this->order_status,
             'created_date' => \Carbon\Carbon::parse($this->created_at)->format('Y-m-d')
         ];
     }

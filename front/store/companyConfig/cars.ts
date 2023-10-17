@@ -9,6 +9,7 @@ export const useCarsStore = defineStore("cardStore", {
     rightUse: [],
     cars: [],
     loading: false,
+    oneCar: [],
   }),
   actions: {
     setLoading(value) {
@@ -75,7 +76,6 @@ export const useCarsStore = defineStore("cardStore", {
         } = await opFetch("/cars", {
           method: "post",
           body: formData,
-          headers,
         });
         if (_rawValue) {
           this.cars.unshift(_rawValue);
@@ -86,6 +86,16 @@ export const useCarsStore = defineStore("cardStore", {
             message: "Поздравляем",
           });
         }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async showCar(id) {
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/cars/${id}`);
+        this.oneCar = _rawValue;
       } catch (error) {
         console.error(error);
       }

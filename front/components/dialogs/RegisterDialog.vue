@@ -1,5 +1,7 @@
 <template>
-  <div>
+  <div
+    style="word-wrap: normal"
+  >
     <v-dialog v-model="registerDialog" :persistent="true" :width="modalWidth">
       <v-card>
         <v-card-title>
@@ -37,7 +39,11 @@
                       </v-radio-group>
                     </v-col>
                     <v-col>
+                      <CompanyFinder
+                        v-if="companySearchMode === 'str'"
+                      />
                       <v-text-field
+                        v-if="companySearchMode === 'inn'"
                         v-model="inn"
                         :readonly="companyConfirmed"
                         class="inputInn"
@@ -46,7 +52,20 @@
                         maxLength="12"
                         placeholder="0000 0000 0000"
                         type="number"
-                      />
+                      >
+                        <template
+                          v-if="!companyConfirmed"
+                          v-slot:append-inner
+                        >
+                          <v-icon
+                            @click="companySearchMode = 'str'"
+                            color="blue"
+                            icon="mdi-file-find-outline"
+                            style="cursor: pointer"
+                            title="Найти компанию по названию"
+                          />
+                        </template>
+                      </v-text-field>
                       <div v-if="company && companyConfirmed">
                         <v-icon color="green" icon="mdi-check-bold" />
                         {{ company.short_name }}
@@ -58,15 +77,10 @@
                       >
                         {{ company.short_name }}
                       </v-btn>
-                      <v-radio-group
+                      <v-checkbox
                         v-model="ndsPayer"
-                        class="mt-4"
-                        inline
-                        label="Являетесь ли вы плательщиком НДС?"
-                      >
-                        <v-radio label="Да" value="yes" />
-                        <v-radio label="Нет" value="no" />
-                      </v-radio-group>
+                        label="Плательщик НДС"
+                      />
                       <v-text-field
                         v-model="contactPerson"
                         :rules="[]"
@@ -213,17 +227,19 @@ import { useAuthStore } from "~/store/auth";
 import { useConfigStore } from "~/store/config";
 import { Mask } from "maska";
 import {useDisplay} from "vuetify";
+import CompanyFinder from "~/components/CompanyFinder.vue";
 
 const authStore = useAuthStore();
 const configStore = useConfigStore();
 const { authDialog, registerDialog, dialogMode, dialogTitle, dialog, company } =
   storeToRefs(authStore);
-const { phoneConfirmed, emailConfirmed, companyConfirmed } =
+const { phoneConfirmed, emailConfirmed, companyConfirmed, companySearchMode } =
   storeToRefs(configStore);
 const mask = new Mask({ mask: "+7 (###) ###-##-##" });
 const emailConfirmCode = computed(() => configStore.emailConfirmCode);
 const { getCompanyByInn, registerUser } = authStore;
 const { name } = useDisplay();
+const findCompanyByStr = ref(false);
 const accountType = ref("");
 const inn = ref("");
 const ndsPayer = ref("no");
@@ -245,7 +261,7 @@ const passwordConfirmValid = computed(
 );
 const displayMode = computed(() => name.value);
 const modalWidth = computed(() => wideScreen.value ? '40%' : '100%');
-const wideScreen = computed(() => ['xl', 'xxl'].includes(displayMode.value));
+const wideScreen = computed(() => ['lg', 'xl', 'xxl'].includes(displayMode.value));
 watch(email, () => (emailConfirmationStatus.value = ""));
 watch(phone, () => (phoneConfirmationStatus.value = ""));
 const registered = async () => {

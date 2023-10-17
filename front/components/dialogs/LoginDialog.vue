@@ -110,7 +110,7 @@ const {loginType} = storeToRefs(useConfigStore());
 const { name } = useDisplay();
 const displayMode = computed(() => name.value);
 const modalWidth = computed(() => wideScreen.value ? '30%' : '100%');
-const wideScreen = computed(() => ['xl', 'xxl'].includes(displayMode.value));
+const wideScreen = computed(() => ['lg', 'xl', 'xxl'].includes(displayMode.value));
 watch(loginType, () => {
   username.value = "";
 });

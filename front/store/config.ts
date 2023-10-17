@@ -17,7 +17,8 @@ export const useConfigStore = defineStore("config", {
     emailConfirmed: false,
     activePanel: null,
     currentRoute: {},
-    loginType: 'email'
+    loginType: 'email',
+    companySearchMode: 'inn'
   }),
   actions: {
     async setValue({ key, value }) {

@@ -9,7 +9,7 @@
           item-title="value"
           @update:search="handleInputBik"
           @input="updateBik"
-          variant="solo"
+          @click="completeFileds"
         ></v-autocomplete>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -56,6 +56,7 @@ const data = reactive({
     paymentAccount: "",
   },
   dadata: [],
+  filedValues: ""
 });
 
 const updateBik = (event) => {
@@ -63,7 +64,11 @@ const updateBik = (event) => {
 };
 
 const handleInputBik = async () => {
-  console.log("Input value changed:", bik.value);
+
+  data.filedValues = data.dadata.find(record => record.value === bik.value);
+  console.log("filtered",data.filedValues);
+  data.requisites.bik = data.filedValues.bic;
+
   var token = "1f871a72833bf0acbdde9976e17aeb519149480d";
   var serviceUrl =
     "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/bank";
@@ -80,7 +85,6 @@ const handleInputBik = async () => {
   });
   const responseData = await response.json();
   data.dadata = responseData.suggestions;
-  console.log("ssssss:", data.dadata);
 };
 </script>
 <style scoped></style>

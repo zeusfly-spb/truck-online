@@ -8,6 +8,7 @@ use App\Http\Resources\CompanyResource;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use Exception;
+use Auth;
 
 class CompanyController extends Controller
 {
@@ -362,13 +363,19 @@ class CompanyController extends Controller
    *     ),
    *   )
    */
-  public function update(CompanyRequest $request, $id)
+  public function updateCompany(Request $request)
   {
     try {
-      $company = Company::find($id);
-      $company->update($request->all());
+      $company = Company::find(Auth::user()->company_id);
+      if ($company) {
+        $company->update([
+          'phone' => $request->phone,
+          'email' => $request->email,
+          'cceo_name' => $request->cceo_name
+        ]);
+      }
       return response()->json(CompanyResource::make($company));
-    } catch (Exception $exception) {
+    }catch (Exception $exception) {
       return response()->json(['error' => $exception->getMessage()], 500);
     }
   }

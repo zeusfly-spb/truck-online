@@ -1,5 +1,5 @@
 <template>
-  <v-container style="max-width: 2300px; background-color: white">
+  <div style="max-width: 2300px; background-color: white">
     <div class="headerOrderTable">
       <h2 class="tableOrders">Таблица заказов</h2>
       <div class="btnsOrderTable">
@@ -112,8 +112,9 @@
                 <span>ID</span> <span @click="sortOrders('id')">⇅</span>
               </div>
             </th>
+            <th style="color: black">Погрузка</th>
+            <th style="color: black">Cлот</th>
             <th style="color: black">Адрес погрузки</th>
-            <th style="color: black">Дата погрузки</th>
             <th style="color: black">Адрес доставки</th>
             <th style="color: black">Возврат контейнера</th>
 
@@ -133,27 +134,47 @@
           </tr>
         </thead>
         <tbody style="color: black">
-          <tr v-for="order in paginatedOrders" :key="order.id">
-            <td>{{ order.id }}</td>
-            <td>{{ order.from_address.name }}</td>
-            <td>{{ order.from_date }}</td>
-            <td>
-              {{ order.delivery_address.name }}, дата доставки:
-              <p class="date">{{ order.delivery_date }}</p>
-            </td>
-            <td>
-              {{ order.return_address.name }}, дата возврата:
-              <p class="date">{{ order.return_date }}</p>
-            </td>
-            <td>{{ order.container.name }}</td>
-            <td>{{ order.weight }}</td>
-            <td>{{ order.price }}</td>
-          </tr>
+          <template v-for="order in paginatedOrders" :key="order.id">
+            <tr @click="paramsOrder(order.id)" style="cursor: pointer">
+              <td>{{ order.id }}</td>
+              <td>{{ order.from_date }}</td>
+              <td>{{ order.from_slot }}</td>
+              <td>
+                {{ order.from_address.name }}
+              </td>
+              <td>
+                {{ order.delivery_address.name }}, дата доставки:
+                <p class="date">
+                  {{ order.delivery_date }}
+                </p>
+              </td>
+              <td>
+                {{ order.return_address.name }}, дата возврата:
+                <p class="date">
+                  {{ order.return_date }}
+                </p>
+              </td>
+              <td>{{ order.container.name }}</td>
+              <td>{{ order.weight }}</td>
+              <td>{{ order.price }}</td>
+            </tr>
+            <tr v-if="selectOrderId === order.id && oneOrder">
+              <td colspan="9">
+                <div class="dopParams">
+                  <div>Класс imo</div>
+                  <div>НДС</div>
+                  <div>Температурный режим</div>
+                  <div>Is international</div>
+                  <v-btn type="button" @click="closeOneOrder">Принять</v-btn>
+                </div>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </v-table>
     </div>
     <div v-intersect="onIntersect" class="observer">Загрузка...</div>
-  </v-container>
+  </div>
 </template>
 <script setup>
 import { useOrdersStore } from "~/store/order";
@@ -170,9 +191,11 @@ const sortOrder = ref(1);
 const currentPage = ref(1);
 const itemsPerPage = ref(10);
 const orderStore = useOrdersStore();
+const selectOrderId = ref(null);
 
 onBeforeMount(async () => {
   await orderStore.getOrders();
+  await orderStore.getOneOrder();
 });
 
 const paginatedOrders = computed(() => {
@@ -254,10 +277,29 @@ const deleteFilters = () => {
   selectedContainerTypes.value = "";
   statusChosen.value = "";
 };
+
+async function paramsOrder(id) {
+  await orderStore.getOneOrder(id);
+  selectOrderId.value = id;
+}
+
+const oneOrder = computed(() => {
+  if (!orderStore.oneOrder || orderStore.loading) return [];
+  return orderStore.oneOrder.order;
+});
+
+const closeOneOrder = () => {
+  selectOrderId.value = null;
+};
 </script>
 
 <style scoped lang="sass">
 
+.dopParams
+  height: 11vh
+  display: flex
+  justify-content: space-between
+  margin-top: 15px
 
 .tableOrders
   color: rgba(0, 0, 0, 0.704)
@@ -268,6 +310,7 @@ const deleteFilters = () => {
   display: flex
   justify-content: space-between
   align-items: center
+  margin: 0px 15px 15px 10px
 
 .btnsOrderTable
   display: flex
@@ -280,7 +323,6 @@ const deleteFilters = () => {
   font-size: 24px
   height: 100vh
 .date
-  color: red
   font-weight: 900
 .filters
   display: flex

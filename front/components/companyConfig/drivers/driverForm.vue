@@ -128,6 +128,7 @@
           variant="outlined"
           hide-details="auto"
           :rules="[rules.required]"
+          type="date"
         ></v-text-field>
       </v-col>
     </v-row>
@@ -149,7 +150,6 @@
 </template>
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
-import tableDrivers from "./tableDrivers.vue";
 const driverStore = useDriversStore();
 
 const data = reactive({
@@ -197,17 +197,13 @@ async function addDriver() {
     data.drivers.driveLicense.date,
     data.drivers.driveLicense.number,
   ];
-  console.log("fffff:", driverLicense);
-  for (let i = 0; i < driverLicense.length; i++) {
-    formdata.append("document", driverLicense[0]);
-    formdata.append("document_date", driverLicense[1]);
-    formdata.append("document_number", driverLicense[2]);
-  }
+  formdata.append("document", driverLicense[0]);
+  formdata.append("document_date", driverLicense[1]);
+  formdata.append("document_number", driverLicense[2]);
   await driverStore.addDriverLicense(formdata);
 
   const filesdata = new FormData();
   const files = data.drivers.files;
-  console.log("files:", files);
   for (let i = 0; i < files.length; i++) {
     filesdata.append("files[]", files[i]);
   }
@@ -230,7 +226,7 @@ async function resetData() {
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения!",
   phoneLength: (value) =>
-    value.toString().length === 10 || "Телефон должен быть длинной 10 цифр",
+    String(value).length === 10 || "Телефон должен быть длинной 10 цифр",
 };
 
 const rulesFile = [(v) => !!v || "Выберите файл"];

@@ -59,7 +59,7 @@
           </template>
 
           <template v-slot:default="{ isActive }">
-            <v-card title="Dialog">
+            <v-card title="Изменение данных машины">
               <v-card-text>
                 <v-form @submit.prevent="updateCar" v-if="data.showFormCar">
                   <v-row no-gutters class="align-center">
@@ -132,6 +132,7 @@
                         v-model="icon"
                         label="Иконка"
                         class="text-body-1"
+                        prepend-icon=""
                         variant="outlined"
                         hide-details="auto"
                         style="margin-right: 10px"
@@ -165,6 +166,7 @@
                       <v-file-input
                         label="СТС Основная Сторона"
                         v-model="fileOne"
+                        prepend-icon=""
                         class="text-body-1"
                         variant="outlined"
                         hide-details="auto"
@@ -177,6 +179,7 @@
                         label="СТС Обратная Сторона"
                         v-model="fileTwo"
                         class="text-body-1"
+                        prepend-icon=""
                         variant="outlined"
                         hide-details="auto"
                         :rules="[rules.required]"
@@ -336,10 +339,4 @@ async function deleteCar(id) {
   await carStore.deleteCar(id);
 }
 </script>
-<style scoped>
-.v-input__details > .v-icon,
-.v-input__prepend > .v-icon,
-.v-input__append > .v-icon {
-  margin-left: 25px;
-}
-</style>
+<style scoped></style>

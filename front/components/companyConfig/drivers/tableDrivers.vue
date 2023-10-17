@@ -1,5 +1,7 @@
 <template>
-  <h1 v-if="allDrivers.length === 0">У вас нет еще ни одного водителя</h1>
+  <h1 v-if="allDrivers.length === 0" style="text-align: center; margin-top: 20px;" >
+    У вас нет еще ни одного водителя
+  </h1>
   <v-table fixed-header v-else>
     <thead>
       <tr>
@@ -64,6 +66,5 @@ const deleteDriver = async (id) => {
   await driverStore.deleteDriver(id);
 };
 
-console.log("drova:", allDrivers);
 </script>
 <style scoped></style>

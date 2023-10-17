@@ -10,12 +10,12 @@
           hide-details="auto"
         ></v-text-field>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
+      <v-col class="mb-3">
         <v-autocomplete
           v-model="bik"
           label="БИК"
-          :items="r"
-          item-title="value"
+          :items="allDadata"
+          item-title="data.bic"
           item-value="bik"
           @update:search="handleInputBik"
           @input="updateBik"
@@ -93,11 +93,9 @@ const handleInputBankName = async () => {
     dadataStore.dadata[0].data.correspondent_account;
 };
 
-const r = computed(() => {
+const allDadata = computed(() => {
   if (!dadataStore.dadata || dadataStore.loading) return [];
   return dadataStore.dadata;
 });
-
-
 </script>
 <style scoped></style>

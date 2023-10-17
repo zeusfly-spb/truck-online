@@ -14,9 +14,8 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
+          placeholder="М170ХТ178"
           :rules="[rules.carNumber]"
-          type="number"
-          placeholder="000"
         ></v-text-field>
       </v-col>
       <v-col md :cols="12" class="mb-3">
@@ -79,7 +78,7 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 10px"
-          :rules="[rules.required]"
+          :rules="[rules.file]"
         >
         </v-file-input>
       </v-col>
@@ -118,7 +117,7 @@
           variant="outlined"
           hide-details="auto"
           style="margin-right: 6px; margin-left: 7px"
-          :rules="[rules.required]"
+          :rules="[rules.file]"
         ></v-file-input>
       </v-col>
       <v-col class="mb-3">
@@ -128,7 +127,7 @@
           class="text-body-1 sts"
           variant="outlined"
           hide-details="auto"
-          :rules="[rules.required]"
+          :rules="[rules.file]"
         ></v-file-input>
       </v-col>
     </v-row>
@@ -144,6 +143,7 @@
         color="primary"
         class="text-body-2 text-uppercase rounded font-weight-bold elevation-0"
         @click="resetData"
+        type="button"
         >Cбросить
       </v-btn>
     </div>
@@ -162,9 +162,12 @@ const changeShowFormCar = () => {
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
   carNumber: (value) =>
-    value.toString().length === 3 || "Номер машины должен быть длиной 3 цифры",
+    String(value).length === 8 ||
+    String(value).length === 9 ||
+    "Номер машины должен быть длиной 8 или 9 знаков",
   sts: (value) =>
     String(value).length === 8 || "CТС-номер должен быть восьмизначным числом",
+  file: (value) => !!value || "Выберите файл",
 };
 const data = reactive({
   showFormCar: false,
@@ -173,7 +176,7 @@ const data = reactive({
       value: null,
     },
     number: {
-      value: "",
+      value: null,
     },
     brand: {
       value: null,
@@ -188,7 +191,7 @@ const data = reactive({
     fileOne: null,
     fileTwo: null,
     sts: {
-      number: "",
+      number: null,
     },
   },
 });
@@ -244,22 +247,39 @@ async function addCar() {
   formdata.append("sts_file_2", fileTwo.value[0]);
   formdata.append("right_use_id", data.cars.rightOfUse.value);
   formdata.append("max_weigth", data.cars.weigth);
-  await carStore.addNewCar(formdata);
-  resetData();
-  changeShowFormCar();
+  const validate =
+    data.cars.number.value &&
+    data.cars.types.value &&
+    data.cars.brand.value &&
+    data.cars.country.value &&
+    data.cars.sts.number &&
+    data.cars.rightOfUse.value &&
+    data.cars.weigth 
+  if (validate) {
+    await carStore.addNewCar(formdata);
+    resetData();
+    changeShowFormCar();
+  } else {
+    useSnack({
+      show: true,
+      type: "error",
+      title: "Новая машина не добавлена!",
+      message: "Проверьте все ли поля заполнены",
+    });
+  }
 }
 
 async function resetData() {
-  data.cars.number.value = "";
-  data.cars.types.value = "";
-  data.cars.brand.value = "";
-  data.cars.country.value = "";
-  data.cars.sts.number = "";
-  icon.value = "";
-  fileOne.value = "";
-  fileTwo.value = "";
-  data.cars.rightOfUse.value = "";
-  data.cars.weigth = "";
+  data.cars.number.value = null;
+  data.cars.types.value = null;
+  data.cars.brand.value = null;
+  data.cars.country.value = null;
+  data.cars.sts.number = null;
+  icon.value = null;
+  fileOne.value = null;
+  fileTwo.value = null;
+  data.cars.rightOfUse.value = null;
+  data.cars.weigth = null;
 }
 </script>
 <style scoped>

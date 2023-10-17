@@ -20,18 +20,19 @@
         </div>
       </div>
       <div class="return">
-        <search-input-return
-          @updateSelectedAddressReturn="updateSelectAdressReturn"
-          ref="childReturn"
-        />
+        <div class="inputReturn">
+          <search-input-return
+            @updateSelectedAddressReturn="updateSelectAdressReturn"
+            ref="childReturn"
+          />
+        </div>
+        <div class="inputWeight">
+          <weight-input @updateWeight="updateWeight" ref="childWeight" />
+        </div>
       </div>
       <div class="containerInput">
-        <div class="inputWeight">
-          <weight-input
-            @updateWeight="updateWeight"
-            style="flex: 1"
-            ref="childWeight"
-          />
+        <div class="taxSelect">
+          <tax-select @updateTax="updateTax" ref="childTax" />
         </div>
         <div class="containerSelect">
           <div>Тип контейнера</div>
@@ -62,7 +63,8 @@
         <v-btn
           variant="tonal"
           style="background-color: #2e67b1; color: rgba(255, 255, 255, 0.5)"
-          @click.prevent="clearData"
+          @click="clearData"
+          type="button"
         >
           Сбросить
         </v-btn>
@@ -76,6 +78,7 @@ import SearchInputTo from "./searchInputTo.vue";
 import SearchInputReturn from "./searchInputReturn.vue";
 import searchContainer from "./searchContainer.vue";
 import WeightInput from "./weightInput.vue";
+import taxSelect from "./taxSelect.vue";
 import { useCalculate } from "~/store/calculateForm";
 import { defineEmits } from "vue";
 
@@ -84,11 +87,13 @@ const showAdditionalOptions = ref(false);
 const containerId = ref(null);
 const calculation = useCalculate();
 const selectedIds = ref([]);
+const tax = ref(null);
 const weight = ref(null);
 const childFrom = ref(null);
 const childTo = ref(null);
 const childReturn = ref(null);
 const childWeight = ref(null);
+const childTax = ref(null);
 const childSelectContainer = ref(null);
 const showCalculateBtn = ref(true);
 const emit = defineEmits([
@@ -96,6 +101,7 @@ const emit = defineEmits([
   "updateContainer",
   "updateWeight",
   "clearMarkers",
+  "updateTax",
 ]);
 
 const toggleAdditionalOptions = () => {
@@ -123,11 +129,14 @@ const updateSelectAdressReturn = (address) => {
 };
 
 const updateWeight = (value) => {
-  if (value === "") {
-    errorWeight.value = true;
-  }
   weight.value = value;
   emit("updateWeight", weight.value);
+  showCalculateBtn.value = true;
+};
+const updateTax = (value) => {
+  tax.value = value;
+  console.log("taaaax:", tax.value);
+  emit("updateTax", tax.value);
   showCalculateBtn.value = true;
 };
 
@@ -154,11 +163,25 @@ async function submitForm() {
     imo: 0,
     is_international: 1,
     temp_reg: 1,
-    tax_id: 1,
+    tax_id: tax.value,
     calc: 1,
   };
-  await calculation.calculate(body);
-  showCalculateBtn.value = false;
+  if (
+    selectedIds &&
+    weight.value &&
+    tax.value &&
+    childSelectContainer.value.validate()
+  ) {
+    await calculation.calculate(body);
+    showCalculateBtn.value = false;
+  } else {
+    useSnack({
+      show: true,
+      type: "error",
+      title: "Проверьте все ли данные указаны!",
+      message: "Предварительная стоимость не рассчитана",
+    });
+  }
 }
 
 const clearData = () => {
@@ -167,6 +190,7 @@ const clearData = () => {
   childReturn.value.clearInput();
   childWeight.value.clearInput();
   childSelectContainer.value.clearSelect();
+  childTax.value.clearSelect();
   selectedCoordinates.value = [];
   selectedIds.value = [];
   emit("clearMarkers");
@@ -226,7 +250,8 @@ const clearData = () => {
     align-items: baseline;
     margin-top: 25px;
   }
-  .inputFrom {
+  .inputFrom,
+  .inputReturn {
     flex: 1;
     margin-right: 10px;
     position: relative;
@@ -236,10 +261,22 @@ const clearData = () => {
     flex: 1;
   }
 
+  .inputWeight,
+  .inputWeight {
+    flex: 1;
+  }
+
+  .return {
+    display: flex;
+    align-items: baseline;
+  }
+
   .containerInput {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+  }
+  .taxSelect,
+  .containerSelect {
+    flex: 1;
   }
   .inputWeight {
     flex: 1;

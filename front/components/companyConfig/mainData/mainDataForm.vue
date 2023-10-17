@@ -31,15 +31,6 @@
           hide-details="auto"
         ></v-file-input>
       </v-col>
-      <v-col md :cols="12" class="mb-3">
-        <v-text-field
-          label="Реквизиты для договора"
-          v-model="data.main.rulereglamento.dataForContract"
-          class="text-body-1"
-          variant="outlined"
-          hide-details="auto"
-        ></v-text-field>
-      </v-col>
     </v-row>
     <v-row no-gutters>
       <v-col md :cols="12" class="mr-3 mb-3">
@@ -110,7 +101,6 @@ const data = reactive({
     email: "",
     rulereglamento: {
       file: "",
-      dataForContract: "",
       number: "",
       date: "",
       signatoryPersone: "",

@@ -9,7 +9,7 @@
               <v-select
                 label="Выберите адрес"
                 name="from_address_id"
-                :items="addresses.filter((el) => !!el.from)"
+                :items="addresses"
                 item-value="id"
                 item-title="name"
                 v-model="order.from_address_id"
@@ -447,11 +447,13 @@ import { useContainersStore } from "~/store/containers";
 import { useAddressesStore } from "~/store/address";
 import { useOrdersStore } from "~/store/order";
 import { useTaxesStore } from "~/store/tax";
+import { useCalculate } from "~/store/calculateForm";
 
 const containerStore = useContainersStore();
 const addresStore = useAddressesStore();
 const orderStore = useOrdersStore();
 const taxStore = useTaxesStore();
+const calculate = useCalculate();
 
 onBeforeMount(async () => {
   await containerStore.getContainers();
@@ -459,58 +461,16 @@ onBeforeMount(async () => {
   await taxStore.getTaxes();
 });
 
-const order = reactive({
-  from_address_id: null,
-  from_date: null,
-  from_slot: null,
-  from_contact_name: null,
-  from_contact_phone: null,
-  from_contact_email: null,
-  delivery_address_id: null,
-  delivery_date: null,
-  delivery_slot: null,
-  delivery_contact_name: null,
-  delivery_contact_phone: null,
-  delivery_contact_email: null,
-  return_address_id: null,
-  return_date: null,
-  return_slot: null,
-  return_contact_name: null,
-  return_contact_phone: null,
-  return_contact_email: null,
-  container_id: null,
-  weight: null,
-  price: null,
-  length_algo: null,
-  description: null,
-  imo: 0,
-  temp_reg: 0,
-  is_international: 0,
-  tax_id: null,
-  calc: 0,
+const intermediateData = computed(() => {
+  return calculate.intermediateData;
 });
 
 watch(
-  () => order.from_address_id,
-  (newVal) => console.log("new address:", newVal),
+  () => intermediateData.value,
+  (newData) => {
+    order.from_address_id = newData.from_address.name;
+  },
 );
-watch(
-  () => order.delivery_address_id,
-  (newVal) => console.log("new address:", newVal),
-);
-watch(
-  () => order.return_address_id,
-  (newVal) => console.log("new address:", newVal),
-);
-watch(
-  () => order.container_id,
-  (newVal) => console.log("new container:", newVal),
-);
-watch(
-  () => order.tax_id,
-  (newVal) => console.log("tax:", newVal),
-);
-
 const addresses = computed(() => {
   if (!addresStore.addresses || addresStore.loading) return [];
   return (
@@ -545,6 +505,61 @@ const taxes = computed(() => {
   return [{ value: "", title: "Выберите ндс" }, ...base];
 });
 
+const order = reactive({
+  from_address_id: intermediateData.value
+    && addresses.value.find(
+        (el) => el.id === intermediateData.value.from_address.id,
+      ).id
+    || null,
+  from_date: null,
+  from_slot: null,
+  from_contact_name: null,
+  from_contact_phone: null,
+  from_contact_email: null,
+  delivery_address_id: intermediateData.value
+    && addresses.value.find(
+        (el) => el.id === intermediateData.value.delivery_address.id,
+      ).id
+    || null,
+  delivery_date: null,
+  delivery_slot: null,
+  delivery_contact_name: null,
+  delivery_contact_phone: null,
+  delivery_contact_email: null,
+  return_address_id: intermediateData.value
+    && addresses.value.find(
+        (el) => el.id === intermediateData.value.return_address.id,
+      ).id
+    || null,
+  return_date: null,
+  return_slot: null,
+  return_contact_name: null,
+  return_contact_phone: null,
+  return_contact_email: null,
+  container_id: intermediateData.value
+    && allContainers.value.find(
+        (el) => el.id === intermediateData.value.container.id,
+      ).id
+    || null,
+  weight: intermediateData.value ? intermediateData.value.weight : null,
+  price: intermediateData.value ? intermediateData.value.price : null,
+  length_algo: null,
+  description: null,
+  imo: 0,
+  temp_reg: 0,
+  is_international: 0,
+  tax_id: intermediateData.value
+    && taxes.value.find((el) => el.id === intermediateData.value.tax_id.id).id
+    || null,
+  calc: 0,
+});
+
+watch(() => order.from_address_id);
+watch(() => order.delivery_address_id);
+watch(() => order.return_address_id);
+watch(() => order.container_id);
+watch(() => order.tax_id);
+
 async function addOrder() {
   await orderStore.createOrder(order);
 }
@@ -563,11 +578,10 @@ const rules = {
   align-items: baseline;
   justify-content: space-around;
 }
-.p-20 {
-  padding: 20px;
-}
+
 .container {
   display: flex;
+  height: 76vh;
 }
 .form {
   width: 50%;
@@ -618,9 +632,6 @@ h3 {
 .dialogInput,
 .v-col-md-4 {
   max-width: auto;
-}
-.v-col {
-  padding: 7px;
 }
 
 @media (max-width: 960px) {

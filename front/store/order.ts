@@ -4,6 +4,7 @@ import { opFetch } from "~/composables/opFetch";
 export const useOrdersStore = defineStore("ordersStore", {
   state: () => ({
     orders: [],
+    oneOrder: [],
     loading: false,
   }),
   actions: {
@@ -23,6 +24,20 @@ export const useOrdersStore = defineStore("ordersStore", {
       }
       this.setLoading(false);
     },
+    async getOneOrder(id) {
+      this.setLoading(true);
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/orders/show/${id}`, { method: "get" });
+        this.oneOrder = _rawValue;
+        console.log(_rawValue);
+      } catch (error) {
+        console.error(error);
+      }
+      this.setLoading(false);
+    },
+
     async createOrder(body) {
       try {
         const {

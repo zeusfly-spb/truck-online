@@ -31,7 +31,7 @@ export const useDriversStore = defineStore("driversStore", {
           method: "post",
           body: body,
         });
-        this.driverId = _rawValue.data.id;
+        //this.driverId = _rawValue.data.id;
         console.log("dataAdd:", _rawValue);
       } catch (error) {
         console.error(error);

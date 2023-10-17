@@ -2,14 +2,7 @@
   <v-bottom-navigation elevation="5">
     <ul class="namesFooter">
       <li class="mainLi">Результат подсчетов:</li>
-      <li>
-        Расстояние:
-        <p>0р</p>
-      </li>
-      <li>
-        Цена:
-        <p>0р</p>
-      </li>
+
       <li>
         Сумма к оплате:
         <p v-if="price !== null">{{ price }}р</p>

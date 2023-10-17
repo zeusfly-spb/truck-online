@@ -22,7 +22,7 @@ import { useAddressesStore } from "~/store/address";
 
 const emit = defineEmits(["updateSelectAddressFrom"]);
 const addressesStore = useAddressesStore();
-const selectedAddress = ref([]);
+const selectedAddress = ref(null);
 
 onBeforeMount(async () => {
   watch(selectedAddress, (coordinates) => {
@@ -44,9 +44,8 @@ const selectAddressFrom = (id) => {
     selectedAddress.value = toRaw({
       id: address.id,
       name: address.name,
-      coordinates: address.location.coordinates,
+      coordinates: address.coordinates.coordinates,
     });
-    console.log("ВЫБРАННЫЙ АДРЕС:", selectedAddress.value);
   }
 };
 const clearInput = () => {
@@ -55,7 +54,7 @@ const clearInput = () => {
 
 const rules = {
   required: (value) =>
-    !selectedAddress.value || "Поле обязательно для заполнения",
+    !!selectedAddress.value || "Поле обязательно для заполнения",
 };
 defineExpose({
   clearInput,

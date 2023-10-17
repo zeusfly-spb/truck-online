@@ -100,7 +100,7 @@
     <v-row no-gutters>
       <v-col md :cols="12" class="mb-3">
         <v-file-input
-          v-model="data.drivers.driveLicense.file"
+          v-model="licenseFile"
           label="В/У водителя"
           class="text-body-1"
           variant="outlined"
@@ -151,6 +151,7 @@
 <script setup>
 import { useDriversStore } from "~/store/companyConfig/drivers";
 const driverStore = useDriversStore();
+const licenseFile = ref();
 
 const data = reactive({
   drivers: {
@@ -168,12 +169,9 @@ const data = reactive({
     password: null,
     files: [],
     passport: {
-      main: null,
-      second: null,
       number: null,
     },
     driveLicense: {
-      file: null,
       date: null,
       number: null,
     },
@@ -193,7 +191,7 @@ async function addDriver() {
 
   const formdata = new FormData();
   const driverLicense = [
-    data.drivers.driveLicense.file,
+    licenseFile.value,
     data.drivers.driveLicense.date,
     data.drivers.driveLicense.number,
   ];

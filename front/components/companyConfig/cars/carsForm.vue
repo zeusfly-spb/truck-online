@@ -162,10 +162,12 @@ const changeShowFormCar = () => {
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
   carNumber: (value) =>
-    String(value).length < 8 || "Номер машины должен быть длиной больше 7 цифр",
+    String(value).length === 8 ||
+    String(value).length === 9 ||
+    "Номер машины должен быть длиной 8 или 9 знаков",
   sts: (value) =>
     String(value).length === 8 || "CТС-номер должен быть восьмизначным числом",
-  file: (value) => value.length === 0 || "Выберите файл",
+  file: (value) => !!value || "Выберите файл",
 };
 const data = reactive({
   showFormCar: false,
@@ -251,11 +253,8 @@ async function addCar() {
     data.cars.brand.value &&
     data.cars.country.value &&
     data.cars.sts.number &&
-    fileOne.value &&
-    fileTwo.value &&
     data.cars.rightOfUse.value &&
-    data.cars.weigth &&
-    data.cars.icon;
+    data.cars.weigth 
   if (validate) {
     await carStore.addNewCar(formdata);
     resetData();

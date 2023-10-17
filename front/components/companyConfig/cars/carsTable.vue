@@ -28,6 +28,9 @@
             <td>
               <v-btn v-bind="props" text="Удалить машину"> </v-btn>
             </td>
+            <td>
+              <v-btn text="Дополнительно" @click="showSts(car.id)"></v-btn>
+            </td>
           </template>
 
           <template v-slot:default="{ isActive }">
@@ -291,6 +294,11 @@ const rightUse = computed(() => {
     })) || []
   );
 });
+
+async function showSts(id) {
+  await carStore.showCar(id);
+}
+
 async function changeEditFormCar(id) {
   data.showFormCar = !data.showFormCar;
   const {

@@ -32,12 +32,7 @@ onBeforeMount(async () => {
   });
   await addressesStore.getAddresses();
 });
-
-const addressesFrom = computed(() => {
-  if (!addressesStore.addresses || addressesStore.loading) return [];
-
-  return addressesStore.addresses.filter((el) => el.from == true);
-});
+const addressesFrom = computed(() => addressesStore.addresses.filter((el) => !!el.from));
 const selectAddressFrom = (id) => {
   const address = addressesFrom.value.find((addr) => addr.id === id);
   if (address) {

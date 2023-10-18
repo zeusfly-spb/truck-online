@@ -9,7 +9,7 @@ export const useCalculate = defineStore("calculateStore", {
   }),
   actions: {
     resetPrice() {
-      this.price = null;
+      this.price = 0;
     },
     async calculate(body) {
       try {

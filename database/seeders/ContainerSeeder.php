@@ -63,5 +63,9 @@ class ContainerSeeder extends Seeder
         'name' => '45 DC',
         'weight' => 20000
       ]);
+      Container::create([
+        'name' => '20+20',
+        'weight' => 40000
+      ]);
     }
 }

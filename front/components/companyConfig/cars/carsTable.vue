@@ -23,35 +23,35 @@
         <td>{{ car.country.name }}</td>
         <td>{{ car.car_type.name }}</td>
         <td>{{ car.max_weigth }}</td>
-        <v-dialog width="400">
-          <template v-slot:activator="{ props }">
-            <td>
-              <v-btn v-bind="props" text="Удалить машину"> </v-btn>
-            </td>
-            <td>
-              <v-btn text="Дополнительно" @click="showSts(car.id)"></v-btn>
-            </td>
-          </template>
-
-          <template v-slot:default="{ isActive }">
-            <v-card title="Подтвердите удаление машины">
-              <v-card-text
-                style="
-                  display: flex;
-                  justify-content: space-around;
-                  margin-top: 15px;
-                "
-              >
-                <v-btn @click="deleteCar(car.id)">Удалить</v-btn>
-                <v-btn text="Отменить" @click="isActive.value = false"></v-btn>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+        <td>
+          <v-col cols="auto">
+            <v-dialog transition="dialog-bottom-transition" width="auto">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  text="Дополнительно"
+                  v-bind="props"
+                  @click="showSts(car.id)"
+                ></v-btn>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card>
+                  <v-toolbar
+                    color="primary"
+                    title="Opening from the bottom"
+                  ></v-toolbar>
+                  <v-card-text>
+                    <div class="text-h2 pa-12">Hello world!</div>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn variant="text" @click="isActive.value = false"
+                      >Close</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </v-col>
+        </td>
         <v-dialog width="1500">
           <template v-slot:activator="{ props }">
             <td>
@@ -295,9 +295,15 @@ const rightUse = computed(() => {
   );
 });
 
-async function showSts(id) {
+const showSts = async (id) => {
   await carStore.showCar(id);
-}
+  console.log("vvvv;", carStore.oneCar.sts_file_1);
+};
+
+const oneCarShow = computed(() => {
+  return carStore.oneCar;
+  // console.log(carStore.oneCar);
+});
 
 async function changeEditFormCar(id) {
   data.showFormCar = !data.showFormCar;
@@ -327,16 +333,7 @@ const updateCar = async () => {
   formData.append("sts_file_2", fileTwo.value && fileTwo.value[0]);
   formData.append("right_use_id", data.cars.rightOfUse.value);
   formData.append("max_weigth", data.cars.weigth);
-  console.log(formData);
-  const url = `/cars/${data.cars.id}`;
-  const {
-    data: { _rawValue },
-  } = await opFetch(url, {
-    method: "post",
-    body: formData,
-  });
-  await carStore.getAllCars();
-  data.showFormCar = !data.showFormCar;
+  await carStore.updateCar(data.cars.id, formData);
 };
 const allCars = computed(() => {
   if (!carStore.cars || carStore.loading) return [];

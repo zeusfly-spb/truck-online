@@ -9,7 +9,7 @@ export const useCarsStore = defineStore("cardStore", {
     rightUse: [],
     cars: [],
     loading: false,
-    oneCar: [],
+    oneCar: null,
   }),
   actions: {
     setLoading(value) {
@@ -24,7 +24,6 @@ export const useCarsStore = defineStore("cardStore", {
           method: "get",
         });
         this.cars = _rawValue;
-        console.log("allcars:", this.cars);
       } catch (error) {
         console.error(error);
       }
@@ -90,15 +89,48 @@ export const useCarsStore = defineStore("cardStore", {
         console.error(error);
       }
     },
-    async showCar(id) {
+    async updateCar(id, formData) {
       try {
         const {
           data: { _rawValue },
-        } = await opFetch(`/cars/${id}`);
-        this.oneCar = _rawValue;
+        } = await opFetch(`/cars/${id}`, {
+          method: "post",
+          body: formData,
+        });
+        if (_rawValue) {
+          await this.getAllCars();
+          useSnack({
+            show: true,
+            type: "success",
+            title: "Машина успешно обновлена!",
+            message: "Поздравляем",
+          });
+        } else {
+          useSnack({
+            show: true,
+            type: "error",
+            title: "При обновлении произошла ошибка!",
+            message: "Попробуйте попытку позже",
+          });
+        }
       } catch (error) {
         console.error(error);
       }
+    },
+    async showCar(id) {
+      this.setLoading(true);
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/cars/${id}`, { method: "get" });
+        if (_rawValue) {
+          this.oneCar = _rawValue;
+          console.log("onecar:", _rawValue);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      this.setLoading(false);
     },
     async deleteCar(id) {
       try {

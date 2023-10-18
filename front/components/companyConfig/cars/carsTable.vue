@@ -25,7 +25,7 @@
         <td>{{ car.max_weigth }}</td>
         <td>
           <v-col cols="auto">
-            <v-dialog transition="dialog-bottom-transition" width="auto">
+            <v-dialog transition="dialog-bottom-transition" width="auto" v-model="showInfoModal">
               <template v-slot:activator="{ props }">
                 <v-btn
                   text="Дополнительно"
@@ -248,6 +248,7 @@ const data = reactive({
     },
   },
 });
+const showInfoModal = ref(false);
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
 };
@@ -298,6 +299,7 @@ const rightUse = computed(() => {
 const showSts = async (id) => {
   await carStore.showCar(id);
   console.log("vvvv;", carStore.oneCar.sts_file_1);
+  showInfoModal.value = true;
 };
 
 const oneCarShow = computed(() => {

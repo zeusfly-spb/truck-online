@@ -42,7 +42,7 @@
                 <v-card>
                   <v-toolbar
                     color="primary"
-                    title="СТС файлы машины"
+                    title="Документы водителя"
                   ></v-toolbar>
                   <v-card-text>
                     <v-carousel style="width: 100%; height: 100%">

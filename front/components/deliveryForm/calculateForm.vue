@@ -1,6 +1,6 @@
 <template>
   <div class="formDelivery">
-    <v-form @submit.prevent="submitForm">
+    <v-form>
       <h2 class="calculation" style="font-weight: 600; font-size: 35px">
         Предварительный расчет
       </h2>
@@ -58,8 +58,18 @@
         </div>
       </div>
       <div class="buttonsForm">
-        <v-btn v-if="showCalculateBtn" type="submit"> Рассчитать </v-btn>
-        <v-btn v-else type="button" @click="goToBigForm"> Создать заказ </v-btn>
+        <v-btn
+          v-if="showCalculateBtn"
+          @click="submitForm"
+        >
+          Рассчитать
+        </v-btn>
+        <v-btn
+          v-else
+          @click="goToBigForm"
+        >
+          Создать заказ
+        </v-btn>
         <v-btn
           variant="tonal"
           style="background-color: #2e67b1; color: rgba(255, 255, 255, 0.5)"

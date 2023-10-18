@@ -13,8 +13,6 @@
 </template>
 <script setup>
 import { useCalculate } from "~/store/calculateForm";
-import { computed } from "vue";
-
 const calculate = useCalculate();
 const price = computed(() => calculate.price);
 </script>
@@ -50,19 +48,6 @@ li {
 
   .mainLi {
     font-size: 18px;
-  }
-}
-
-@media (max-width: 610px) {
-  .namesFooter {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  li {
-    display: flex;
-    justify-content: space-between;
   }
 }
 </style>

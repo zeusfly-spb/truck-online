@@ -84,10 +84,8 @@ const data = reactive({
   .window-item {
     display: flex;
     flex-direction: column;
-    // height: 100%;
     .carForm {
       flex-shrink: 0;
-      // max-height: 450px;
     }
 
     .carTable {
@@ -133,14 +131,14 @@ const data = reactive({
   }
   :deep(.v-file-input .v-input__prepend) {
     position: absolute;
-    left: 12px;
-    top: 16px;
+    // left: 12px;
+    // top: 16px;
   }
   :deep(.v-file-input .v-field-label) {
-    margin-left: 40px;
+    // margin-left: 40px;
   }
   :deep(.v-file-input .v-field__input) {
-    margin-left: 40px;
+    // margin-left: 40px;
   }
 
   @media (max-width: 508px) {
@@ -158,7 +156,7 @@ const data = reactive({
       top: 16px;
     }
     :deep(.v-file-input .v-field-label) {
-      margin-left: 27px;
+      // margin-left: 27px;
     }
   }
   @media (max-width: 424px) {

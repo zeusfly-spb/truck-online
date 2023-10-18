@@ -25,7 +25,11 @@
         <td>{{ car.max_weigth }}</td>
         <td>
           <v-col cols="auto">
-            <v-dialog transition="dialog-bottom-transition" width="auto" v-model="showInfoModal">
+            <v-dialog
+              transition="dialog-bottom-transition"
+              style="width: 100%; height: 100%"
+              v-model="showInfoModal"
+            >
               <template v-slot:activator="{ props }">
                 <v-btn
                   text="Дополнительно"
@@ -37,15 +41,32 @@
                 <v-card>
                   <v-toolbar
                     color="primary"
-                    title="Opening from the bottom"
+                    title="СТС файлы машины"
                   ></v-toolbar>
                   <v-card-text>
-                    <div class="text-h2 pa-12">Hello world!</div>
-                    <img :src="config.public.apiBase.slice(0, -3) + 'storage/' +oneCar.sts_file_1" alt="sts">
+                    <v-carousel style="width: 100%; height: 100%">
+                      <v-carousel-item
+                        :src="
+                          config.public.apiBase.slice(0, -3) +
+                          'storage/' +
+                          oneCar.sts_file_1
+                        "
+                        cover
+                      ></v-carousel-item>
+
+                      <v-carousel-item
+                        :src="
+                          config.public.apiBase.slice(0, -3) +
+                          'storage/' +
+                          oneCar.sts_file_1
+                        "
+                        cover
+                      ></v-carousel-item>
+                    </v-carousel>
                   </v-card-text>
                   <v-card-actions class="justify-end">
                     <v-btn variant="text" @click="isActive.value = false"
-                      >Close</v-btn
+                      >Закрыть</v-btn
                     >
                   </v-card-actions>
                 </v-card>
@@ -304,11 +325,6 @@ const showSts = async (id) => {
   console.log("vvvv;", carStore.oneCar.sts_file_1);
   showInfoModal.value = true;
 };
-
-const oneCarShow = computed(() => {
-  return carStore.oneCar;
-  // console.log(carStore.oneCar);
-});
 
 async function changeEditFormCar(id) {
   data.showFormCar = !data.showFormCar;

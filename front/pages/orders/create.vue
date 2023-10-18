@@ -506,41 +506,45 @@ const taxes = computed(() => {
 });
 
 const order = reactive({
-  from_address_id: intermediateData.value
-    && addresses.value.find(
+  from_address_id:
+    (intermediateData.value &&
+      addresses.value.find(
         (el) => el.id === intermediateData.value.from_address.id,
-      ).id
-    || null,
+      ).id) ||
+    null,
   from_date: null,
   from_slot: null,
   from_contact_name: null,
   from_contact_phone: null,
   from_contact_email: null,
-  delivery_address_id: intermediateData.value
-    && addresses.value.find(
+  delivery_address_id:
+    (intermediateData.value &&
+      addresses.value.find(
         (el) => el.id === intermediateData.value.delivery_address.id,
-      ).id
-    || null,
+      ).id) ||
+    null,
   delivery_date: null,
   delivery_slot: null,
   delivery_contact_name: null,
   delivery_contact_phone: null,
   delivery_contact_email: null,
-  return_address_id: intermediateData.value
-    && addresses.value.find(
+  return_address_id:
+    (intermediateData.value &&
+      addresses.value.find(
         (el) => el.id === intermediateData.value.return_address.id,
-      ).id
-    || null,
+      ).id) ||
+    null,
   return_date: null,
   return_slot: null,
   return_contact_name: null,
   return_contact_phone: null,
   return_contact_email: null,
-  container_id: intermediateData.value
-    && allContainers.value.find(
+  container_id:
+    (intermediateData.value &&
+      allContainers.value.find(
         (el) => el.id === intermediateData.value.container.id,
-      ).id
-    || null,
+      ).id) ||
+    null,
   weight: intermediateData.value ? intermediateData.value.weight : null,
   price: intermediateData.value ? intermediateData.value.price : null,
   length_algo: null,
@@ -548,9 +552,11 @@ const order = reactive({
   imo: 0,
   temp_reg: 0,
   is_international: 0,
-  tax_id: intermediateData.value
-    && taxes.value.find((el) => el.id === intermediateData.value.tax_id.id).id
-    || null,
+  tax_id:
+    (intermediateData.value &&
+      taxes.value.find((el) => el.id === intermediateData.value.tax.id)
+        .id) ||
+    null,
   calc: 0,
 });
 

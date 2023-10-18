@@ -84,10 +84,8 @@ const data = reactive({
   .window-item {
     display: flex;
     flex-direction: column;
-    // height: 100%;
     .carForm {
       flex-shrink: 0;
-      // max-height: 450px;
     }
 
     .carTable {

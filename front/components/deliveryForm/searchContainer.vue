@@ -38,7 +38,7 @@ const updateContainer = (id) => {
 };
 
 const allContainers = computed(() => {
-  const names = ["20f", "40f", "20+20"];
+  const names = ["20DC", "40HC", "20+20"];
   return containersStore.containers.filter((el) => names.includes(el.name));
 });
 

@@ -6,6 +6,7 @@ export const useDriversStore = defineStore("driversStore", {
     drivers: [],
     driverId: null,
     loading: false,
+    oneDriver: null,
   }),
   actions: {
     setLoading(value) {
@@ -31,6 +32,8 @@ export const useDriversStore = defineStore("driversStore", {
           method: "post",
           body: body,
         });
+        if (_rawValue) {
+        }
         //this.driverId = _rawValue.data.id;
         console.log("dataAdd:", _rawValue);
       } catch (error) {
@@ -68,6 +71,20 @@ export const useDriversStore = defineStore("driversStore", {
         console.log("documentsADD:", data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async showOneDriver(id) {
+      try {
+        const {
+          data: { _rawValue },
+        } = await opFetch(`/drivers/${id}`, {
+          method: "get",
+        });
+        if (_rawValue) {
+          this.oneDriver = _rawValue;
+        }
+      } catch (erorr) {
+        console.error(erorr);
       }
     },
     async deleteDriver(id) {

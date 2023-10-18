@@ -23,35 +23,57 @@
         <td>{{ car.country.name }}</td>
         <td>{{ car.car_type.name }}</td>
         <td>{{ car.max_weigth }}</td>
-        <v-dialog width="400">
-          <template v-slot:activator="{ props }">
-            <td>
-              <v-btn v-bind="props" text="Удалить машину"> </v-btn>
-            </td>
-            <td>
-              <v-btn text="Дополнительно" @click="showSts(car.id)"></v-btn>
-            </td>
-          </template>
+        <td>
+          <v-col cols="auto">
+            <v-dialog
+              transition="dialog-bottom-transition"
+              style="width: 100%; height: 100%"
+              v-model="showInfoModal"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  text="Дополнительно"
+                  v-bind="props"
+                  @click="showSts(car.id)"
+                ></v-btn>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card>
+                  <v-toolbar
+                    color="primary"
+                    title="СТС файлы машины"
+                  ></v-toolbar>
+                  <v-card-text>
+                    <v-carousel style="width: 100%; height: 100%">
+                      <v-carousel-item
+                        :src="
+                          config.public.apiBase.slice(0, -3) +
+                          'storage/' +
+                          oneCar.sts_file_1
+                        "
+                        cover
+                      ></v-carousel-item>
 
-          <template v-slot:default="{ isActive }">
-            <v-card title="Подтвердите удаление машины">
-              <v-card-text
-                style="
-                  display: flex;
-                  justify-content: space-around;
-                  margin-top: 15px;
-                "
-              >
-                <v-btn @click="deleteCar(car.id)">Удалить</v-btn>
-                <v-btn text="Отменить" @click="isActive.value = false"></v-btn>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </template>
-        </v-dialog>
+                      <v-carousel-item
+                        :src="
+                          config.public.apiBase.slice(0, -3) +
+                          'storage/' +
+                          oneCar.sts_file_1
+                        "
+                        cover
+                      ></v-carousel-item>
+                    </v-carousel>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn variant="text" @click="isActive.value = false"
+                      >Закрыть</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </v-col>
+        </td>
         <v-dialog width="1500">
           <template v-slot:activator="{ props }">
             <td>
@@ -60,7 +82,6 @@
               >
             </td>
           </template>
-
           <template v-slot:default="{ isActive }">
             <v-card title="Изменение данных машины">
               <v-card-text>
@@ -221,6 +242,7 @@
 <script setup>
 import { useCarsStore } from "~/store/companyConfig/cars";
 const carStore = useCarsStore();
+const oneCar = computed(() => carStore.oneCar);
 const data = reactive({
   showFormEditCar: false,
   cars: {
@@ -248,6 +270,9 @@ const data = reactive({
     },
   },
 });
+const config = useRuntimeConfig();
+
+const showInfoModal = ref(false);
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",
 };
@@ -295,9 +320,11 @@ const rightUse = computed(() => {
   );
 });
 
-async function showSts(id) {
+const showSts = async (id) => {
   await carStore.showCar(id);
-}
+  console.log("vvvv;", carStore.oneCar.sts_file_1);
+  showInfoModal.value = true;
+};
 
 async function changeEditFormCar(id) {
   data.showFormCar = !data.showFormCar;
@@ -327,16 +354,7 @@ const updateCar = async () => {
   formData.append("sts_file_2", fileTwo.value && fileTwo.value[0]);
   formData.append("right_use_id", data.cars.rightOfUse.value);
   formData.append("max_weigth", data.cars.weigth);
-  console.log(formData);
-  const url = `/cars/${data.cars.id}`;
-  const {
-    data: { _rawValue },
-  } = await opFetch(url, {
-    method: "post",
-    body: formData,
-  });
-  await carStore.getAllCars();
-  data.showFormCar = !data.showFormCar;
+  await carStore.updateCar(data.cars.id, formData);
 };
 const allCars = computed(() => {
   if (!carStore.cars || carStore.loading) return [];

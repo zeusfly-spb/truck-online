@@ -15,52 +15,52 @@ class ContainerSeeder extends Seeder
     {
       // 20
       Container::create([
-        'name' => '20 FR',
+        'name' => '20FR',
         'weight' => 20000
       ]);
       Container::create([
-        'name' => '20 OT',
+        'name' => '20OT',
         'weight' => 20000
       ]);
       Container::create([
-        'name' => '20 TANK',
+        'name' => '20TANK',
         'weight' => 20000
       ]);
       Container::create([
-        'name' => '20 DC',
+        'name' => '20DC',
         'weight' => 20000
       ]);
       Container::create([
-        'name' => '20 REF',
+        'name' => '20REF',
         'weight' => 20000
       ]);
       // 40
       Container::create([
-        'name' => '40 FR',
+        'name' => '40FR',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '40 OT',
+        'name' => '40OT',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '40 TANK',
+        'name' => '40TANK',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '40 DC',
+        'name' => '40DC',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '40 REF',
+        'name' => '40REF',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '40 HC',
+        'name' => '40HC',
         'weight' => 40000
       ]);
       Container::create([
-        'name' => '45 DC',
+        'name' => '45DC',
         'weight' => 45000
       ]);
       Container::create([

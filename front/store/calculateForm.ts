@@ -4,7 +4,7 @@ const url = "orders/store";
 
 export const useCalculate = defineStore("calculateStore", {
   state: () => ({
-    price: null,
+    price: 0,
     intermediateData: null,
   }),
   actions: {

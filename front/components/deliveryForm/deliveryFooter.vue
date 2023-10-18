@@ -2,11 +2,9 @@
   <v-bottom-navigation elevation="5">
     <ul class="namesFooter">
       <li class="mainLi">Результат подсчетов:</li>
-
       <li>
         Сумма к оплате:
-        <p v-if="price !== null">{{ price }}р</p>
-        <p v-else>0р</p>
+        <p>{{ price }}р</p>
       </li>
     </ul>
   </v-bottom-navigation>
@@ -22,7 +20,6 @@ li {
   font-size: 20px;
   list-style-type: none;
 }
-
 .namesFooter {
   width: 100%;
   display: flex;

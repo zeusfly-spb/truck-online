@@ -41,6 +41,7 @@
                   ></v-toolbar>
                   <v-card-text>
                     <div class="text-h2 pa-12">Hello world!</div>
+                    <img :src="config.public.apiBase.slice(0, -3) + 'storage/' +oneCar.sts_file_1" alt="sts">
                   </v-card-text>
                   <v-card-actions class="justify-end">
                     <v-btn variant="text" @click="isActive.value = false"
@@ -60,7 +61,6 @@
               >
             </td>
           </template>
-
           <template v-slot:default="{ isActive }">
             <v-card title="Изменение данных машины">
               <v-card-text>
@@ -221,6 +221,7 @@
 <script setup>
 import { useCarsStore } from "~/store/companyConfig/cars";
 const carStore = useCarsStore();
+const oneCar = computed(() => carStore.oneCar);
 const data = reactive({
   showFormEditCar: false,
   cars: {
@@ -248,6 +249,8 @@ const data = reactive({
     },
   },
 });
+const config = useRuntimeConfig();
+
 const showInfoModal = ref(false);
 const rules = {
   required: (value) => !!value || "Поле обязательно для заполнения",

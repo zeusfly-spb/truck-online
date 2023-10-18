@@ -414,7 +414,7 @@
         <twogis-map />
       </div>
     </div>
-    <v-col cols="12" md="12">
+    <v-col>
       <v-text-field
         name="description"
         label="Комментарий"
@@ -554,8 +554,7 @@ const order = reactive({
   is_international: 0,
   tax_id:
     (intermediateData.value &&
-      taxes.value.find((el) => el.id === intermediateData.value.tax.id)
-        .id) ||
+      taxes.value.find((el) => el.id === intermediateData.value.tax.id).id) ||
     null,
   calc: 0,
 });
@@ -587,7 +586,7 @@ const rules = {
 
 .container {
   display: flex;
-  height: 76vh;
+  /* height: 76vh; */
 }
 .form {
   width: 50%;

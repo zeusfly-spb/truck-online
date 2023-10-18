@@ -98,7 +98,7 @@ export const useCarsStore = defineStore("cardStore", {
           body: formData,
         });
         if (_rawValue) {
-          await this.getAllCars();
+          this.cars = this.cars.map(item => item.id === _rawValue.id ? _rawValue: item);
           useSnack({
             show: true,
             type: "success",

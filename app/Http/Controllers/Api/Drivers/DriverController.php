@@ -110,7 +110,7 @@ class DriverController extends BaseController
     $user = $this->createUser($request);
     if ($user) {
       $user->assignRole('driver');
-      return $this->sendResponse($user, 'Driver created successfully.');
+      return response()->json($user);
     }
   }
 
@@ -125,6 +125,9 @@ class DriverController extends BaseController
       'password' => bcrypt($request->password),
       'company_id' => Auth::user()->company_id
     ]);
+
+    $this->uploadDocument($request ,$user->id);
+    $this->uploadFiles($request ,$user->id);
     $user->addMangoAccount();
     return $user;
   }
@@ -238,7 +241,15 @@ class DriverController extends BaseController
 
     return response()->json(['message' => "success"]);
   }
-
+  public function show($id)
+  {
+    try {
+      $user = User::find($id);
+      return response()->json(DriverResource::make($user));
+    } catch (\Exception $exception) {
+      return response()->json(['error' => $exception->getMessage()], 500);
+    }
+  }
   /**
    * @OA\Delete(
    *      path="/api/drivers/{id}",

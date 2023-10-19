@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   devtools: {enabled: true, componentInspector: false},
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost/api'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost/api',
+      storageBase: process.env.NUXT_PUBLIC_API_BASE.slice(0, -4) + '/storage'
     }
   },
   css: ["vuetify/styles", "@/assets/main.scss", "vuetify/lib/styles/main.sass",

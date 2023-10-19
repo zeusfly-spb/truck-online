@@ -118,6 +118,7 @@ Route::prefix('confirmation')->group(function () {
 });
 
 Route::post('/company/find_by_inn', [CompanyController::class, 'findByInn']);
+Route::post('/company/find_by_str', [CompanyController::class, 'findByStr']);
 
 Route::apiResource('addresses', AddressController::class);
 Route::apiResource('containers', ContainerController::class);

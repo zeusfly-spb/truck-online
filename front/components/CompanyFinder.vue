@@ -26,8 +26,19 @@
 import {storeToRefs} from "pinia";
 import {useConfigStore} from "~/store/config";
 
+const { companyConfirmed, companySearchMode } = storeToRefs(useConfigStore());
 const str = ref('');
-const { companyConfirmed, companySearchMode } = storeToRefs(useConfigStore())
+const companies = ref([]);
+watch(str, val => val.length >= 3 ? find() : null);
+const find = async () => {
+  const {data: { _rawValue }} = await opFetch('/company/find_by_str', {
+    method: 'POST',
+    body: {
+      str: str.value
+    }
+  });
+  companies.value = _rawValue;
+};
 
 </script>
 

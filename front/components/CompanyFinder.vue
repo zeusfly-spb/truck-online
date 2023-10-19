@@ -26,9 +26,8 @@
     >
       <v-btn
         v-for="item in companies"
-        color="#BBDEFB"
+        color="#BBDEFF"
         @click="setCompany(item)"
-        style="margin-top: .3em"
       >
         {{ item.short_name || '' }}
       </v-btn>

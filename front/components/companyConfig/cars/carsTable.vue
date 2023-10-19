@@ -42,26 +42,15 @@
                   <v-toolbar
                     color="primary"
                     title="СТС файлы машины"
-                  ></v-toolbar>
+                  />
                   <v-card-text>
                     <v-carousel style="width: 100%; height: 100%">
                       <v-carousel-item
-                        :src="
-                          config.public.apiBase.slice(0, -3) +
-                          'storage/' +
-                          oneCar.sts_file_1
-                        "
-                        cover
-                      ></v-carousel-item>
-
-                      <v-carousel-item
-                        :src="
-                          config.public.apiBase.slice(0, -3) +
-                          'storage/' +
-                          oneCar.sts_file_1
-                        "
-                        cover
-                      ></v-carousel-item>
+                        v-for="(item, index) in [oneCar.sts_file_1, oneCar.sts_file_2]"
+                        :src="`${config.public.storageBase}/${item}`"
+                        :cover="true"
+                        :key="index"
+                      />
                     </v-carousel>
                   </v-card-text>
                   <v-card-actions class="justify-end">

@@ -336,6 +336,7 @@ const confirmCompany = () => {
   configStore.setValue({ key: "companyConfirmed", value: true });
 };
 watch(inn, async (val) => {
+  company.value = null;
   !!val && val.length >= 10 ? await getCompanyByInn(val) : null;
 });
 const isEmail = (val) => {
